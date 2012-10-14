@@ -1,0 +1,4 @@
+https://github.com/handcraftsman/QIFGet
+
+
+license source: http://www.opensource.org/licenses/mit-license.php

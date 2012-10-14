@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Afluistic github.com/handcraftsman/Afluistic")]
+[assembly: AssemblyTitle("Afluistic.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Afluistic")]
-[assembly: AssemblyCopyright("Copyright © 2012 Clinton Sheppard")]
+[assembly: AssemblyProduct("Afluistic.Tests")]
+[assembly: AssemblyCopyright("Copyright © 2012 Clinton Sheppard ")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("aa0900bc-0ac8-45fe-b41f-3fc056fc7662")]
+[assembly: Guid("562e3c59-5469-4e55-b4f1-52002a0a1ce4")]
 
 // Version information for an assembly consists of the following four values:
 //
