@@ -6,4 +6,3 @@ _ReSharper.*
 dist
 *.cache
 *.ReSharper
-codestyle.xml
