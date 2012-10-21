@@ -1,26 +1,40 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿// * **************************************************************************
+// * Copyright (c) Clinton Sheppard <sheppard@cs.unm.edu>
+// *
+// * This source code is subject to terms and conditions of the MIT License.
+// * A copy of the license can be found in the License.txt file
+// * at the root of this distribution.
+// * By using this source code in any fashion, you are agreeing to be bound by
+// * the terms of the MIT License.
+// * You must not remove this notice from this software.
+// *
+// * source repository: https://github.com/handcraftsman/Afluistic
+// * **************************************************************************
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Afluistic.Tests")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Afluistic.Tests")]
-[assembly: AssemblyCopyright("Copyright © 2012 Clinton Sheppard ")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+
+[assembly:AssemblyTitle("Afluistic.Tests")]
+[assembly:AssemblyDescription("")]
+[assembly:AssemblyConfiguration("")]
+[assembly:AssemblyCompany("")]
+[assembly:AssemblyProduct("Afluistic.Tests")]
+[assembly:AssemblyCopyright("Copyright © 2012 Clinton Sheppard ")]
+[assembly:AssemblyTrademark("")]
+[assembly:AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
-[assembly: ComVisible(false)]
+
+[assembly:ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("562e3c59-5469-4e55-b4f1-52002a0a1ce4")]
+
+[assembly:Guid("562e3c59-5469-4e55-b4f1-52002a0a1ce4")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,5 +46,6 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+
+[assembly:AssemblyVersion("1.0.0.0")]
+[assembly:AssemblyFileVersion("1.0.0.0")]
