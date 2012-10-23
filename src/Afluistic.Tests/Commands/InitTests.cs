@@ -77,7 +77,7 @@ namespace Afluistic.Tests.Commands
                             StatementPath = @"x:\previous.statement"
                         });
                     var command = IoC.Get<Init>();
-                    _result = command.Execute(IoC.Get<Init>().GetCommandWords().Concat(new[] { FilePath }).ToArray());
+                    _result = command.Execute(command.GetCommandWords().Concat(new[] { FilePath }).ToArray());
                 }
             }
 
@@ -118,7 +118,7 @@ namespace Afluistic.Tests.Commands
                 protected override void Before_first_test()
                 {
                     var command = IoC.Get<Init>();
-                    _result = command.Execute(IoC.Get<Init>().GetCommandWords().Concat(new[] { FilePath }).ToArray());
+                    _result = command.Execute(command.GetCommandWords().Concat(new[] { FilePath }).ToArray());
                 }
             }
 
@@ -142,7 +142,7 @@ namespace Afluistic.Tests.Commands
                             StatementPath = @"x:\previous.statement"
                         });
                     var command = IoC.Get<Init>();
-                    _result = command.Execute(IoC.Get<Init>().GetCommandWords().Concat(new[] { FilePath }).ToArray());
+                    _result = command.Execute(command.GetCommandWords().Concat(new[] { FilePath }).ToArray());
                 }
             }
 
@@ -161,7 +161,7 @@ namespace Afluistic.Tests.Commands
                 protected override void Before_first_test()
                 {
                     var command = IoC.Get<Init>();
-                    _result = command.Execute(IoC.Get<Init>().GetCommandWords());
+                    _result = command.Execute(command.GetCommandWords());
                 }
             }
 
@@ -180,7 +180,7 @@ namespace Afluistic.Tests.Commands
                 protected override void Before_first_test()
                 {
                     var command = IoC.Get<Init>();
-                    _result = command.Execute(IoC.Get<Init>().GetCommandWords().Concat(new[] { "a", "b", "c" }).ToArray());
+                    _result = command.Execute(command.GetCommandWords().Concat(new[] { "a", "b", "c" }).ToArray());
                 }
             }
         }
