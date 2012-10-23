@@ -21,14 +21,42 @@ namespace Afluistic.Tests.Extensions
 {
     public class TypeExtensionsTests
     {
-        private const string UIDescription = "profile";
+        private const string PropertyDescription = "reversed";
+        private const string TypeDescription = "profile";
 
-        [UIDescription(UIDescription)]
+        [UIDescription(TypeDescription)]
         public class ObjectWithDescription
         {
+            [UIDescription(PropertyDescription)]
+            public string Name { get; set; }
         }
 
-        public class When_asked_to_get_the_UI_description
+        public class When_asked_to_get_the_UI_description_for_a_Property
+        {
+            [TestFixture]
+            public class Given_a_Property_that_does_not_have_a_UIDescription_attribute
+            {
+                [Test]
+                public void Should_return_the_name_of_the_Property()
+                {
+                    var description = TypeExtensions.GetUIDescription<TestObject>(x => x.Value);
+                    description.ShouldBeEqualTo("Value");
+                }
+            }
+
+            [TestFixture]
+            public class Given_a_Property_that_has_a_UIDescription_attribute
+            {
+                [Test]
+                public void Should_return_the_description_from_the_attribute()
+                {
+                    var description = TypeExtensions.GetUIDescription<ObjectWithDescription>(x => x.Name);
+                    description.ShouldBeEqualTo(PropertyDescription);
+                }
+            }
+        }
+
+        public class When_asked_to_get_the_UI_description_for_a_Type
         {
             [TestFixture]
             public class Given_a_Type_that_does_not_have_a_UIDescription_attribute
@@ -48,7 +76,7 @@ namespace Afluistic.Tests.Extensions
                 public void Should_return_the_description_from_the_attribute()
                 {
                     var description = typeof(ObjectWithDescription).GetUIDescription();
-                    description.ShouldBeEqualTo(UIDescription);
+                    description.ShouldBeEqualTo(TypeDescription);
                 }
             }
         }

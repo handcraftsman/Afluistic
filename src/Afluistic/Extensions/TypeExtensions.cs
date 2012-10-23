@@ -12,6 +12,9 @@
 // * **************************************************************************
 using System;
 using System.Linq;
+using System.Linq.Expressions;
+
+using Afluistic.MvbaCore;
 
 namespace Afluistic.Extensions
 {
@@ -31,6 +34,19 @@ namespace Afluistic.Extensions
                 return attribute.UIDescription;
             }
             return type.Name;
+        }
+
+        public static string GetUIDescription<T>(Expression<Func<T,object>> propertyOnType)
+        {
+            var type = typeof(T);
+            var expectedPropertyName = propertyOnType.GetFinalPropertyName();
+            var property = type.GetProperties().First(x => x.Name == expectedPropertyName);
+            var attribute = property.GetCustomAttributes(typeof(UIDescriptionAttribute), false).FirstOrDefault() as UIDescriptionAttribute;
+            if (attribute != null)
+            {
+                return attribute.UIDescription;
+            }
+            return property.Name;
         }
     }
 }

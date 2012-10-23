@@ -10,7 +10,11 @@
 // *
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
+
 using System;
+using System.Linq;
+
+using Afluistic.Extensions;
 
 namespace Afluistic
 {
@@ -18,6 +22,18 @@ namespace Afluistic
     {
         public UIDescriptionAttribute(string uiDescription)
         {
+            var indexOfMarker = uiDescription.IndexOf('$');
+            if (indexOfMarker != -1)
+            {
+                var end = uiDescription.IndexOf(' ', indexOfMarker);
+                var typeName = uiDescription.Substring(1 + indexOfMarker, end - indexOfMarker - 1);
+                var type = AppDomain.CurrentDomain
+                    .GetAssemblies()
+                    .SelectMany(x => x.GetTypes())
+                    .FirstOrDefault(x => x.Name == typeName);
+                var typeDescription = type.GetUIDescription();
+                uiDescription = uiDescription.Substring(0, indexOfMarker) + typeDescription + uiDescription.Substring(end);
+            }
             UIDescription = uiDescription;
         }
 

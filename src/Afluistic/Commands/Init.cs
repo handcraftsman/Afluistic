@@ -86,7 +86,7 @@ namespace Afluistic.Commands
         public void WriteUsage(TextWriter textWriter)
         {
             textWriter.WriteLine(String.Join(" ", this.GetCommandWords()) + " [filepath]");
-            textWriter.WriteLine("\tInitializes the default {0} at [filepath].", typeof(Statement).GetUIDescription());
+            textWriter.WriteLine("\tInitializes a {0} at [filepath].", typeof(Statement).GetUIDescription());
         }
     }
 }

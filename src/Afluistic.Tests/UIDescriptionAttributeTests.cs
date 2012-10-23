@@ -20,15 +20,28 @@ namespace Afluistic.Tests
     public class UIDescriptionAttributeTests
     {
         [TestFixture]
-        public class Given_a_description_in_the_constructor
+        public class Given_a_simple_description_in_the_constructor
         {
             [Test]
-            public void Should_be_able_to_get_the_description()
+            public void Should_get_the_description()
             {
                 const string uiDescription = "test";
                 var descriptor = new UIDescriptionAttribute(uiDescription);
                 var description = descriptor.UIDescription;
                 description.ShouldBeEqualTo(uiDescription);
+            }
+        }
+
+        [TestFixture]
+        public class Given_a_description_with_a_type_reference_in_the_constructor
+        {
+            [Test]
+            public void Should_get_the_description_with_type_reference_replaced_by_its_ui_description()
+            {
+                string uiDescription = "a $"+typeof(TestObject).Name+" test";
+                var descriptor = new UIDescriptionAttribute(uiDescription);
+                var description = descriptor.UIDescription;
+                description.ShouldBeEqualTo("a Test Object test");
             }
         }
     }

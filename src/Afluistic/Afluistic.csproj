@@ -60,6 +60,7 @@
     <Compile Include="CommandHandler.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\Init.cs" />
+    <Compile Include="Commands\ShowSettings.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Domain\Statement.cs" />
     <Compile Include="Extensions\CommandExtensions.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="MvbaCore\Notification.cs" />
     <Compile Include="MvbaCore\NotificationMessage.cs" />
     <Compile Include="MvbaCore\NotificationSeverity.cs" />
+    <Compile Include="MvbaCore\Reflection.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ApplicationSettingsService.cs" />

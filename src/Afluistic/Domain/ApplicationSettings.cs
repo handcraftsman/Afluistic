@@ -15,6 +15,7 @@ namespace Afluistic.Domain
     [UIDescription("Application Settings")]
     public class ApplicationSettings
     {
+        [UIDescription("$Statement filepath")]
         public string StatementPath { get; set; }
     }
 }

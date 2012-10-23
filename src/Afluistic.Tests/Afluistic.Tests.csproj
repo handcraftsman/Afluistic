@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\ShowSettingsTests.cs" />
     <Compile Include="Commands\InitTests.cs" />
     <Compile Include="Extensions\CommandExtensionsTests.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
