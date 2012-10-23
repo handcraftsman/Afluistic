@@ -58,7 +58,7 @@ namespace Afluistic.Commands
             }
             if (settingsResult.HasWarnings)
             {
-                _systemService.StandardOut.WriteLine(settingsResult.Warnings);
+                _systemService.StandardOut.WriteLine("Warning: "+settingsResult.Warnings);
             }
 
             ApplicationSettings applicationSettings = settingsResult;

@@ -25,8 +25,8 @@ namespace Afluistic.Services
 
     public class SerializationService : ISerializationService
     {
-        public const string SerializationErrorMessageText = "Unable to serialize object to {0} due to {1}";
-        public const string DeserializationErrorMessageText = "Unable to deserialize object from {0} due to {1}";
+        public const string SerializationErrorMessageText = "Unable to serialize object to {0} due to{1}{2}";
+        public const string DeserializationErrorMessageText = "Unable to deserialize object from {0} due to{1}{2}";
         private readonly IJsonSerializer _jsonSerializer;
 
         public SerializationService(IJsonSerializer jsonSerializer)
@@ -43,7 +43,7 @@ namespace Afluistic.Services
             }
             catch (Exception e)
             {
-                return Notification.ErrorFor(SerializationErrorMessageText, path, e.Message);
+                return Notification.ErrorFor(SerializationErrorMessageText, path, Environment.NewLine, e.Message);
             }
         }
 
@@ -56,7 +56,7 @@ namespace Afluistic.Services
             }
             catch (Exception e)
             {
-                return Notification.ErrorFor(DeserializationErrorMessageText, path, e.Message).ToNotification<T>();
+                return Notification.ErrorFor(DeserializationErrorMessageText, path, Environment.NewLine, e.Message).ToNotification<T>();
             }
         }
     }

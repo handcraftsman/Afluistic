@@ -11,6 +11,7 @@
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
 
+using System;
 using System.IO;
 
 using Afluistic.Domain;
@@ -27,7 +28,7 @@ namespace Afluistic.Services
 
     public class ApplicationSettingsService : IApplicationSettingsService
     {
-        public const string DamagedSettingsFileMessageText = "Failed to load {0} from {1} due to {2}";
+        public const string DamagedSettingsFileMessageText = "Failed to load {0} from {1} due to{2}{3}";
         public const string MissingSettingsFileMessageText = "Failed to load {0} from {1} because the file does not exist. Creating new ones.";
         private readonly IFileSystemService _fileSystemService;
         private readonly ISerializationService _serializationService;
@@ -50,7 +51,7 @@ namespace Afluistic.Services
             {
                 if (_fileSystemService.FileExists(settingsPath))
                 {
-                    return Notification.ErrorFor(DamagedSettingsFileMessageText, typeof(ApplicationSettings).GetUIDescription(), settingsPath, settings.Errors).ToNotification<ApplicationSettings>();
+                    return Notification.ErrorFor(DamagedSettingsFileMessageText, typeof(ApplicationSettings).GetUIDescription(), settingsPath, Environment.NewLine, settings.Errors).ToNotification<ApplicationSettings>();
                 }
                 return Notification.WarningFor(MissingSettingsFileMessageText, typeof(ApplicationSettings).GetUIDescription(), settingsPath).ToNotification(new ApplicationSettings());
             }

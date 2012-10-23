@@ -11,6 +11,7 @@
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
 
+using System;
 using System.Collections.Generic;
 
 using Afluistic.Domain;
@@ -27,7 +28,7 @@ namespace Afluistic.Services
     public class StorageService : IStorageService
     {
         public const string InitializationErrorMessageText = "Please initialize the {0} filepath.";
-        public const string SerializationErrorMessageText = "Unable to save the {0} to {1} due to {2}";
+        public const string SerializationErrorMessageText = "Unable to save the {0} to {1} due to{2}{3}";
         private readonly IApplicationSettingsService _applicationSettingsService;
         private readonly ISerializationService _serializationService;
 
@@ -55,7 +56,7 @@ namespace Afluistic.Services
             var result = _serializationService.SerializeToFile(statement, path);
             if (result.HasErrors)
             {
-                return Notification.ErrorFor(SerializationErrorMessageText, typeof(Statement).GetUIDescription(), path, result.Errors);
+                return Notification.ErrorFor(SerializationErrorMessageText, typeof(Statement).GetUIDescription(), path, Environment.NewLine, result.Errors);
             }
             return result;
         }
