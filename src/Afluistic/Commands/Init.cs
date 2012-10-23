@@ -58,11 +58,16 @@ namespace Afluistic.Commands
             }
             if (settingsResult.HasWarnings)
             {
-                _systemService.StandardOut.WriteLine("Warning: "+settingsResult.Warnings);
+                _systemService.StandardOut.WriteLine("Warning: " + settingsResult.Warnings);
             }
 
             ApplicationSettings applicationSettings = settingsResult;
-            applicationSettings.StatementPath = args[commandWords.Length];
+            var statementPath = args[commandWords.Length].ToStatementPath();
+            if (statementPath.HasErrors)
+            {
+                return statementPath;
+            }
+            applicationSettings.StatementPath = statementPath;
 
             var saveResult = _applicationSettingsService.Save(applicationSettings);
             if (saveResult.HasErrors)

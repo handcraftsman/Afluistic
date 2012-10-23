@@ -27,6 +27,8 @@ using FluentAssert;
 
 using NUnit.Framework;
 
+using StringExtensions = Afluistic.Extensions.StringExtensions;
+
 namespace Afluistic.Tests.Commands
 {
     public class InitTests
@@ -34,45 +36,7 @@ namespace Afluistic.Tests.Commands
         public class When_asked_to_execute
         {
             [TestFixture]
-            public class Given_parameters_with_a_filepath : IntegrationTestBase
-            {
-                private Notification _result;
-
-                [Test]
-                public void Should_return_an_error_message_for_the_missing_file_path()
-                {
-                    _result.HasErrors.ShouldBeTrue();
-                    Regex.IsMatch(_result.Errors, Init.FilePathNotSpecifiedMessageText.MessageTextToRegex()).ShouldBeTrue();
-                }
-
-                protected override void Before_first_test()
-                {
-                    var command = IoC.Get<Init>();
-                    _result = command.Execute(IoC.Get<Init>().GetCommandWords());
-                }
-            }
-
-            [TestFixture]
-            public class Given_too_many_parameters : IntegrationTestBase
-            {
-                private Notification _result;
-
-                [Test]
-                public void Should_return_an_error_message_for_too_many_parameters()
-                {
-                    _result.HasErrors.ShouldBeTrue();
-                    Regex.IsMatch(_result.Errors, Init.TooManyArgumentsMessageText.MessageTextToRegex()).ShouldBeTrue();
-                }
-
-                protected override void Before_first_test()
-                {
-                    var command = IoC.Get<Init>();
-                    _result = command.Execute(IoC.Get<Init>().GetCommandWords().Concat(new[] { "a", "b", "c" }).ToArray());
-                }
-            }
-
-            [TestFixture]
-            public class Given_valid_parameters_and_the_application_settings_have_been_initialized : IntegrationTestBase
+            public class Given_a_valid_filepath_and_the_application_settings_have_been_initialized : IntegrationTestBase
             {
                 private const string FilePath = @"x:\test";
                 private Notification _result;
@@ -118,7 +82,7 @@ namespace Afluistic.Tests.Commands
             }
 
             [TestFixture]
-            public class Given_valid_parameters_and_the_application_settings_have_not_been_initialized : IntegrationTestBase
+            public class Given_a_valid_filepath_and_the_application_settings_have_not_been_initialized : IntegrationTestBase
             {
                 private const string FilePath = @"x:\test";
                 private Notification _result;
@@ -155,6 +119,68 @@ namespace Afluistic.Tests.Commands
                 {
                     var command = IoC.Get<Init>();
                     _result = command.Execute(IoC.Get<Init>().GetCommandWords().Concat(new[] { FilePath }).ToArray());
+                }
+            }
+
+            [TestFixture]
+            public class Given_an_invalid_filepath_and_the_application_settings_have_been_initialized : IntegrationTestBase
+            {
+                private const string FilePath = @"?";
+                private Notification _result;
+
+                [Test]
+                public void Should_return_an_error_notification()
+                {
+                    _result.HasErrors.ShouldBeTrue();
+                    Regex.IsMatch(_result.Errors, StringExtensions.ErrorConvertingToAbsolutePathMesssageText.MessageTextToRegex()).ShouldBeTrue();
+                }
+
+                protected override void Before_first_test()
+                {
+                    IoC.Get<IApplicationSettingsService>().Save(new ApplicationSettings
+                        {
+                            StatementPath = @"x:\previous.statement"
+                        });
+                    var command = IoC.Get<Init>();
+                    _result = command.Execute(IoC.Get<Init>().GetCommandWords().Concat(new[] { FilePath }).ToArray());
+                }
+            }
+
+            [TestFixture]
+            public class Given_parameters_with_a_filepath : IntegrationTestBase
+            {
+                private Notification _result;
+
+                [Test]
+                public void Should_return_an_error_message_for_the_missing_file_path()
+                {
+                    _result.HasErrors.ShouldBeTrue();
+                    Regex.IsMatch(_result.Errors, Init.FilePathNotSpecifiedMessageText.MessageTextToRegex()).ShouldBeTrue();
+                }
+
+                protected override void Before_first_test()
+                {
+                    var command = IoC.Get<Init>();
+                    _result = command.Execute(IoC.Get<Init>().GetCommandWords());
+                }
+            }
+
+            [TestFixture]
+            public class Given_too_many_parameters : IntegrationTestBase
+            {
+                private Notification _result;
+
+                [Test]
+                public void Should_return_an_error_message_for_too_many_parameters()
+                {
+                    _result.HasErrors.ShouldBeTrue();
+                    Regex.IsMatch(_result.Errors, Init.TooManyArgumentsMessageText.MessageTextToRegex()).ShouldBeTrue();
+                }
+
+                protected override void Before_first_test()
+                {
+                    var command = IoC.Get<Init>();
+                    _result = command.Execute(IoC.Get<Init>().GetCommandWords().Concat(new[] { "a", "b", "c" }).ToArray());
                 }
             }
         }

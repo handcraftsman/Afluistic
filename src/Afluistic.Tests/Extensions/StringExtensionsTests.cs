@@ -11,6 +11,8 @@
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
 
+using System;
+using System.IO;
 using System.Linq;
 
 using Afluistic.Extensions;
@@ -46,6 +48,98 @@ namespace Afluistic.Tests.Extensions
                     const string messageText = "the {0} is round";
                     var regexText = messageText.MessageTextToRegex();
                     regexText.ShouldBeEqualTo("the .* is round");
+                }
+            }
+        }
+
+        public class When_asked_to_convert_a_path_to_a_statement_path
+        {
+            [TestFixture]
+            public class Given_a_path_that_cannot_be_converted_to_an_absolute_path
+            {
+                [Test]
+                public void Should_return_an_error_notification()
+                {
+                    const string path = "?";
+                    var result = path.ToStatementPath();
+                    result.HasErrors.ShouldBeTrue();
+                }
+            }
+
+            [TestFixture]
+            public class Given_a_path_that_resolves_to_a_directory
+            {
+                [Test]
+                public void Should_return_a_path_created_by_combining_the_directory_with_the_default_file_name()
+                {
+                    const string path = @".";
+                    var result = path.ToStatementPath();
+                    result.HasErrors.ShouldBeFalse();
+                    result.Item.ShouldBeEqualTo(Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, Constants.DefaultStatementFileName)));
+                }
+            }
+
+            [TestFixture]
+            public class Given_a_path_that_resolves_to_a_file
+            {
+                [Test]
+                public void Should_return_the_absolute_path_to_the_file()
+                {
+                    const string path = @".\Afluistic.pdb";
+                    var result = path.ToStatementPath();
+                    result.HasErrors.ShouldBeFalse();
+                    result.Item.ShouldBeEqualTo(Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, path)));
+                }
+            }
+        }
+
+        public class When_asked_to_convert_a_path_to_an_absolute_path
+        {
+            [TestFixture]
+            public class Given_a_dot_dot_path
+            {
+                [Test]
+                public void Should_return_the_current_directory_combined_with_the_input()
+                {
+                    const string path = @"..\foo";
+                    var absolutePath = path.ToAbsolutePath();
+                    absolutePath.Item.ShouldBeEqualTo(Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, path)));
+                }
+            }
+
+            [TestFixture]
+            public class Given_a_path_containing_a_drive_designation
+            {
+                [Test]
+                public void Should_return_the_input()
+                {
+                    const string path = @"c:\foo";
+                    var absolutePath = path.ToAbsolutePath();
+                    absolutePath.Item.ShouldBeEqualTo(path);
+                }
+            }
+
+            [TestFixture]
+            public class Given_dot
+            {
+                [Test]
+                public void Should_return_the_current_directory()
+                {
+                    const string path = ".";
+                    var absolutePath = path.ToAbsolutePath();
+                    absolutePath.Item.ShouldBeEqualTo(Environment.CurrentDirectory);
+                }
+            }
+
+            [TestFixture]
+            public class Given_dot_slash_foo
+            {
+                [Test]
+                public void Should_return_the_current_directory_combined_with_the_input()
+                {
+                    const string path = @".\foo";
+                    var absolutePath = path.ToAbsolutePath();
+                    absolutePath.Item.ShouldBeEqualTo(Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, path)));
                 }
             }
         }

@@ -14,9 +14,11 @@ namespace Afluistic
 {
     public static class Constants
     {
+        public const string DefaultStatementFileName = "afluistic.statement";
+
         public static class Settings
         {
-            public static readonly string FileName = "afluistic.settings";
+            public const string FileName = "afluistic.settings";
         }
     }
 }
