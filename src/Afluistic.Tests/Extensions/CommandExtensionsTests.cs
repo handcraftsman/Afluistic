@@ -28,7 +28,7 @@ namespace Afluistic.Tests.Extensions
     {
         public class SampleCommand : ICommand
         {
-            public Notification Execute(string[] args)
+            public Notification Execute(ExecutionArguments executionArguments)
             {
                 throw new NotImplementedException();
             }
@@ -128,7 +128,7 @@ namespace Afluistic.Tests.Extensions
 
                 public class Sample : ICommand
                 {
-                    public Notification Execute(string[] args)
+                    public Notification Execute(ExecutionArguments executionArguments)
                     {
                         throw new NotImplementedException();
                     }

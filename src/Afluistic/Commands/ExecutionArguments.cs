@@ -10,17 +10,15 @@
 // *
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
-using System.Collections.Generic;
+using Afluistic.Domain;
+using Afluistic.MvbaCore;
 
-namespace Afluistic.Domain
+namespace Afluistic.Commands
 {
-    public class Statement
+    public class ExecutionArguments
     {
-        public Statement()
-        {
-            Accounts = new List<Account>();
-        }
-
-        public IList<Account> Accounts { get; set; }
+        public Notification<ApplicationSettings> ApplicationSettings { get; set; }
+        public string[] Args { get; set; }
+        public Notification<Statement> Statement { get; set; }
     }
 }

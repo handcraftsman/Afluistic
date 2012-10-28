@@ -16,8 +16,10 @@ using System.IO;
 using System.Linq;
 
 using Afluistic.Commands;
+using Afluistic.Commands.Prerequisites;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
+using Afluistic.Services;
 
 namespace Afluistic
 {
@@ -29,11 +31,21 @@ namespace Afluistic
 
     public class CommandHandler : ICommandHandler
     {
+        public const string DontKnowHowToHandleMessageText = "Don't know how to handle: '{0}'";
+        private readonly IApplicationSettingsService _applicationSettingsService;
         private readonly ICommand[] _commands;
+        private readonly IPrerequisiteChecker _prerequisiteChecker;
+        private readonly IStorageService _storageService;
 
-        public CommandHandler(ICommand[] commands)
+        public CommandHandler(IApplicationSettingsService applicationSettingsService,
+                              IPrerequisiteChecker prerequisiteChecker,
+                              IStorageService storageService,
+                              ICommand[] commands)
         {
             _commands = commands;
+            _applicationSettingsService = applicationSettingsService;
+            _storageService = storageService;
+            _prerequisiteChecker = prerequisiteChecker;
         }
 
         public Notification Handle(string[] args)
@@ -41,9 +53,20 @@ namespace Afluistic
             var command = GetMatchingCommand(args);
             if (command == null)
             {
-                return Notification.ErrorFor("Don't know how to handle: '" + String.Join(" ", args) + "'");
+                return Notification.ErrorFor(DontKnowHowToHandleMessageText, String.Join(" ", args));
             }
-            return command.Execute(args);
+            var executionArguments = new ExecutionArguments
+                {
+                    Args = args.Skip(command.GetCommandWords().Length).ToArray(),
+                    ApplicationSettings = _applicationSettingsService.Load(),
+                    Statement = _storageService.Load()
+                };
+            var prerequisiteResult = _prerequisiteChecker.Check(command, executionArguments);
+            if (prerequisiteResult.HasErrors)
+            {
+                return prerequisiteResult;
+            }
+            return command.Execute(executionArguments);
         }
 
         public void WriteUsage(TextWriter textWriter)

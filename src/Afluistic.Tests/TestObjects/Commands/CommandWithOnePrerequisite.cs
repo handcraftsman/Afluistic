@@ -10,11 +10,27 @@
 // *
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
-namespace Afluistic.Tests
+
+using System;
+using System.IO;
+
+using Afluistic.Commands;
+using Afluistic.Commands.Prerequisites;
+using Afluistic.MvbaCore;
+
+namespace Afluistic.Tests.TestObjects.Commands
 {
-    [UIDescription("Test Object")]
-    public class TestObject
+    public class CommandWithOnePrerequisite : ICommand
     {
-        public string Value { get; set; }
+        [RequireAdditionalArgs(1)]
+        public Notification Execute(ExecutionArguments executionArguments)
+        {
+            return Notification.InfoFor("Command was executed");
+        }
+
+        public void WriteUsage(TextWriter textWriter)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

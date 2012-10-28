@@ -11,6 +11,8 @@
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
 
+using Afluistic.Tests.TestObjects;
+
 using FluentAssert;
 
 using NUnit.Framework;

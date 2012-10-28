@@ -13,6 +13,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 
 using Afluistic.Commands.Prerequisites;
 using Afluistic.Domain;
@@ -22,11 +23,11 @@ using Afluistic.Services;
 
 namespace Afluistic.Commands
 {
-    public class ShowSettings : ICommand
+    public class ListAccounts : ICommand
     {
         private readonly ISystemService _systemService;
 
-        public ShowSettings(ISystemService systemService)
+        public ListAccounts(ISystemService systemService)
         {
             _systemService = systemService;
         }
@@ -34,17 +35,25 @@ namespace Afluistic.Commands
         [RequireAdditionalArgs(0)]
         [RequireApplicationSettings]
         [RequireApplicationSettingsAlreadyInitialized]
+        [RequireStatement]
+        [RequireActiveAccountsExist]
         public Notification Execute(ExecutionArguments executionArguments)
         {
-            ApplicationSettings applicationSettings = executionArguments.ApplicationSettings;
-            _systemService.StandardOut.WriteLine(TypeExtensions.GetUIDescription<ApplicationSettings>(x => x.StatementPath) + ":\t" + applicationSettings.StatementPath);
+            Statement statement = executionArguments.Statement;
+            var index = 1;
+            foreach (var account in statement.Accounts.Where(x => !x.IsDeleted))
+            {
+                _systemService.StandardOut.WriteLine(index + ") " + account.Name);
+                index++;
+            }
+
             return Notification.Empty;
         }
 
         public void WriteUsage(TextWriter textWriter)
         {
             textWriter.WriteLine(String.Join(" ", this.GetCommandWords()));
-            textWriter.WriteLine("\tShows the {0}.", typeof(ApplicationSettings).GetUIDescription());
+            textWriter.WriteLine("\tLists the active accounts in the {0}.", typeof(Statement).GetUIDescription());
         }
     }
 }

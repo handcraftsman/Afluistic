@@ -22,11 +22,13 @@ namespace Afluistic.Services
 {
     public interface IStorageService
     {
+        Notification<Statement> Load();
         Notification Save(Statement statement);
     }
 
     public class StorageService : IStorageService
     {
+        public const string DeserializationErrorMessageText = "Unable to load the {0} to {1} due to{2}{3}";
         public const string InitializationErrorMessageText = "Please initialize the {0} filepath.";
         public const string SerializationErrorMessageText = "Unable to save the {0} to {1} due to{2}{3}";
         private readonly IApplicationSettingsService _applicationSettingsService;
@@ -59,6 +61,29 @@ namespace Afluistic.Services
                 return Notification.ErrorFor(SerializationErrorMessageText, typeof(Statement).GetUIDescription(), path, Environment.NewLine, result.Errors);
             }
             return result;
+        }
+
+        public Notification<Statement> Load()
+        {
+            var settingsResult = _applicationSettingsService.Load();
+            if (settingsResult.HasErrors)
+            {
+                return settingsResult.ToNotification<Statement>();
+            }
+
+            ApplicationSettings settings = settingsResult;
+            var path = settings.StatementPath;
+            if (path.IsNullOrEmpty())
+            {
+                return Notification.ErrorFor(InitializationErrorMessageText, typeof(Statement).GetUIDescription()).ToNotification<Statement>();
+            }
+
+            var statement = _serializationService.DeserializeFromFile<Statement>(path);
+            if (statement.HasErrors)
+            {
+                return Notification.ErrorFor(DeserializationErrorMessageText, typeof(Statement).GetUIDescription(), path, Environment.NewLine, statement.Errors).ToNotification<Statement>();
+            }
+            return statement;
         }
     }
 }

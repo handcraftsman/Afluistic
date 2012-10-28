@@ -11,14 +11,35 @@
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Afluistic.Commands;
+using Afluistic.Commands.Prerequisites;
+using Afluistic.MvbaCore;
 
 namespace Afluistic.Extensions
 {
     public static class CommandExtensions
     {
+        private static readonly IDictionary<Type, IPrerequisite[]> CachedPrerequisites = new Dictionary<Type, IPrerequisite[]>();
+
+        public static IEnumerable<IPrerequisite> GetCommandExecutionPrerequisites(this ICommand command)
+        {
+            IPrerequisite[] prerequisites;
+            if (!CachedPrerequisites.TryGetValue(command.GetType(), out prerequisites))
+            {
+                prerequisites = command.GetType()
+                    .GetMethod(Reflection.GetMethodName((ICommand c) => c.Execute(null)))
+                    .GetCustomAttributes(typeof(IPrerequisite), false)
+                    .Cast<IPrerequisite>()
+                    .ToArray();
+                CachedPrerequisites.Add(command.GetType(), prerequisites);
+            }
+            return prerequisites;
+        }
+
         public static string[] GetCommandWords(this ICommand command)
         {
             var commandWords = command.GetType()

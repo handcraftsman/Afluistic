@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 
 using Afluistic.Services;
 using Afluistic.Tests.Extensions;
+using Afluistic.Tests.TestObjects;
 
 using FluentAssert;
 

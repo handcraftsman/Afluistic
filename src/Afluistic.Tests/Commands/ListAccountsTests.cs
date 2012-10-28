@@ -12,6 +12,7 @@
 // * **************************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 using Afluistic.Commands;
@@ -25,13 +26,14 @@ using NUnit.Framework;
 
 namespace Afluistic.Tests.Commands
 {
-    public class ShowSettingsTests
+    public class ListAccountsTests
     {
         public class When_asked_to_execute
         {
             [TestFixture]
             public class Given_Execution_Arguments : IntegrationTestBase
             {
+                private const string AccountName = "Bob";
                 private Notification _result;
 
                 [Test]
@@ -45,11 +47,12 @@ namespace Afluistic.Tests.Commands
                 public void Should_write_to_the_standard_output()
                 {
                     StandardOutText.Length.ShouldNotBeEqualTo(0);
+                    StandardOutText.ShouldContain(AccountName);
                 }
 
                 protected override void Before_first_test()
                 {
-                    var command = IoC.Get<ShowSettings>();
+                    var command = IoC.Get<ListAccounts>();
                     var executionArguments = new ExecutionArguments
                         {
                             ApplicationSettings = new Notification<ApplicationSettings>
@@ -57,6 +60,16 @@ namespace Afluistic.Tests.Commands
                                     Item = new ApplicationSettings
                                         {
                                             StatementPath = @"x:\current.statement"
+                                        }
+                                },
+                            Statement = new Statement
+                                {
+                                    Accounts = new List<Account>
+                                        {
+                                            new Account
+                                                {
+                                                    Name = AccountName
+                                                }
                                         }
                                 }
                         };
@@ -74,7 +87,7 @@ namespace Afluistic.Tests.Commands
                 public void Should_write_its_usage_information_to_the_TextWriter()
                 {
                     var writer = new StringWriter();
-                    var command = IoC.Get<ShowSettings>();
+                    var command = IoC.Get<ListAccounts>();
                     command.WriteUsage(writer);
                     writer.ToString().ShouldContain(String.Join(" ", command.GetCommandWords()));
                 }

@@ -18,6 +18,34 @@ namespace Afluistic.MvbaCore
 {
     public static class Reflection
     {
+        private static MethodCallExpression GetMethodCallExpression<T, TReturn>(Expression<Func<T, TReturn>> expression)
+        {
+            var methodCallExpression = expression.Body as MethodCallExpression;
+            if (methodCallExpression == null)
+            {
+                var unaryExpression = expression.Body as UnaryExpression;
+                if (unaryExpression == null)
+                {
+                    throw new ArgumentException(
+                        "expression must be in the form: (Foo instance) => instance.Method()");
+                }
+                methodCallExpression = unaryExpression.Operand as MethodCallExpression;
+                if (methodCallExpression == null)
+                {
+                    throw new ArgumentException(
+                        "expression must be in the form: (Foo instance) => instance.Method()");
+                }
+            }
+            return methodCallExpression;
+        }
+
+        [DebuggerStepThrough]
+        public static string GetMethodName<T, TReturn>(Expression<Func<T, TReturn>> expression)
+        {
+            var methodCallExpression = GetMethodCallExpression(expression);
+            return methodCallExpression.Method.Name;
+        }
+
         [DebuggerStepThrough]
         public static string GetFinalPropertyName<T, TReturn>(this Expression<Func<T, TReturn>> expression)
         {
@@ -30,7 +58,9 @@ namespace Afluistic.MvbaCore
             return names.Last();
         }
 
+// ReSharper disable ReturnTypeCanBeEnumerable.Local
         private static List<string> GetNames(MemberExpression memberExpression)
+// ReSharper restore ReturnTypeCanBeEnumerable.Local
         {
             var names = new List<string>
 			{

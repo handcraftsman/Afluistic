@@ -29,7 +29,7 @@ namespace Afluistic.Services
     public class ApplicationSettingsService : IApplicationSettingsService
     {
         public const string DamagedSettingsFileMessageText = "Failed to load {0} from {1} due to{2}{3}";
-        public const string MissingSettingsFileMessageText = "Failed to load {0} from {1} because the file does not exist. Creating new ones.";
+        public const string MissingSettingsFileMessageText = "Failed to load {0} from {2} because the file does not exist. The {1} filepath needs to be initialized.";
         private readonly IFileSystemService _fileSystemService;
         private readonly ISerializationService _serializationService;
         private readonly ISystemService _systemService;
@@ -53,7 +53,7 @@ namespace Afluistic.Services
                 {
                     return Notification.ErrorFor(DamagedSettingsFileMessageText, typeof(ApplicationSettings).GetUIDescription(), settingsPath, Environment.NewLine, settings.Errors).ToNotification<ApplicationSettings>();
                 }
-                return Notification.WarningFor(MissingSettingsFileMessageText, typeof(ApplicationSettings).GetUIDescription(), settingsPath).ToNotification(new ApplicationSettings());
+                return Notification.WarningFor(MissingSettingsFileMessageText, typeof(ApplicationSettings).GetUIDescription(), typeof(Statement).GetUIDescription(), settingsPath).ToNotification(new ApplicationSettings());
             }
             return settings;
         }

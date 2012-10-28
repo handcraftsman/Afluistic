@@ -13,7 +13,9 @@
 
 using System;
 using System.IO;
+using System.Linq;
 
+using Afluistic.Commands.Prerequisites;
 using Afluistic.Domain;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
@@ -24,45 +26,23 @@ namespace Afluistic.Commands
     public class Init : ICommand
     {
         public const string FilePathNotSpecifiedMessageText = "filepath must be specified.";
-        public const string SuccessMessageText = "{0} was created at {1}";
-        public const string TooManyArgumentsMessageText = "too many arguments specified - please check the usage.";
+        public const string SuccessMessageText = "The {0} was created at {1}";
         private readonly IApplicationSettingsService _applicationSettingsService;
         private readonly IStorageService _storageService;
-        private readonly ISystemService _systemService;
 
         public Init(IApplicationSettingsService applicationSettingsService,
-                    IStorageService storageService,
-                    ISystemService systemService)
+                    IStorageService storageService)
         {
             _applicationSettingsService = applicationSettingsService;
             _storageService = storageService;
-            _systemService = systemService;
         }
 
-        public Notification Execute(string[] args)
+        [RequireAdditionalArgs(1, FilePathNotSpecifiedMessageText)]
+        [RequireApplicationSettings]
+        public Notification Execute(ExecutionArguments executionArguments)
         {
-            var commandWords = this.GetCommandWords();
-            if (args.Length < 1 + commandWords.Length)
-            {
-                return Notification.ErrorFor(FilePathNotSpecifiedMessageText);
-            }
-            if (args.Length > 1 + commandWords.Length)
-            {
-                return Notification.ErrorFor(TooManyArgumentsMessageText);
-            }
-
-            var settingsResult = _applicationSettingsService.Load();
-            if (settingsResult.HasErrors)
-            {
-                return settingsResult;
-            }
-            if (settingsResult.HasWarnings)
-            {
-                _systemService.StandardOut.WriteLine("Warning: " + settingsResult.Warnings);
-            }
-
-            ApplicationSettings applicationSettings = settingsResult;
-            var statementPath = args[commandWords.Length].ToStatementPath();
+            ApplicationSettings applicationSettings = executionArguments.ApplicationSettings;
+            var statementPath = executionArguments.Args.Last().ToStatementPath();
             if (statementPath.HasErrors)
             {
                 return statementPath;

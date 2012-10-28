@@ -13,14 +13,12 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
 using Afluistic.Domain;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
-using Afluistic.Services;
 using Afluistic.Tests.Extensions;
 
 using FluentAssert;
@@ -36,9 +34,38 @@ namespace Afluistic.Tests.Commands
         public class When_asked_to_execute
         {
             [TestFixture]
-            public class Given_a_valid_filepath_and_the_application_settings_have_been_initialized : IntegrationTestBase
+            public class Given_an_invalid_filepath : IntegrationTestBase
             {
-                private const string FilePath = @"x:\test";
+                private const string FilePath = @"?";
+                private Notification _result;
+
+                [Test]
+                public void Should_return_an_error_notification()
+                {
+                    _result.HasErrors.ShouldBeTrue();
+                    Regex.IsMatch(_result.Errors, StringExtensions.ErrorConvertingToAbsolutePathMesssageText.MessageTextToRegex()).ShouldBeTrue();
+                }
+
+                protected override void Before_first_test()
+                {
+                    var command = IoC.Get<Init>();
+                    var executionArguments = new ExecutionArguments
+                        {
+                            ApplicationSettings = new ApplicationSettings
+                                {
+                                    StatementPath = @"x:\previous.statement"
+                                },
+                            Args = new[] { FilePath },
+                            Statement = new Statement()
+                        };
+                    _result = command.Execute(executionArguments);
+                }
+            }
+
+            [TestFixture]
+            public class Given_valid_Execution_Arguments : IntegrationTestBase
+            {
+                private const string FilePath = @"x:\new.statement";
                 private Notification _result;
 
                 [Test]
@@ -72,115 +99,17 @@ namespace Afluistic.Tests.Commands
 
                 protected override void Before_first_test()
                 {
-                    IoC.Get<IApplicationSettingsService>().Save(new ApplicationSettings
+                    var command = IoC.Get<Init>();
+                    var executionArguments = new ExecutionArguments
                         {
-                            StatementPath = @"x:\previous.statement"
-                        });
-                    var command = IoC.Get<Init>();
-                    _result = command.Execute(command.GetCommandWords().Concat(new[] { FilePath }).ToArray());
-                }
-            }
-
-            [TestFixture]
-            public class Given_a_valid_filepath_and_the_application_settings_have_not_been_initialized : IntegrationTestBase
-            {
-                private const string FilePath = @"x:\test";
-                private Notification _result;
-
-                [Test]
-                public void Should_create_the_requested_file()
-                {
-                    FileExists(FilePath).ShouldBeTrue();
-                }
-
-                [Test]
-                public void Should_return_a_success_message()
-                {
-                    _result.HasErrors.ShouldBeFalse();
-                    _result.HasWarnings.ShouldBeFalse();
-                    _result.Infos.Length.ShouldBeGreaterThan(0);
-                }
-
-                [Test]
-                public void Should_update_the_settings_statement_path_to_contain_the_filepath()
-                {
-                    var settingsResult = Settings;
-                    settingsResult.HasErrors.ShouldBeFalse();
-                    settingsResult.Item.StatementPath.ShouldBeEqualTo(FilePath);
-                }
-
-                [Test]
-                public void Should_write_a_warning_about_the_missing_settings_file_to_the_standard_output()
-                {
-                    Regex.IsMatch(StandardOutText, ApplicationSettingsService.MissingSettingsFileMessageText.MessageTextToRegex()).ShouldBeTrue();
-                }
-
-                protected override void Before_first_test()
-                {
-                    var command = IoC.Get<Init>();
-                    _result = command.Execute(command.GetCommandWords().Concat(new[] { FilePath }).ToArray());
-                }
-            }
-
-            [TestFixture]
-            public class Given_an_invalid_filepath_and_the_application_settings_have_been_initialized : IntegrationTestBase
-            {
-                private const string FilePath = @"?";
-                private Notification _result;
-
-                [Test]
-                public void Should_return_an_error_notification()
-                {
-                    _result.HasErrors.ShouldBeTrue();
-                    Regex.IsMatch(_result.Errors, StringExtensions.ErrorConvertingToAbsolutePathMesssageText.MessageTextToRegex()).ShouldBeTrue();
-                }
-
-                protected override void Before_first_test()
-                {
-                    IoC.Get<IApplicationSettingsService>().Save(new ApplicationSettings
-                        {
-                            StatementPath = @"x:\previous.statement"
-                        });
-                    var command = IoC.Get<Init>();
-                    _result = command.Execute(command.GetCommandWords().Concat(new[] { FilePath }).ToArray());
-                }
-            }
-
-            [TestFixture]
-            public class Given_parameters_with_a_filepath : IntegrationTestBase
-            {
-                private Notification _result;
-
-                [Test]
-                public void Should_return_an_error_message_for_the_missing_file_path()
-                {
-                    _result.HasErrors.ShouldBeTrue();
-                    Regex.IsMatch(_result.Errors, Init.FilePathNotSpecifiedMessageText.MessageTextToRegex()).ShouldBeTrue();
-                }
-
-                protected override void Before_first_test()
-                {
-                    var command = IoC.Get<Init>();
-                    _result = command.Execute(command.GetCommandWords());
-                }
-            }
-
-            [TestFixture]
-            public class Given_too_many_parameters : IntegrationTestBase
-            {
-                private Notification _result;
-
-                [Test]
-                public void Should_return_an_error_message_for_too_many_parameters()
-                {
-                    _result.HasErrors.ShouldBeTrue();
-                    Regex.IsMatch(_result.Errors, Init.TooManyArgumentsMessageText.MessageTextToRegex()).ShouldBeTrue();
-                }
-
-                protected override void Before_first_test()
-                {
-                    var command = IoC.Get<Init>();
-                    _result = command.Execute(command.GetCommandWords().Concat(new[] { "a", "b", "c" }).ToArray());
+                            ApplicationSettings = new ApplicationSettings
+                                {
+                                    StatementPath = @"x:\previous.statement"
+                                },
+                            Args = new[] { FilePath },
+                            Statement = new Statement()
+                        };
+                    _result = command.Execute(executionArguments);
                 }
             }
         }

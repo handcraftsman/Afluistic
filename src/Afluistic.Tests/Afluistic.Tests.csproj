@@ -69,6 +69,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandHandlerTests.cs" />
+    <Compile Include="Commands\ListAccountsTests.cs" />
+    <Compile Include="Commands\Prerequisites\RequireActiveAccountsExistTests.cs" />
+    <Compile Include="Commands\Prerequisites\RequireAdditionalArgsTests.cs" />
+    <Compile Include="Commands\Prerequisites\RequireApplicationSettingsAlreadyInitializedTests.cs" />
+    <Compile Include="Commands\Prerequisites\RequireApplicationSettingsTests.cs" />
+    <Compile Include="TestObjects\Commands\CommandWithMultiplePrerequisites.cs" />
+    <Compile Include="TestObjects\Commands\CommandWithNoPrerequisites.cs" />
+    <Compile Include="TestObjects\Commands\CommandWithOnePrerequisite.cs" />
+    <Compile Include="Commands\Prerequisites\PrerequisiteCheckerTests.cs" />
+    <Compile Include="Commands\Prerequisites\RequireStatementTests.cs" />
     <Compile Include="Commands\ShowSettingsTests.cs" />
     <Compile Include="Commands\InitTests.cs" />
     <Compile Include="Extensions\CommandExtensionsTests.cs" />
@@ -84,7 +95,7 @@
     <Compile Include="Services\JsonSerializerTests.cs" />
     <Compile Include="Services\SerializationServiceTests.cs" />
     <Compile Include="Services\StorageServiceTests.cs" />
-    <Compile Include="TestObject.cs" />
+    <Compile Include="TestObjects\TestObject.cs" />
     <Compile Include="UIDescriptionAttributeTests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-// * **************************************************************************
+﻿// * **************************************************************************
 // * Copyright (c) Clinton Sheppard <sheppard@cs.unm.edu>
 // *
 // * This source code is subject to terms and conditions of the MIT License.
@@ -10,17 +10,13 @@
 // *
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
-using System.Collections.Generic;
+using Afluistic.MvbaCore;
 
-namespace Afluistic.Domain
+namespace Afluistic.Commands.Prerequisites
 {
-    public class Statement
+    public interface IPrerequisite
     {
-        public Statement()
-        {
-            Accounts = new List<Account>();
-        }
-
-        public IList<Account> Accounts { get; set; }
+        Notification Check(ExecutionArguments exectionArguments);
+        int Order { get; }
     }
 }

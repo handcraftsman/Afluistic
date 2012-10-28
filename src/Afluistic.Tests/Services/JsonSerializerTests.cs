@@ -12,6 +12,7 @@
 // * **************************************************************************
 
 using Afluistic.Services;
+using Afluistic.Tests.TestObjects;
 
 using FluentAssert;
 

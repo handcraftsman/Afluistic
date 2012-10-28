@@ -10,6 +10,7 @@
 // *
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
+
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -36,7 +37,7 @@ namespace Afluistic.Extensions
             return type.Name;
         }
 
-        public static string GetUIDescription<T>(Expression<Func<T,object>> propertyOnType)
+        public static string GetUIDescription<T>(Expression<Func<T, object>> propertyOnType)
         {
             var type = typeof(T);
             var expectedPropertyName = propertyOnType.GetFinalPropertyName();

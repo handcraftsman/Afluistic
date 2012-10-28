@@ -1,4 +1,4 @@
-// * **************************************************************************
+﻿// * **************************************************************************
 // * Copyright (c) Clinton Sheppard <sheppard@cs.unm.edu>
 // *
 // * This source code is subject to terms and conditions of the MIT License.
@@ -10,17 +10,11 @@
 // *
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
-using System.Collections.Generic;
-
 namespace Afluistic.Domain
 {
-    public class Statement
+    public class Account
     {
-        public Statement()
-        {
-            Accounts = new List<Account>();
-        }
-
-        public IList<Account> Accounts { get; set; }
+        public bool IsDeleted { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-// * **************************************************************************
+﻿// * **************************************************************************
 // * Copyright (c) Clinton Sheppard <sheppard@cs.unm.edu>
 // *
 // * This source code is subject to terms and conditions of the MIT License.
@@ -11,16 +11,26 @@
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
 
+using System;
 using System.IO;
 
-using Afluistic.Domain;
+using Afluistic.Commands;
 using Afluistic.MvbaCore;
 
-namespace Afluistic.Commands
+namespace Afluistic.Tests.TestObjects.Commands
 {
-    public interface ICommand
+    public class CommandWithNoPrerequisites : ICommand
     {
-        Notification Execute(ExecutionArguments executionArguments);
-        void WriteUsage(TextWriter textWriter);
+        public const string CommandWasExecutedMessageText = "Command was executed";
+
+        public Notification Execute(ExecutionArguments executionArguments)
+        {
+            return Notification.InfoFor(CommandWasExecutedMessageText);
+        }
+
+        public void WriteUsage(TextWriter textWriter)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
