@@ -154,11 +154,11 @@ namespace Afluistic.Tests.Commands
                 public void Should_write_its_usage_information_to_the_TextWriter()
                 {
                     var writer = new StringWriter();
-                    var command = IoC.Get<Init>();
+                    var command = IoC.Get<AddAccountType>();
                     command.WriteUsage(writer);
                     var output = writer.ToString();
                     output.ShouldContain(String.Join(" ", command.GetCommandWords()));
-                    Regex.IsMatch(output, Init.UsageMessageText.MessageTextToRegex()).ShouldBeTrue();
+                    Regex.IsMatch(output, AddAccountType.UsageMessageText.MessageTextToRegex()).ShouldBeTrue();
                 }
             }
         }
