@@ -20,11 +20,11 @@ namespace Afluistic.Commands.Prerequisites
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class RequireStatement : Attribute, IPrerequisite
     {
-        public Notification Check(ExecutionArguments exectionArguments)
+        public Notification Check(ExecutionArguments executionArguments)
         {
-            if (exectionArguments.Statement.HasErrors)
+            if (executionArguments.Statement.HasErrors)
             {
-                return exectionArguments.Statement;
+                return executionArguments.Statement;
             }
 
             return Notification.Empty;

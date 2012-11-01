@@ -25,9 +25,9 @@ namespace Afluistic.Commands.Prerequisites
     {
         public const string NoActiveAccountsMessageText = "There are no active {0}.";
 
-        public Notification Check(ExecutionArguments exectionArguments)
+        public Notification Check(ExecutionArguments executionArguments)
         {
-            Statement statement = exectionArguments.Statement;
+            Statement statement = executionArguments.Statement;
             if (!statement.Accounts.Any(x => !x.IsDeleted))
             {
                 return Notification.ErrorFor(NoActiveAccountsMessageText, typeof(Account).GetPluralUIDescription());

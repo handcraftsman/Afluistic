@@ -16,7 +16,7 @@ namespace Afluistic.Commands.Prerequisites
 {
     public interface IPrerequisite
     {
-        Notification Check(ExecutionArguments exectionArguments);
+        Notification Check(ExecutionArguments executionArguments);
         int Order { get; }
     }
 }

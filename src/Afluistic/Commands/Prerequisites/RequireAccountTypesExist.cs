@@ -25,9 +25,9 @@ namespace Afluistic.Commands.Prerequisites
     {
         public const string NoAccountTypesMessageText = "There are no {0}.";
 
-        public Notification Check(ExecutionArguments exectionArguments)
+        public Notification Check(ExecutionArguments executionArguments)
         {
-            Statement statement = exectionArguments.Statement;
+            Statement statement = executionArguments.Statement;
             if (!statement.AccountTypes.Any())
             {
                 return Notification.ErrorFor(NoAccountTypesMessageText, typeof(AccountType).GetPluralUIDescription());

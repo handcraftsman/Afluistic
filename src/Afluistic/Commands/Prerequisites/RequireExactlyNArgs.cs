@@ -37,9 +37,9 @@ namespace Afluistic.Commands.Prerequisites
             _messageText = messageText.ReplaceTypeReferencesWithUIDescriptions(false);
         }
 
-        public Notification Check(ExecutionArguments exectionArguments)
+        public Notification Check(ExecutionArguments executionArguments)
         {
-            var args = exectionArguments.Args;
+            var args = executionArguments.Args;
             if (args.Length != _expectedNumberOfAdditionalArgs)
             {
                 return Notification.ErrorFor(_messageText);
