@@ -12,7 +12,6 @@
 // * **************************************************************************
 namespace Afluistic.Tests.TestObjects
 {
-    [UIDescription("Test Object")]
     public class TestObject
     {
         public string Value { get; set; }

@@ -38,7 +38,7 @@ namespace Afluistic.Commands
             _storageService = storageService;
         }
 
-        [RequireAdditionalArgs(1, FilePathNotSpecifiedMessageText)]
+        [RequireExactlyNArgs(1, FilePathNotSpecifiedMessageText)]
         [RequireApplicationSettings]
         public Notification Execute(ExecutionArguments executionArguments)
         {

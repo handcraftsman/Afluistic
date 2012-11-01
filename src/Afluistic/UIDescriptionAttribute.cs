@@ -12,7 +12,6 @@
 // * **************************************************************************
 
 using System;
-using System.Linq;
 
 using Afluistic.Extensions;
 
@@ -27,28 +26,11 @@ namespace Afluistic
 
         public UIDescriptionAttribute(string uiDescription, string pluralUiDescription)
         {
-            UIDescription = ReplaceTypeReferencesWuthUIDescriptions(uiDescription, false);
-            PluralUIDescription = ReplaceTypeReferencesWuthUIDescriptions(pluralUiDescription, true);
+            UIDescription = uiDescription.ReplaceTypeReferencesWithUIDescriptions(false);
+            PluralUIDescription = pluralUiDescription.ReplaceTypeReferencesWithUIDescriptions(true);
         }
 
         public string PluralUIDescription { get; private set; }
         public string UIDescription { get; private set; }
-
-        private static string ReplaceTypeReferencesWuthUIDescriptions(string uiDescription, bool plural)
-        {
-            var indexOfMarker = uiDescription.IndexOf('$');
-            if (indexOfMarker != -1)
-            {
-                var end = uiDescription.IndexOf(' ', indexOfMarker);
-                var typeName = uiDescription.Substring(1 + indexOfMarker, end - indexOfMarker - 1);
-                var type = AppDomain.CurrentDomain
-                    .GetAssemblies()
-                    .SelectMany(x => x.GetTypes())
-                    .FirstOrDefault(x => x.Name == typeName);
-                var typeDescription = plural ? type.GetPluralUIDescription() : type.GetSingularUIDescription();
-                uiDescription = uiDescription.Substring(0, indexOfMarker) + typeDescription + uiDescription.Substring(end);
-            }
-            return uiDescription;
-        }
     }
 }

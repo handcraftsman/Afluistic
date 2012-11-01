@@ -17,6 +17,8 @@ using FluentAssert;
 
 using NUnit.Framework;
 
+using Afluistic.Extensions;
+
 namespace Afluistic.Tests
 {
     public class UIDescriptionAttributeTests
@@ -40,10 +42,10 @@ namespace Afluistic.Tests
             [Test]
             public void Should_get_the_description_with_type_reference_replaced_by_its_ui_description()
             {
-                string uiDescription = "a $"+typeof(TestObject).Name+" test";
+                string uiDescription = "a $"+typeof(ObjectWithDescription).Name+" test";
                 var descriptor = new UIDescriptionAttribute(uiDescription);
                 var description = descriptor.UIDescription;
-                description.ShouldBeEqualTo("a Test Object test");
+                description.ShouldBeEqualTo("a "+typeof(ObjectWithDescription).GetSingularUIDescription()+" test");
             }
         }
     }

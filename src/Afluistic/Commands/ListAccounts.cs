@@ -33,7 +33,7 @@ namespace Afluistic.Commands
             _systemService = systemService;
         }
 
-        [RequireAdditionalArgs(0)]
+        [RequireExactlyNArgs(0)]
         [RequireApplicationSettings]
         [RequireApplicationSettingsAlreadyInitialized]
         [RequireStatement]

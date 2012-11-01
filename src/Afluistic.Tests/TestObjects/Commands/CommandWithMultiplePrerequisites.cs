@@ -22,7 +22,7 @@ namespace Afluistic.Tests.TestObjects.Commands
 {
     public class CommandWithMultiplePrerequisites : ICommand
     {
-        [RequireAdditionalArgs(1)]
+        [RequireExactlyNArgs(1)]
         [RequireApplicationSettings]
         public Notification Execute(ExecutionArguments executionArguments)
         {

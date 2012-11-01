@@ -75,7 +75,7 @@ namespace Afluistic.Tests.Commands.Prerequisites
                     [Test]
                     public void Should_return_the_error_error_notification_from_the_first_prerequisite()
                     {
-                        Regex.IsMatch(_result.Errors, RequireAdditionalArgs.TooManyArgumentsMessageText.MessageTextToRegex()).ShouldBeTrue();
+                        Regex.IsMatch(_result.Errors, RequireExactlyNArgs.WrongNumberOfArgumentsMessageText.MessageTextToRegex()).ShouldBeTrue();
                     }
                 }
 
@@ -148,7 +148,7 @@ namespace Afluistic.Tests.Commands.Prerequisites
                     [Test]
                     public void Should_return_the_error_notification_text_from_the_failed_prerequisite()
                     {
-                        Regex.IsMatch(_result.Errors, RequireAdditionalArgs.TooManyArgumentsMessageText.MessageTextToRegex()).ShouldBeTrue();
+                        Regex.IsMatch(_result.Errors, RequireExactlyNArgs.WrongNumberOfArgumentsMessageText.MessageTextToRegex()).ShouldBeTrue();
                     }
                 }
 

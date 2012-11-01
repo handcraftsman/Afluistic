@@ -22,7 +22,7 @@ namespace Afluistic.Tests.TestObjects.Commands
 {
     public class CommandWithOnePrerequisite : ICommand
     {
-        [RequireAdditionalArgs(1)]
+        [RequireExactlyNArgs(1)]
         public Notification Execute(ExecutionArguments executionArguments)
         {
             return Notification.InfoFor("Command was executed");

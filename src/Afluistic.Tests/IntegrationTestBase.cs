@@ -50,6 +50,14 @@ namespace Afluistic.Tests
                 return standardOutText;
             }
         }
+        protected Notification<Statement> Statement
+        {
+            get
+            {
+                var statement = IoC.Get<StorageService>().Load();
+                return statement;
+            }
+        }
 
         [SetUp]
         public void BeforeEachTest()

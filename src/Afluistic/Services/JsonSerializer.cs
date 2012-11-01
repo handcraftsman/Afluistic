@@ -33,6 +33,7 @@ namespace Afluistic.Services
         public T DeserializeFromFile<T>(string path)
         {
             var serializer = Newtonsoft.Json.JsonSerializer.Create(new JsonSerializerSettings());
+            serializer.Converters.Add(new NamedConstantJsonConverter());
             using (var reader = _fileSystemService.GetStreamReader(path))
             {
                 var content = (T)serializer.Deserialize(reader, typeof(T));
@@ -48,6 +49,7 @@ namespace Afluistic.Services
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 };
             serializer.Converters.Add(new IsoDateTimeConverter());
+            serializer.Converters.Add(new NamedConstantJsonConverter());
 
             using (var streamWriter = _fileSystemService.GetStreamWriter(path))
             {

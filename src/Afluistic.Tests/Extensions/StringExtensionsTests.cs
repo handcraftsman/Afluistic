@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 
 using Afluistic.Extensions;
+using Afluistic.Tests.TestObjects;
 
 using FluentAssert;
 
@@ -179,6 +180,81 @@ namespace Afluistic.Tests.Extensions
                     const string input = "boss";
                     var result = input.Pluralize();
                     result.ShouldBeEqualTo("bosses");
+                }
+            }
+        }
+
+        public class When_asked_to_replace_Type_references_with_UI_descriptions
+        {
+            [TestFixture]
+            public class Given_a_string_with_a_Type_reference_at_the_beginning
+            {
+                [Test]
+                public void Should_return_the_string_with_the_Type_reference_replaced_by_its_singular_UI_description()
+                {
+                    var input = "$" + typeof(ObjectWithDescription).Name + " world";
+                    var result = input.ReplaceTypeReferencesWithUIDescriptions(false);
+                    result.ShouldBeEqualTo(typeof(ObjectWithDescription).GetSingularUIDescription() + " world");
+                }
+            }
+
+            [TestFixture]
+            public class Given_a_string_with_a_Type_reference_at_the_end
+            {
+                [Test]
+                public void Should_return_the_string_with_the_Type_reference_replaced_by_its_singular_UI_description()
+                {
+                    var input = "Hello $" + typeof(ObjectWithDescription).Name;
+                    var result = input.ReplaceTypeReferencesWithUIDescriptions(false);
+                    result.ShouldBeEqualTo("Hello " + typeof(ObjectWithDescription).GetSingularUIDescription());
+                }
+            }
+
+            [TestFixture]
+            public class Given_a_string_with_a_Type_references_marker_not_followed_by_a_Type_name
+            {
+                [Test]
+                public void Should_return_the_original_string()
+                {
+                    var input = "Hello $world";
+                    var result = input.ReplaceTypeReferencesWithUIDescriptions(false);
+                    result.ShouldBeEqualTo("Hello $world");
+                }
+            }
+
+            [TestFixture]
+            public class Given_a_string_with_multiple_Type_references
+            {
+                [Test]
+                public void Should_return_the_string_with_all_Type_references_replaced_by_their_singular_UI_descriptions()
+                {
+                    var input = "Hello $" + typeof(ObjectWithDescription).Name + " world $" + typeof(TestObject).Name + " again";
+                    var result = input.ReplaceTypeReferencesWithUIDescriptions(false);
+                    result.ShouldBeEqualTo("Hello " + typeof(ObjectWithDescription).GetSingularUIDescription() + " world " + typeof(TestObject).GetSingularUIDescription() + " again");
+                }
+            }
+
+            [TestFixture]
+            public class Given_a_string_with_one_Type_reference
+            {
+                [Test]
+                public void Should_return_the_string_with_the_Type_reference_replaced_by_its_singular_UI_description()
+                {
+                    var input = "Hello $" + typeof(ObjectWithDescription).Name + " world";
+                    var result = input.ReplaceTypeReferencesWithUIDescriptions(false);
+                    result.ShouldBeEqualTo("Hello " + typeof(ObjectWithDescription).GetSingularUIDescription() + " world");
+                }
+            }
+
+            [TestFixture]
+            public class Given_a_string_without_Type_references
+            {
+                [Test]
+                public void Should_return_the_original_string()
+                {
+                    const string input = "Hello world";
+                    var result = input.ReplaceTypeReferencesWithUIDescriptions(false);
+                    result.ShouldBeEqualTo(input);
                 }
             }
         }

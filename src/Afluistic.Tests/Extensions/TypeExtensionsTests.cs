@@ -22,18 +22,6 @@ namespace Afluistic.Tests.Extensions
 {
     public class TypeExtensionsTests
     {
-        private const string PluralPropertyDescription = "horses";
-        private const string PluralTypeDescription = "foxes";
-        private const string PropertyDescription = "cat";
-        private const string TypeDescription = "dog";
-
-        [UIDescription(TypeDescription, PluralTypeDescription)]
-        public class ObjectWithDescription
-        {
-            [UIDescription(PropertyDescription, PluralPropertyDescription)]
-            public string Name { get; set; }
-        }
-
         public class When_asked_to_get_the_plural_UI_description_for_a_Property
         {
             [TestFixture]
@@ -54,7 +42,7 @@ namespace Afluistic.Tests.Extensions
                 public void Should_return_the_plural_description_from_the_attribute()
                 {
                     var description = TypeExtensions.GetPluralUIDescription<ObjectWithDescription>(x => x.Name);
-                    description.ShouldBeEqualTo(PluralPropertyDescription);
+                    description.ShouldBeEqualTo(ObjectWithDescription.PluralPropertyDescription);
                 }
             }
         }
@@ -79,7 +67,7 @@ namespace Afluistic.Tests.Extensions
                 public void Should_return_the_plural_description_from_the_attribute()
                 {
                     var description = typeof(ObjectWithDescription).GetPluralUIDescription();
-                    description.ShouldBeEqualTo(PluralTypeDescription);
+                    description.ShouldBeEqualTo(ObjectWithDescription.PluralTypeDescription);
                 }
             }
         }
@@ -104,7 +92,7 @@ namespace Afluistic.Tests.Extensions
                 public void Should_return_the_singular_description_from_the_attribute()
                 {
                     var description = TypeExtensions.GetSingularUIDescription<ObjectWithDescription>(x => x.Name);
-                    description.ShouldBeEqualTo(PropertyDescription);
+                    description.ShouldBeEqualTo(ObjectWithDescription.PropertyDescription);
                 }
             }
         }
@@ -129,7 +117,7 @@ namespace Afluistic.Tests.Extensions
                 public void Should_return_the_singular_description_from_the_attribute()
                 {
                     var description = typeof(ObjectWithDescription).GetSingularUIDescription();
-                    description.ShouldBeEqualTo(TypeDescription);
+                    description.ShouldBeEqualTo(ObjectWithDescription.TypeDescription);
                 }
             }
         }

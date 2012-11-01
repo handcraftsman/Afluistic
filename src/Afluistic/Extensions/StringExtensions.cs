@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 using Afluistic.MvbaCore;
 
@@ -23,6 +24,47 @@ namespace Afluistic.Extensions
     public static class StringExtensions
     {
         public const string ErrorConvertingToAbsolutePathMesssageText = "Don't know how to convert '{0}' to an absolute path. Try using an absolute path.";
+
+        public static string Pluralize(this string input)
+        {
+            // other variations are YAGNI at this time
+            return input.EndsWith("s") ? input + "es" : input + "s";
+        }
+
+        public static string ReplaceTypeReferencesWithUIDescriptions(this string uiDescription, bool plural)
+        {
+            var parts = uiDescription.Split('$');
+            if (parts.Length == 1)
+            {
+                return uiDescription;
+            }
+            var result = new StringBuilder();
+            result.Append(parts[0]);
+            foreach (var part in parts.Skip(1))
+            {
+                var end = part.IndexOf(' ');
+                if (end == -1)
+                {
+                    end = part.Length;
+                }
+                var typeName = part.Substring(0, end);
+                var type = AppDomain.CurrentDomain
+                    .GetAssemblies()
+                    .SelectMany(x => x.GetTypes())
+                    .FirstOrDefault(x => x.Name == typeName);
+                if (type != null)
+                {
+                    var typeDescription = plural ? type.GetPluralUIDescription() : type.GetSingularUIDescription();
+                    result.Append(typeDescription);
+                    result.Append(part.Substring(typeName.Length));
+                }
+                else
+                {
+                    result.Append("$" + part);
+                }
+            }
+            return result.ToString();
+        }
 
         public static string[] SplitOnTransitionToCapitalLetter(this string input)
         {
@@ -61,12 +103,6 @@ namespace Afluistic.Extensions
                 return Path.Combine(absolutePath, Constants.DefaultStatementFileName);
             }
             return absolutePath;
-        }
-
-        public static string Pluralize(this string input)
-        {
-            // other variations are YAGNI at this time
-            return input.EndsWith("s") ? input + "es" : input + "s";
         }
     }
 }

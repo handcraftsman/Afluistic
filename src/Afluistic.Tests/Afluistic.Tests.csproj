@@ -43,6 +43,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\NUnit\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="QIFGet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\QifGet\QIFGet.dll</HintPath>
+    </Reference>
     <Reference Include="Rhino.Mocks, Version=3.5.0.1337, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Rhino\Rhino.Mocks.dll</HintPath>
@@ -70,11 +74,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandHandlerTests.cs" />
+    <Compile Include="Commands\AddAccountTypeTests.cs" />
     <Compile Include="Commands\ListAccountTypesTests.cs" />
     <Compile Include="Commands\ListAccountsTests.cs" />
+    <Compile Include="Commands\Prerequisites\RequireAtMostNArgsTests.cs" />
+    <Compile Include="Commands\Prerequisites\RequireAtLeastNArgsTests.cs" />
     <Compile Include="Commands\Prerequisites\RequireAccountTypesExistTests.cs" />
     <Compile Include="Commands\Prerequisites\RequireActiveAccountsExistTests.cs" />
-    <Compile Include="Commands\Prerequisites\RequireAdditionalArgsTests.cs" />
+    <Compile Include="Commands\Prerequisites\RequireExactlyNArgsTests.cs" />
     <Compile Include="Commands\Prerequisites\RequireApplicationSettingsAlreadyInitializedTests.cs" />
     <Compile Include="Commands\Prerequisites\RequireApplicationSettingsTests.cs" />
     <Compile Include="Extensions\IEnumerableTExtensionsTests.cs" />
@@ -98,6 +105,7 @@
     <Compile Include="Services\JsonSerializerTests.cs" />
     <Compile Include="Services\SerializationServiceTests.cs" />
     <Compile Include="Services\StorageServiceTests.cs" />
+    <Compile Include="TestObjects\ObjectWithDescription.cs" />
     <Compile Include="TestObjects\TestObject.cs" />
     <Compile Include="UIDescriptionAttributeTests.cs" />
   </ItemGroup>

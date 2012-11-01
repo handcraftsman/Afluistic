@@ -10,14 +10,16 @@
 // *
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
-using Afluistic.Domain.NamedConstants;
-
-namespace Afluistic.Domain
+namespace Afluistic.Tests.TestObjects
 {
-    [UIDescription("Account Type")]
-    public class AccountType
+    [UIDescription(TypeDescription, PluralTypeDescription)]
+    public class ObjectWithDescription
     {
+        public const string PluralPropertyDescription = "horses";
+        public const string PluralTypeDescription = "foxes";
+        public const string PropertyDescription = "cat";
+        public const string TypeDescription = "dog";
+        [UIDescription(PropertyDescription, PluralPropertyDescription)]
         public string Name { get; set; }
-        public TaxabilityType Taxability { get; set; }
     }
 }

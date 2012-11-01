@@ -58,23 +58,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandHandler.cs" />
+    <Compile Include="Commands\AddAccountType.cs" />
     <Compile Include="Commands\ListAccountTypes.cs" />
     <Compile Include="Commands\ExecutionArguments.cs" />
     <Compile Include="Commands\Prerequisites\IPrerequisite.cs" />
     <Compile Include="Commands\Prerequisites\PrerequisiteChecker.cs" />
     <Compile Include="Commands\Prerequisites\RequireAccountTypesExist.cs" />
     <Compile Include="Commands\Prerequisites\RequireActiveAccountsExist.cs" />
-    <Compile Include="Commands\Prerequisites\RequireAdditionalArgs.cs" />
+    <Compile Include="Commands\Prerequisites\RequireAtLeastNArgs.cs" />
     <Compile Include="Commands\ListAccounts.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\Init.cs" />
     <Compile Include="Commands\Prerequisites\RequireApplicationSettingsAlreadyInitialized.cs" />
     <Compile Include="Commands\Prerequisites\RequireApplicationSettings.cs" />
+    <Compile Include="Commands\Prerequisites\RequireAtMostNArgs.cs" />
+    <Compile Include="Commands\Prerequisites\RequireExactlyNArgs.cs" />
     <Compile Include="Commands\Prerequisites\RequireStatement.cs" />
     <Compile Include="Commands\ShowSettings.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Domain\Account.cs" />
     <Compile Include="Domain\AccountType.cs" />
+    <Compile Include="Domain\NamedConstants\TaxabilityType.cs" />
     <Compile Include="Domain\Statement.cs" />
     <Compile Include="Extensions\CommandExtensions.cs" />
     <Compile Include="Extensions\IEnumerableTExtensions.cs" />
@@ -92,6 +96,7 @@
     <Compile Include="Services\ApplicationSettingsService.cs" />
     <Compile Include="Services\FileSystemService.cs" />
     <Compile Include="Services\JsonSerializer.cs" />
+    <Compile Include="Services\NamedConstantJsonConverter.cs" />
     <Compile Include="Services\SerializationService.cs" />
     <Compile Include="Domain\ApplicationSettings.cs" />
     <Compile Include="Services\StorageService.cs" />

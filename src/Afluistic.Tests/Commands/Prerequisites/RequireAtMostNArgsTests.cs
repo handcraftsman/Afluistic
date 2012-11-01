@@ -24,14 +24,14 @@ using NUnit.Framework;
 
 namespace Afluistic.Tests.Commands.Prerequisites
 {
-    public class RequireAdditionalArgsTests
+    public class RequireAtMostNArgsTests
     {
         public class When_asked_to_Check
         {
             [TestFixture]
-            public class Given_the_prerequisite_fails_due_to_too_few_arguments_and_has_custom_message_text
+            public class Given_the_prerequisite_fails_due_to_too_many_arguments_and_has_custom_message_text
             {
-                public const string TooFewArgumentsCustomMessageText = "Say this if too few";
+                public const string TooManyArgumentsCustomMessageText = "Say this if too many";
                 private Notification _result;
 
                 [TestFixtureSetUp]
@@ -39,16 +39,16 @@ namespace Afluistic.Tests.Commands.Prerequisites
                 {
                     var executionArguments = new ExecutionArguments
                         {
-                            Args = new string[] { }
+                            Args = new[] { "a", "b" }
                         };
-                    _result = new RequireAdditionalArgs(1, TooFewArgumentsCustomMessageText)
+                    _result = new RequireAtMostNArgs(1, TooManyArgumentsCustomMessageText)
                         .Check(executionArguments);
                 }
 
                 [Test]
                 public void Error_notification_should_use_the_custom_error_text()
                 {
-                    Regex.IsMatch(_result.Errors, TooFewArgumentsCustomMessageText.MessageTextToRegex()).ShouldBeTrue();
+                    Regex.IsMatch(_result.Errors, TooManyArgumentsCustomMessageText.MessageTextToRegex()).ShouldBeTrue();
                 }
 
                 [Test]
@@ -59,7 +59,7 @@ namespace Afluistic.Tests.Commands.Prerequisites
             }
 
             [TestFixture]
-            public class Given_the_prerequisite_fails_due_to_too_few_arguments_and_has_default_message_text
+            public class Given_the_prerequisite_fails_due_to_too_many_arguments_and_has_default_message_text
             {
                 private Notification _result;
 
@@ -68,16 +68,16 @@ namespace Afluistic.Tests.Commands.Prerequisites
                 {
                     var executionArguments = new ExecutionArguments
                         {
-                            Args = new string[] { }
+                            Args = new[] { "a", "b" }
                         };
-                    _result = new RequireAdditionalArgs(1)
+                    _result = new RequireAtMostNArgs(1)
                         .Check(executionArguments);
                 }
 
                 [Test]
                 public void Error_notification_text_should_use_the_default_message_text()
                 {
-                    Regex.IsMatch(_result.Errors, RequireAdditionalArgs.TooFewArgumentsMessageText.MessageTextToRegex()).ShouldBeTrue();
+                    Regex.IsMatch(_result.Errors, RequireAtMostNArgs.TooManyArgumentsMessageText.MessageTextToRegex()).ShouldBeTrue();
                 }
 
                 [Test]
@@ -88,36 +88,7 @@ namespace Afluistic.Tests.Commands.Prerequisites
             }
 
             [TestFixture]
-            public class Given_the_prerequisite_fails_due_to_too_many_arguments
-            {
-                private Notification _result;
-
-                [TestFixtureSetUp]
-                public void Before_first_test()
-                {
-                    var executionArguments = new ExecutionArguments
-                        {
-                            Args = new[] { "a", "b", "c" }
-                        };
-                    _result = new RequireAdditionalArgs(2)
-                        .Check(executionArguments);
-                }
-
-                [Test]
-                public void Error_notification_text_should_reference_too_many_arguments()
-                {
-                    Regex.IsMatch(_result.Errors, RequireAdditionalArgs.TooManyArgumentsMessageText.MessageTextToRegex()).ShouldBeTrue();
-                }
-
-                [Test]
-                public void Should_return_an_error_notification()
-                {
-                    _result.HasErrors.ShouldBeTrue();
-                }
-            }
-
-            [TestFixture]
-            public class Given_the_prerequisite_passes
+            public class Given_the_prerequisite_has_less_than_the_maximum_number_of_required_arguments
             {
                 private Notification _result;
 
@@ -128,7 +99,30 @@ namespace Afluistic.Tests.Commands.Prerequisites
                         {
                             Args = new[] { "a" }
                         };
-                    _result = new RequireAdditionalArgs(1)
+                    _result = new RequireAtMostNArgs(2)
+                        .Check(executionArguments);
+                }
+
+                [Test]
+                public void Should_not_return_an_error_notification()
+                {
+                    _result.HasErrors.ShouldBeFalse();
+                }
+            }
+
+            [TestFixture]
+            public class Given_the_prerequisite_has_the_maximum_number_of_arguments
+            {
+                private Notification _result;
+
+                [TestFixtureSetUp]
+                public void Before_first_test()
+                {
+                    var executionArguments = new ExecutionArguments
+                        {
+                            Args = new[] { "a" }
+                        };
+                    _result = new RequireAtMostNArgs(1)
                         .Check(executionArguments);
                 }
 

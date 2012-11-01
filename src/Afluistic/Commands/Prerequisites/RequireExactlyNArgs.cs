@@ -1,4 +1,4 @@
-// * **************************************************************************
+﻿// * **************************************************************************
 // * Copyright (c) Clinton Sheppard <sheppard@cs.unm.edu>
 // *
 // * This source code is subject to terms and conditions of the MIT License.
@@ -13,40 +13,36 @@
 
 using System;
 
+using Afluistic.Extensions;
 using Afluistic.MvbaCore;
 
 namespace Afluistic.Commands.Prerequisites
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-    public class RequireAdditionalArgs : Attribute, IPrerequisite
+    public class RequireExactlyNArgs : Attribute, IPrerequisite
     {
-        public const string TooFewArgumentsMessageText = "Too few arguments specified - please check the usage.";
-        public const string TooManyArgumentsMessageText = "Too many arguments specified - please check the usage.";
+        public const string WrongNumberOfArgumentsMessageText = "Wrong number arguments specified - please check the usage.";
 
         private readonly int _expectedNumberOfAdditionalArgs;
-        private readonly string _tooFewArgumentsMessageText;
+        private readonly string _messageText;
 
-        public RequireAdditionalArgs(int expectedNumberOfAdditionalArgs)
-            : this(expectedNumberOfAdditionalArgs, TooFewArgumentsMessageText)
+        public RequireExactlyNArgs(int expectedNumberOfAdditionalArgs)
+            : this(expectedNumberOfAdditionalArgs, WrongNumberOfArgumentsMessageText)
         {
         }
 
-        public RequireAdditionalArgs(int expectedNumberOfAdditionalArgs, string tooFewArgumentsMessageText)
+        public RequireExactlyNArgs(int expectedNumberOfAdditionalArgs, string messageText)
         {
             _expectedNumberOfAdditionalArgs = expectedNumberOfAdditionalArgs;
-            _tooFewArgumentsMessageText = tooFewArgumentsMessageText;
+            _messageText = messageText.ReplaceTypeReferencesWithUIDescriptions(false);
         }
 
         public Notification Check(ExecutionArguments exectionArguments)
         {
             var args = exectionArguments.Args;
-            if (args.Length > _expectedNumberOfAdditionalArgs)
+            if (args.Length != _expectedNumberOfAdditionalArgs)
             {
-                return Notification.ErrorFor(TooManyArgumentsMessageText);
-            }
-            if (args.Length < _expectedNumberOfAdditionalArgs)
-            {
-                return Notification.ErrorFor(_tooFewArgumentsMessageText);
+                return Notification.ErrorFor(_messageText);
             }
             return Notification.Empty;
         }
