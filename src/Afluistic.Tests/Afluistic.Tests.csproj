@@ -70,11 +70,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandHandlerTests.cs" />
+    <Compile Include="Commands\ListAccountTypesTests.cs" />
     <Compile Include="Commands\ListAccountsTests.cs" />
+    <Compile Include="Commands\Prerequisites\RequireAccountTypesExistTests.cs" />
     <Compile Include="Commands\Prerequisites\RequireActiveAccountsExistTests.cs" />
     <Compile Include="Commands\Prerequisites\RequireAdditionalArgsTests.cs" />
     <Compile Include="Commands\Prerequisites\RequireApplicationSettingsAlreadyInitializedTests.cs" />
     <Compile Include="Commands\Prerequisites\RequireApplicationSettingsTests.cs" />
+    <Compile Include="Extensions\IEnumerableTExtensionsTests.cs" />
     <Compile Include="TestObjects\Commands\CommandWithMultiplePrerequisites.cs" />
     <Compile Include="TestObjects\Commands\CommandWithNoPrerequisites.cs" />
     <Compile Include="TestObjects\Commands\CommandWithOnePrerequisite.cs" />

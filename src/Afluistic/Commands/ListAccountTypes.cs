@@ -13,7 +13,6 @@
 
 using System;
 using System.IO;
-using System.Linq;
 
 using Afluistic.Commands.Prerequisites;
 using Afluistic.Domain;
@@ -23,12 +22,12 @@ using Afluistic.Services;
 
 namespace Afluistic.Commands
 {
-    public class ListAccounts : ICommand
+    public class ListAccountTypes : ICommand
     {
-        public const string UsageMessageText = "\tLists the active {0} in the {1}.";
+        public const string UsageMessageText = "\tLists the supported {0}.";
         private readonly ISystemService _systemService;
 
-        public ListAccounts(ISystemService systemService)
+        public ListAccountTypes(ISystemService systemService)
         {
             _systemService = systemService;
         }
@@ -37,11 +36,12 @@ namespace Afluistic.Commands
         [RequireApplicationSettings]
         [RequireApplicationSettingsAlreadyInitialized]
         [RequireStatement]
-        [RequireActiveAccountsExist]
+        [RequireAccountTypesExist]
         public Notification Execute(ExecutionArguments executionArguments)
         {
             Statement statement = executionArguments.Statement;
-            foreach (var indexed in statement.Accounts.Where(x => !x.IsDeleted).GetIndexedValues())
+
+            foreach (var indexed in statement.AccountTypes.GetIndexedValues())
             {
                 _systemService.StandardOut.WriteLine(indexed.ToString(x => x.Name));
             }
@@ -52,7 +52,7 @@ namespace Afluistic.Commands
         public void WriteUsage(TextWriter textWriter)
         {
             textWriter.WriteLine(String.Join(" ", this.GetCommandWords()));
-            textWriter.WriteLine(UsageMessageText, typeof(Account).GetPluralUIDescription(), typeof(Statement).GetSingularUIDescription());
+            textWriter.WriteLine(UsageMessageText, typeof(AccountType).GetPluralUIDescription());
         }
     }
 }

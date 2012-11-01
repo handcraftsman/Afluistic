@@ -24,6 +24,7 @@ namespace Afluistic.Commands
 {
     public class ShowSettings : ICommand
     {
+        public const string UsageMessageText = "\tShows the {0}.";
         private readonly ISystemService _systemService;
 
         public ShowSettings(ISystemService systemService)
@@ -37,14 +38,14 @@ namespace Afluistic.Commands
         public Notification Execute(ExecutionArguments executionArguments)
         {
             ApplicationSettings applicationSettings = executionArguments.ApplicationSettings;
-            _systemService.StandardOut.WriteLine(TypeExtensions.GetUIDescription<ApplicationSettings>(x => x.StatementPath) + ":\t" + applicationSettings.StatementPath);
+            _systemService.StandardOut.WriteLine(TypeExtensions.GetSingularUIDescription<ApplicationSettings>(x => x.StatementPath) + ":\t" + applicationSettings.StatementPath);
             return Notification.Empty;
         }
 
         public void WriteUsage(TextWriter textWriter)
         {
             textWriter.WriteLine(String.Join(" ", this.GetCommandWords()));
-            textWriter.WriteLine("\tShows the {0}.", typeof(ApplicationSettings).GetUIDescription());
+            textWriter.WriteLine(UsageMessageText, typeof(ApplicationSettings).GetSingularUIDescription());
         }
     }
 }

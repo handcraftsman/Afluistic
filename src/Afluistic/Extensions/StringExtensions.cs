@@ -62,5 +62,11 @@ namespace Afluistic.Extensions
             }
             return absolutePath;
         }
+
+        public static string Pluralize(this string input)
+        {
+            // other variations are YAGNI at this time
+            return input.EndsWith("s") ? input + "es" : input + "s";
+        }
     }
 }

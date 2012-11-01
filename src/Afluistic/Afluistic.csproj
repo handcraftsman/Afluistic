@@ -58,9 +58,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandHandler.cs" />
+    <Compile Include="Commands\ListAccountTypes.cs" />
     <Compile Include="Commands\ExecutionArguments.cs" />
     <Compile Include="Commands\Prerequisites\IPrerequisite.cs" />
     <Compile Include="Commands\Prerequisites\PrerequisiteChecker.cs" />
+    <Compile Include="Commands\Prerequisites\RequireAccountTypesExist.cs" />
     <Compile Include="Commands\Prerequisites\RequireActiveAccountsExist.cs" />
     <Compile Include="Commands\Prerequisites\RequireAdditionalArgs.cs" />
     <Compile Include="Commands\ListAccounts.cs" />
@@ -72,10 +74,13 @@
     <Compile Include="Commands\ShowSettings.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Domain\Account.cs" />
+    <Compile Include="Domain\AccountType.cs" />
     <Compile Include="Domain\Statement.cs" />
     <Compile Include="Extensions\CommandExtensions.cs" />
+    <Compile Include="Extensions\IEnumerableTExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="IndexedItem.cs" />
     <Compile Include="IoC.cs" />
     <Compile Include="MvbaCore\Extensions\IEnumerableExtensions.cs" />
     <Compile Include="MvbaCore\Notification.cs" />

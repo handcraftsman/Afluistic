@@ -11,18 +11,16 @@
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
 using System.Collections.Generic;
+using System.Linq;
 
-namespace Afluistic.Domain
+namespace Afluistic.Extensions
 {
-    public class Statement
+    public static class IEnumerableTExtensions
     {
-        public Statement()
+        public static IEnumerable<IndexedItem<T>> GetIndexedValues<T>(this IEnumerable<T> items)
         {
-            Accounts = new List<Account>();
-            AccountTypes = new List<AccountType>();
+            var index = 1;
+            return items.Select(item => new IndexedItem<T>(index++, item));
         }
-
-        public IList<AccountType> AccountTypes { get; set; }
-        public IList<Account> Accounts { get; set; }
     }
 }

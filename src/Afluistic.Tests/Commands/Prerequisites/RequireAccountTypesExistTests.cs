@@ -26,7 +26,7 @@ using NUnit.Framework;
 
 namespace Afluistic.Tests.Commands.Prerequisites
 {
-    public class RequireActiveAccountsExistTests
+    public class RequireAccountTypesExistTests
     {
         public class When_asked_to_Check
         {
@@ -34,29 +34,26 @@ namespace Afluistic.Tests.Commands.Prerequisites
             public class Given_Execution_Arguments_with_a_Statement_result
             {
                 [Test]
-                public void Should_return_a_success_notification_if_the_Statement_has_at_least_one_active_account()
+                public void Should_return_a_success_notification_if_the_Statement_has_at_least_one_account_type()
                 {
-                    var accounts = new List<Account>
+                    var accountTypes = new List<AccountType>
                         {
-                            new Account
-                                {
-                                    IsDeleted = false
-                                }
+                            new AccountType()
                         };
                     var statement = new Statement
                         {
-                            Accounts = accounts
+                            AccountTypes = accountTypes
                         };
                     var executionArguments = new ExecutionArguments
                         {
                             Statement = Notification.Empty.ToNotification(statement)
                         };
-                    var result = new RequireActiveAccountsExist().Check(executionArguments);
+                    var result = new RequireAccountTypesExist().Check(executionArguments);
                     result.IsValid.ShouldBeTrue();
                 }
 
                 [Test]
-                public void Should_return_an_error_notification_if_the_Statement_has_no_accounts()
+                public void Should_return_an_error_notification_if_the_Statement_has_no_account_types()
                 {
                     var executionArguments = new ExecutionArguments
                         {
@@ -65,35 +62,9 @@ namespace Afluistic.Tests.Commands.Prerequisites
                                     Item = new Statement()
                                 }
                         };
-                    var result = new RequireActiveAccountsExist().Check(executionArguments);
+                    var result = new RequireAccountTypesExist().Check(executionArguments);
                     result.HasErrors.ShouldBeTrue();
-                    Regex.IsMatch(result.Errors, RequireActiveAccountsExist.NoActiveAccountsMessageText.MessageTextToRegex()).ShouldBeTrue();
-                }
-
-                [Test]
-                public void Should_return_an_error_notification_if_the_Statement_has_only_inactive_accounts()
-                {
-                    var accounts = new List<Account>
-                        {
-                            new Account
-                                {
-                                    IsDeleted = true
-                                }
-                        };
-                    var statement = new Statement
-                        {
-                            Accounts = accounts
-                        };
-                    var executionArguments = new ExecutionArguments
-                        {
-                            Statement = new Notification<Statement>
-                                {
-                                    Item = statement
-                                }
-                        };
-                    var result = new RequireActiveAccountsExist().Check(executionArguments);
-                    result.HasErrors.ShouldBeTrue();
-                    Regex.IsMatch(result.Errors, RequireActiveAccountsExist.NoActiveAccountsMessageText.MessageTextToRegex()).ShouldBeTrue();
+                    Regex.IsMatch(result.Errors, RequireAccountTypesExist.NoAccountTypesMessageText.MessageTextToRegex()).ShouldBeTrue();
                 }
             }
         }

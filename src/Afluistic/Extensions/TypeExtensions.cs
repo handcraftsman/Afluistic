@@ -21,23 +21,43 @@ namespace Afluistic.Extensions
 {
     public static class TypeExtensions
     {
+        public static string GetPluralUIDescription(this Type type)
+        {
+            return GetUIDescription(type, true);
+        }
+
+        public static string GetPluralUIDescription<T>(Expression<Func<T, object>> propertyOnType)
+        {
+            return GetUIDescription(propertyOnType, true);
+        }
+
+        public static string GetSingularUIDescription(this Type type)
+        {
+            return GetUIDescription(type, false);
+        }
+
+        public static string GetSingularUIDescription<T>(Expression<Func<T, object>> propertyOnType)
+        {
+            return GetUIDescription(propertyOnType, false);
+        }
+
         public static string[] GetTypeNameWords(this Type type)
         {
             var nameWords = type.Name.SplitOnTransitionToCapitalLetter();
             return nameWords;
         }
 
-        public static string GetUIDescription(this Type type)
+        private static string GetUIDescription(this Type type, bool plural)
         {
             var attribute = type.GetCustomAttributes(typeof(UIDescriptionAttribute), false).FirstOrDefault() as UIDescriptionAttribute;
             if (attribute != null)
             {
-                return attribute.UIDescription;
+                return plural ? attribute.PluralUIDescription : attribute.UIDescription;
             }
-            return type.Name;
+            return plural ? type.Name.Pluralize() : type.Name;
         }
 
-        public static string GetUIDescription<T>(Expression<Func<T, object>> propertyOnType)
+        private static string GetUIDescription<T>(Expression<Func<T, object>> propertyOnType, bool plural)
         {
             var type = typeof(T);
             var expectedPropertyName = propertyOnType.GetFinalPropertyName();
@@ -45,9 +65,9 @@ namespace Afluistic.Extensions
             var attribute = property.GetCustomAttributes(typeof(UIDescriptionAttribute), false).FirstOrDefault() as UIDescriptionAttribute;
             if (attribute != null)
             {
-                return attribute.UIDescription;
+                return plural ? attribute.PluralUIDescription : attribute.UIDescription;
             }
-            return property.Name;
+            return plural ? property.Name.Pluralize() : property.Name;
         }
     }
 }

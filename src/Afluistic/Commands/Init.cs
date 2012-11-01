@@ -27,6 +27,7 @@ namespace Afluistic.Commands
     {
         public const string FilePathNotSpecifiedMessageText = "filepath must be specified.";
         public const string SuccessMessageText = "The {0} was created at {1}";
+        public const string UsageMessageText = "\tInitializes a {0} at [filepath].";
         private readonly IApplicationSettingsService _applicationSettingsService;
         private readonly IStorageService _storageService;
 
@@ -60,13 +61,13 @@ namespace Afluistic.Commands
             {
                 return storageResult;
             }
-            return Notification.InfoFor(SuccessMessageText, typeof(Statement).GetUIDescription(), applicationSettings.StatementPath);
+            return Notification.InfoFor(SuccessMessageText, typeof(Statement).GetSingularUIDescription(), applicationSettings.StatementPath);
         }
 
         public void WriteUsage(TextWriter textWriter)
         {
             textWriter.WriteLine(String.Join(" ", this.GetCommandWords()) + " [filepath]");
-            textWriter.WriteLine("\tInitializes a {0} at [filepath].", typeof(Statement).GetUIDescription());
+            textWriter.WriteLine(UsageMessageText, typeof(Statement).GetSingularUIDescription());
         }
     }
 }

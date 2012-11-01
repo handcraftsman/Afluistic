@@ -12,7 +12,7 @@
 // * **************************************************************************
 namespace Afluistic.Domain
 {
-    [UIDescription("Application Settings")]
+    [UIDescription("Application Settings", "Application Settings")]
     public class ApplicationSettings
     {
         [UIDescription("$Statement filepath")]

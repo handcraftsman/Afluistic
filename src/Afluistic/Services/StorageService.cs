@@ -53,12 +53,12 @@ namespace Afluistic.Services
             var path = settings.StatementPath;
             if (path.IsNullOrEmpty())
             {
-                return Notification.ErrorFor(InitializationErrorMessageText, typeof(Statement).GetUIDescription());
+                return Notification.ErrorFor(InitializationErrorMessageText, typeof(Statement).GetSingularUIDescription());
             }
             var result = _serializationService.SerializeToFile(statement, path);
             if (result.HasErrors)
             {
-                return Notification.ErrorFor(SerializationErrorMessageText, typeof(Statement).GetUIDescription(), path, Environment.NewLine, result.Errors);
+                return Notification.ErrorFor(SerializationErrorMessageText, typeof(Statement).GetSingularUIDescription(), path, Environment.NewLine, result.Errors);
             }
             return result;
         }
@@ -75,13 +75,13 @@ namespace Afluistic.Services
             var path = settings.StatementPath;
             if (path.IsNullOrEmpty())
             {
-                return Notification.ErrorFor(InitializationErrorMessageText, typeof(Statement).GetUIDescription()).ToNotification<Statement>();
+                return Notification.ErrorFor(InitializationErrorMessageText, typeof(Statement).GetSingularUIDescription()).ToNotification<Statement>();
             }
 
             var statement = _serializationService.DeserializeFromFile<Statement>(path);
             if (statement.HasErrors)
             {
-                return Notification.ErrorFor(DeserializationErrorMessageText, typeof(Statement).GetUIDescription(), path, Environment.NewLine, statement.Errors).ToNotification<Statement>();
+                return Notification.ErrorFor(DeserializationErrorMessageText, typeof(Statement).GetSingularUIDescription(), path, Environment.NewLine, statement.Errors).ToNotification<Statement>();
             }
             return statement;
         }

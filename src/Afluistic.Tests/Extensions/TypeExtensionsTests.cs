@@ -22,17 +22,69 @@ namespace Afluistic.Tests.Extensions
 {
     public class TypeExtensionsTests
     {
-        private const string PropertyDescription = "reversed";
-        private const string TypeDescription = "profile";
+        private const string PluralPropertyDescription = "horses";
+        private const string PluralTypeDescription = "foxes";
+        private const string PropertyDescription = "cat";
+        private const string TypeDescription = "dog";
 
-        [UIDescription(TypeDescription)]
+        [UIDescription(TypeDescription, PluralTypeDescription)]
         public class ObjectWithDescription
         {
-            [UIDescription(PropertyDescription)]
+            [UIDescription(PropertyDescription, PluralPropertyDescription)]
             public string Name { get; set; }
         }
 
-        public class When_asked_to_get_the_UI_description_for_a_Property
+        public class When_asked_to_get_the_plural_UI_description_for_a_Property
+        {
+            [TestFixture]
+            public class Given_a_Property_that_does_not_have_a_UIDescription_attribute
+            {
+                [Test]
+                public void Should_return_the_pluralized_name_of_the_Property()
+                {
+                    var description = TypeExtensions.GetPluralUIDescription<TestObject>(x => x.Value);
+                    description.ShouldBeEqualTo("Values");
+                }
+            }
+
+            [TestFixture]
+            public class Given_a_Property_that_has_a_UIDescription_attribute
+            {
+                [Test]
+                public void Should_return_the_plural_description_from_the_attribute()
+                {
+                    var description = TypeExtensions.GetPluralUIDescription<ObjectWithDescription>(x => x.Name);
+                    description.ShouldBeEqualTo(PluralPropertyDescription);
+                }
+            }
+        }
+
+        public class When_asked_to_get_the_plural_UI_description_for_a_Type
+        {
+            [TestFixture]
+            public class Given_a_Type_that_does_not_have_a_UIDescription_attribute
+            {
+                [Test]
+                public void Should_return_the_pluralized_name_of_the_Type()
+                {
+                    var description = typeof(CommandHandler).GetPluralUIDescription();
+                    description.ShouldBeEqualTo("CommandHandlers");
+                }
+            }
+
+            [TestFixture]
+            public class Given_a_Type_that_has_a_UIDescription_attribute
+            {
+                [Test]
+                public void Should_return_the_plural_description_from_the_attribute()
+                {
+                    var description = typeof(ObjectWithDescription).GetPluralUIDescription();
+                    description.ShouldBeEqualTo(PluralTypeDescription);
+                }
+            }
+        }
+
+        public class When_asked_to_get_the_singular_UI_description_for_a_Property
         {
             [TestFixture]
             public class Given_a_Property_that_does_not_have_a_UIDescription_attribute
@@ -40,7 +92,7 @@ namespace Afluistic.Tests.Extensions
                 [Test]
                 public void Should_return_the_name_of_the_Property()
                 {
-                    var description = TypeExtensions.GetUIDescription<TestObject>(x => x.Value);
+                    var description = TypeExtensions.GetSingularUIDescription<TestObject>(x => x.Value);
                     description.ShouldBeEqualTo("Value");
                 }
             }
@@ -49,15 +101,15 @@ namespace Afluistic.Tests.Extensions
             public class Given_a_Property_that_has_a_UIDescription_attribute
             {
                 [Test]
-                public void Should_return_the_description_from_the_attribute()
+                public void Should_return_the_singular_description_from_the_attribute()
                 {
-                    var description = TypeExtensions.GetUIDescription<ObjectWithDescription>(x => x.Name);
+                    var description = TypeExtensions.GetSingularUIDescription<ObjectWithDescription>(x => x.Name);
                     description.ShouldBeEqualTo(PropertyDescription);
                 }
             }
         }
 
-        public class When_asked_to_get_the_UI_description_for_a_Type
+        public class When_asked_to_get_the_singular_UI_description_for_a_Type
         {
             [TestFixture]
             public class Given_a_Type_that_does_not_have_a_UIDescription_attribute
@@ -65,7 +117,7 @@ namespace Afluistic.Tests.Extensions
                 [Test]
                 public void Should_return_the_name_of_the_Type()
                 {
-                    var description = typeof(CommandHandler).GetUIDescription();
+                    var description = typeof(CommandHandler).GetSingularUIDescription();
                     description.ShouldBeEqualTo(typeof(CommandHandler).Name);
                 }
             }
@@ -74,9 +126,9 @@ namespace Afluistic.Tests.Extensions
             public class Given_a_Type_that_has_a_UIDescription_attribute
             {
                 [Test]
-                public void Should_return_the_description_from_the_attribute()
+                public void Should_return_the_singular_description_from_the_attribute()
                 {
-                    var description = typeof(ObjectWithDescription).GetUIDescription();
+                    var description = typeof(ObjectWithDescription).GetSingularUIDescription();
                     description.ShouldBeEqualTo(TypeDescription);
                 }
             }

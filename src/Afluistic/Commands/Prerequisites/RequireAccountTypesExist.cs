@@ -15,22 +15,22 @@ using System;
 using System.Linq;
 
 using Afluistic.Domain;
-using Afluistic.MvbaCore;
 using Afluistic.Extensions;
+using Afluistic.MvbaCore;
 
 namespace Afluistic.Commands.Prerequisites
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-    public class RequireActiveAccountsExist : Attribute, IPrerequisite
+    public class RequireAccountTypesExist : Attribute, IPrerequisite
     {
-        public const string NoActiveAccountsMessageText = "There are no active {0}.";
+        public const string NoAccountTypesMessageText = "There are no {0}.";
 
         public Notification Check(ExecutionArguments exectionArguments)
         {
             Statement statement = exectionArguments.Statement;
-            if (!statement.Accounts.Any(x => !x.IsDeleted))
+            if (!statement.AccountTypes.Any())
             {
-                return Notification.ErrorFor(NoActiveAccountsMessageText, typeof(Account).GetPluralUIDescription());
+                return Notification.ErrorFor(NoAccountTypesMessageText, typeof(AccountType).GetPluralUIDescription());
             }
 
             return Notification.Empty;
@@ -38,7 +38,7 @@ namespace Afluistic.Commands.Prerequisites
 
         public int Order
         {
-            get { return 500; }
+            get { return 600; }
         }
     }
 }

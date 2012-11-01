@@ -14,11 +14,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
 using Afluistic.Domain;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
+using Afluistic.Tests.Extensions;
 
 using FluentAssert;
 
@@ -89,7 +91,10 @@ namespace Afluistic.Tests.Commands
                     var writer = new StringWriter();
                     var command = IoC.Get<ListAccounts>();
                     command.WriteUsage(writer);
-                    writer.ToString().ShouldContain(String.Join(" ", command.GetCommandWords()));
+                    var output = writer.ToString();
+                    output.ShouldContain(String.Join(" ", command.GetCommandWords()));
+                    Regex.IsMatch(output, ListAccounts.UsageMessageText.MessageTextToRegex()).ShouldBeTrue();
+
                 }
             }
         }

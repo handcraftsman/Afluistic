@@ -28,6 +28,18 @@ namespace Afluistic.Tests.Extensions
         public class When_asked_to_convert_a_message_text_to_a_regex
         {
             [TestFixture]
+            public class Given_a_message_text_containing_a_start_multiple_match_character_special_character
+            {
+                [Test]
+                public void Should_escape_the_character_with_a_backslash()
+                {
+                    const string messageText = "the [0] is round";
+                    var regexText = messageText.MessageTextToRegex();
+                    regexText.ShouldBeEqualTo(@"the \[0] is round");
+                }
+            }
+
+            [TestFixture]
             public class Given_a_message_text_containing_multiple_string_format_placeholders
             {
                 [Test]
@@ -140,6 +152,33 @@ namespace Afluistic.Tests.Extensions
                     const string path = @".\foo";
                     var absolutePath = path.ToAbsolutePath();
                     absolutePath.Item.ShouldBeEqualTo(Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, path)));
+                }
+            }
+        }
+
+        public class When_asked_to_pluralize_a_string
+        {
+            [TestFixture]
+            public class Given_an_input_that_does_not_end_with__s
+            {
+                [Test]
+                public void Should_return_the_input_with_suffix__s()
+                {
+                    const string input = "cat";
+                    var result = input.Pluralize();
+                    result.ShouldBeEqualTo("cats");
+                }
+            }
+
+            [TestFixture]
+            public class Given_an_input_that_ends_with__s
+            {
+                [Test]
+                public void Should_return_the_input_with_suffix__es()
+                {
+                    const string input = "boss";
+                    var result = input.Pluralize();
+                    result.ShouldBeEqualTo("bosses");
                 }
             }
         }

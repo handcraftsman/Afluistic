@@ -12,6 +12,7 @@
 // * **************************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -27,13 +28,14 @@ using NUnit.Framework;
 
 namespace Afluistic.Tests.Commands
 {
-    public class ShowSettingsTests
+    public class ListAccountTypesTests
     {
         public class When_asked_to_execute
         {
             [TestFixture]
             public class Given_Execution_Arguments : IntegrationTestBase
             {
+                private const string AccountTypeName = "Bob";
                 private Notification _result;
 
                 [Test]
@@ -47,18 +49,22 @@ namespace Afluistic.Tests.Commands
                 public void Should_write_to_the_standard_output()
                 {
                     StandardOutText.Length.ShouldNotBeEqualTo(0);
+                    StandardOutText.ShouldContain(AccountTypeName);
                 }
 
                 protected override void Before_first_test()
                 {
-                    var command = IoC.Get<ShowSettings>();
+                    var command = IoC.Get<ListAccountTypes>();
                     var executionArguments = new ExecutionArguments
                         {
-                            ApplicationSettings = new Notification<ApplicationSettings>
+                            Statement = new Statement
                                 {
-                                    Item = new ApplicationSettings
+                                    AccountTypes = new List<AccountType>
                                         {
-                                            StatementPath = @"x:\current.statement"
+                                            new AccountType
+                                                {
+                                                    Name = AccountTypeName
+                                                }
                                         }
                                 }
                         };
@@ -76,11 +82,11 @@ namespace Afluistic.Tests.Commands
                 public void Should_write_its_usage_information_to_the_TextWriter()
                 {
                     var writer = new StringWriter();
-                    var command = IoC.Get<ShowSettings>();
+                    var command = IoC.Get<ListAccountTypes>();
                     command.WriteUsage(writer);
                     var output = writer.ToString();
                     output.ShouldContain(String.Join(" ", command.GetCommandWords()));
-                    Regex.IsMatch(output, ShowSettings.UsageMessageText.MessageTextToRegex()).ShouldBeTrue();
+                    Regex.IsMatch(output, ListAccountTypes.UsageMessageText.MessageTextToRegex()).ShouldBeTrue();
                 }
             }
         }

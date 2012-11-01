@@ -21,6 +21,20 @@ namespace Afluistic
     public class UIDescriptionAttribute : Attribute
     {
         public UIDescriptionAttribute(string uiDescription)
+            : this(uiDescription, uiDescription.Pluralize())
+        {
+        }
+
+        public UIDescriptionAttribute(string uiDescription, string pluralUiDescription)
+        {
+            UIDescription = ReplaceTypeReferencesWuthUIDescriptions(uiDescription, false);
+            PluralUIDescription = ReplaceTypeReferencesWuthUIDescriptions(pluralUiDescription, true);
+        }
+
+        public string PluralUIDescription { get; private set; }
+        public string UIDescription { get; private set; }
+
+        private static string ReplaceTypeReferencesWuthUIDescriptions(string uiDescription, bool plural)
         {
             var indexOfMarker = uiDescription.IndexOf('$');
             if (indexOfMarker != -1)
@@ -31,12 +45,10 @@ namespace Afluistic
                     .GetAssemblies()
                     .SelectMany(x => x.GetTypes())
                     .FirstOrDefault(x => x.Name == typeName);
-                var typeDescription = type.GetUIDescription();
+                var typeDescription = plural ? type.GetPluralUIDescription() : type.GetSingularUIDescription();
                 uiDescription = uiDescription.Substring(0, indexOfMarker) + typeDescription + uiDescription.Substring(end);
             }
-            UIDescription = uiDescription;
+            return uiDescription;
         }
-
-        public string UIDescription { get; private set; }
     }
 }

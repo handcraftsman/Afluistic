@@ -14,6 +14,7 @@ namespace Afluistic.Domain
 {
     public class Account
     {
+        public AccountType AccountType { get; set; }
         public bool IsDeleted { get; set; }
         public string Name { get; set; }
     }

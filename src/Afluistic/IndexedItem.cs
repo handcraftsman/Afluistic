@@ -10,19 +10,24 @@
 // *
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
-using System.Collections.Generic;
+using System;
 
-namespace Afluistic.Domain
+namespace Afluistic
 {
-    public class Statement
+    public class IndexedItem<T>
     {
-        public Statement()
+        public IndexedItem(int index, T item)
         {
-            Accounts = new List<Account>();
-            AccountTypes = new List<AccountType>();
+            Index = index;
+            Item = item;
         }
 
-        public IList<AccountType> AccountTypes { get; set; }
-        public IList<Account> Accounts { get; set; }
+        public int Index { get; private set; }
+        public T Item { get; private set; }
+
+        public string ToString(Func<T, string> getStringValue)
+        {
+            return Index + ") " + getStringValue(Item);
+        }
     }
 }

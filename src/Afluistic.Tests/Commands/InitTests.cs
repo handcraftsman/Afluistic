@@ -125,7 +125,9 @@ namespace Afluistic.Tests.Commands
                     var writer = new StringWriter();
                     var command = IoC.Get<Init>();
                     command.WriteUsage(writer);
-                    writer.ToString().ShouldContain(String.Join(" ", command.GetCommandWords()));
+                    var output = writer.ToString();
+                    output.ShouldContain(String.Join(" ", command.GetCommandWords()));
+                    Regex.IsMatch(output, Init.UsageMessageText.MessageTextToRegex()).ShouldBeTrue();
                 }
             }
         }

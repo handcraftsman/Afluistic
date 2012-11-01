@@ -18,7 +18,7 @@ namespace Afluistic.Tests.Extensions
     {
         public static string MessageTextToRegex(this string messageText)
         {
-            return Regex.Replace(messageText, @"\{[0-9]+\}", ".*");
+            return Regex.Replace(messageText, @"\{[0-9]+\}", ".*").Replace("[", @"\[");
         }
     }
 }

@@ -1,4 +1,4 @@
-// * **************************************************************************
+﻿// * **************************************************************************
 // * Copyright (c) Clinton Sheppard <sheppard@cs.unm.edu>
 // *
 // * This source code is subject to terms and conditions of the MIT License.
@@ -10,19 +10,11 @@
 // *
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
-using System.Collections.Generic;
-
 namespace Afluistic.Domain
 {
-    public class Statement
+    [UIDescription("Account Type")]
+    public class AccountType
     {
-        public Statement()
-        {
-            Accounts = new List<Account>();
-            AccountTypes = new List<AccountType>();
-        }
-
-        public IList<AccountType> AccountTypes { get; set; }
-        public IList<Account> Accounts { get; set; }
+        public string Name { get; set; }
     }
 }
