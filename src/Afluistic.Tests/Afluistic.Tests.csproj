@@ -75,6 +75,16 @@
   <ItemGroup>
     <Compile Include="CommandHandlerTests.cs" />
     <Compile Include="Commands\AddAccountTypeTests.cs" />
+    <Compile Include="Commands\ArgumentChecks\AlwaysReturnsFailureValidator.cs" />
+    <Compile Include="Commands\ArgumentChecks\AlwaysReturnsSuccessValidator.cs" />
+    <Compile Include="Commands\ArgumentChecks\IsAFilePathTests.cs" />
+    <Compile Include="Commands\ArgumentChecks\IsATaxabilityTypeKeyTests.cs" />
+    <Compile Include="Commands\ArgumentChecks\IsTheIndexOfAnExistingAccountTypeTests.cs" />
+    <Compile Include="Commands\ArgumentChecks\IsTheNameOfAnExistingAccountTypeTests.cs" />
+    <Compile Include="Commands\ArgumentChecks\Logic\MatchesAllOfTests.cs" />
+    <Compile Include="Commands\ArgumentChecks\Logic\MatchesAnyOfTests.cs" />
+    <Compile Include="Commands\ArgumentChecks\Logic\MatchesNoneOfTests.cs" />
+    <Compile Include="Commands\ChangeAccountTypeTaxabilityTypeTests.cs" />
     <Compile Include="Commands\ListAccountTypesTests.cs" />
     <Compile Include="Commands\ListAccountsTests.cs" />
     <Compile Include="Commands\Prerequisites\RequireAtMostNArgsTests.cs" />

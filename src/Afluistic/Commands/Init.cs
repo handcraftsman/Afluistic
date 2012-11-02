@@ -15,6 +15,7 @@ using System;
 using System.IO;
 using System.Linq;
 
+using Afluistic.Commands.ArgumentChecks;
 using Afluistic.Commands.Prerequisites;
 using Afluistic.Domain;
 using Afluistic.Extensions;
@@ -40,15 +41,11 @@ namespace Afluistic.Commands
 
         [RequireExactlyNArgs(1, FilePathNotSpecifiedMessageText)]
         [RequireApplicationSettings]
+        [VerifyThatArgument(1, typeof(IsAFilePath))]
         public Notification Execute(ExecutionArguments executionArguments)
         {
             ApplicationSettings applicationSettings = executionArguments.ApplicationSettings;
-            var statementPath = executionArguments.Args.Last().ToStatementPath();
-            if (statementPath.HasErrors)
-            {
-                return statementPath;
-            }
-            applicationSettings.StatementPath = statementPath;
+            applicationSettings.StatementPath = executionArguments.Args.Last().ToStatementPath();
 
             var saveResult = _applicationSettingsService.Save(applicationSettings);
             if (saveResult.HasErrors)

@@ -15,17 +15,29 @@ using System;
 using System.Collections.Generic;
 
 using Afluistic.Commands;
+using Afluistic.Commands.ArgumentChecks;
+using Afluistic.Commands.ArgumentChecks.Logic;
 
 using StructureMap;
-using StructureMap.Graph;
+using StructureMap.Pipeline;
 
 namespace Afluistic
 {
     public static class IoC
     {
+        public static void EjectAllInstancesOf<T>()
+        {
+            ObjectFactory.EjectAllInstancesOf<T>();
+        }
+
         public static TType Get<TType>()
         {
             return ObjectFactory.GetInstance<TType>();
+        }
+
+        public static TInterface Get<TInterface>(Type concrete)
+        {
+            return (TInterface)ObjectFactory.GetInstance(concrete);
         }
 
         public static IEnumerable<TInterface> GetAll<TInterface>()
@@ -35,17 +47,19 @@ namespace Afluistic
 
         public static void Initialize()
         {
-            ObjectFactory.Initialize(x => x.Scan(s =>
-            {
-                s.TheCallingAssembly();
-                s.AddAllTypesOf<ICommand>();
-                s.WithDefaultConventions();
-            }));
-        }
-
-        public static void EjectAllInstancesOf<T>()
-        {
-            ObjectFactory.EjectAllInstancesOf<T>();
+            ObjectFactory.Initialize(x =>
+                {
+                    x.Scan(s =>
+                        {
+                            s.TheCallingAssembly();
+                            s.AddAllTypesOf<ICommand>();
+                            s.AddAllTypesOf<IArgumentValidator>();
+                            s.AddAllTypesOf<IArgumentLogicModifier>();
+                            s.WithDefaultConventions();
+                        });
+                    x.For<IArgumentLogicModifier>().LifecycleIs(Lifecycles.GetLifecycle(InstanceScope.ThreadLocal));
+                    x.For<IArgumentValidator>().LifecycleIs(Lifecycles.GetLifecycle(InstanceScope.ThreadLocal));
+                });
         }
     }
 }

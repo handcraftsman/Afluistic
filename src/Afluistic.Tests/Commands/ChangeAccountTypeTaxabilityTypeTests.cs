@@ -1,4 +1,4 @@
-// * **************************************************************************
+﻿// * **************************************************************************
 // * Copyright (c) Clinton Sheppard <sheppard@cs.unm.edu>
 // *
 // * This source code is subject to terms and conditions of the MIT License.
@@ -12,6 +12,7 @@
 // * **************************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -30,7 +31,7 @@ using NUnit.Framework;
 
 namespace Afluistic.Tests.Commands
 {
-    public class AddAccountTypeTests
+    public class ChangeAccountTypeTaxabilityTypeTests
     {
         public class When_asked_to_execute
         {
@@ -42,7 +43,7 @@ namespace Afluistic.Tests.Commands
                 private Notification _result;
 
                 [Test]
-                public void Should_add_the_new_account_type()
+                public void Should_change_the_taxability_type()
                 {
                     var statementResult = Statement;
                     statementResult.HasErrors.ShouldBeFalse();
@@ -64,7 +65,7 @@ namespace Afluistic.Tests.Commands
                 {
                     _result.HasErrors.ShouldBeFalse();
                     _result.HasWarnings.ShouldBeFalse();
-                    Regex.IsMatch(_result.Infos, AddAccountType.SuccessMessageText.MessageTextToRegex()).ShouldBeTrue();
+                    Regex.IsMatch(_result.Infos, ChangeAccountTypeTaxabilityType.SuccessMessageText.MessageTextToRegex()).ShouldBeTrue();
                 }
 
                 protected override void Before_first_test()
@@ -77,14 +78,24 @@ namespace Afluistic.Tests.Commands
                                     StatementPath = @"x:\previous.statement"
                                 },
                             Args = new[] { ExpectedAccountName, _expectedTaxabilityType.Key },
-                            Statement = new Statement()
+                            Statement = new Statement
+                                {
+                                    AccountTypes = new List<AccountType>
+                                        {
+                                            new AccountType
+                                                {
+                                                    Name = ExpectedAccountName,
+                                                    Taxability = TaxabilityType.GetAll().First(x => x != _expectedTaxabilityType)
+                                                }
+                                        }
+                                }
                         };
                     var configured = IoC.Get<IApplicationSettingsService>().Save(executionArguments.ApplicationSettings);
                     configured.IsValid.ShouldBeTrue(() => configured.ErrorsAndWarnings);
                     var stored = IoC.Get<IStorageService>().Save(executionArguments.Statement);
                     stored.IsValid.ShouldBeTrue(() => configured.ErrorsAndWarnings);
 
-                    var command = IoC.Get<AddAccountType>();
+                    var command = IoC.Get<ChangeAccountTypeTaxabilityType>();
                     _result = command.Execute(executionArguments);
                 }
             }
@@ -99,11 +110,11 @@ namespace Afluistic.Tests.Commands
                 public void Should_write_its_usage_information_to_the_TextWriter()
                 {
                     var writer = new StringWriter();
-                    var command = IoC.Get<AddAccountType>();
+                    var command = IoC.Get<ChangeAccountTypeTaxabilityType>();
                     command.WriteUsage(writer);
                     var output = writer.ToString();
                     output.ShouldContain(String.Join(" ", command.GetCommandWords()));
-                    Regex.IsMatch(output, AddAccountType.UsageMessageText.MessageTextToRegex()).ShouldBeTrue();
+                    Regex.IsMatch(output, ChangeAccountTypeTaxabilityType.UsageMessageText.MessageTextToRegex()).ShouldBeTrue();
                 }
             }
         }

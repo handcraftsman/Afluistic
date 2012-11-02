@@ -59,6 +59,17 @@
   <ItemGroup>
     <Compile Include="CommandHandler.cs" />
     <Compile Include="Commands\AddAccountType.cs" />
+    <Compile Include="Commands\ArgumentChecks\IsATaxabilityTypeKey.cs" />
+    <Compile Include="Commands\ArgumentChecks\IsTheIndexOfAnExistingAccountType.cs" />
+    <Compile Include="Commands\ArgumentChecks\IsTheNameOfAnExistingAccountType.cs" />
+    <Compile Include="Commands\ArgumentChecks\Logic\IArgumentLogicModifier.cs" />
+    <Compile Include="Commands\ArgumentChecks\Logic\MatchesAllOf.cs" />
+    <Compile Include="Commands\ArgumentChecks\Logic\MatchesAnyOf.cs" />
+    <Compile Include="Commands\ArgumentChecks\Logic\MatchesNoneOf.cs" />
+    <Compile Include="Commands\ArgumentChecks\VerifyThatArgument.cs" />
+    <Compile Include="Commands\ArgumentChecks\IArgumentValidator.cs" />
+    <Compile Include="Commands\ArgumentChecks\IsAFilePath.cs" />
+    <Compile Include="Commands\ChangeAccountTypeTaxabilityType.cs" />
     <Compile Include="Commands\ListAccountTypes.cs" />
     <Compile Include="Commands\ExecutionArguments.cs" />
     <Compile Include="Commands\Prerequisites\IPrerequisite.cs" />

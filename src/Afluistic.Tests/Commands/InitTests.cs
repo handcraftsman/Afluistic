@@ -34,35 +34,6 @@ namespace Afluistic.Tests.Commands
         public class When_asked_to_execute
         {
             [TestFixture]
-            public class Given_an_invalid_filepath : IntegrationTestBase
-            {
-                private const string FilePath = @"?";
-                private Notification _result;
-
-                [Test]
-                public void Should_return_an_error_notification()
-                {
-                    _result.HasErrors.ShouldBeTrue();
-                    Regex.IsMatch(_result.Errors, StringExtensions.ErrorConvertingToAbsolutePathMesssageText.MessageTextToRegex()).ShouldBeTrue();
-                }
-
-                protected override void Before_first_test()
-                {
-                    var command = IoC.Get<Init>();
-                    var executionArguments = new ExecutionArguments
-                        {
-                            ApplicationSettings = new ApplicationSettings
-                                {
-                                    StatementPath = @"x:\previous.statement"
-                                },
-                            Args = new[] { FilePath },
-                            Statement = new Statement()
-                        };
-                    _result = command.Execute(executionArguments);
-                }
-            }
-
-            [TestFixture]
             public class Given_valid_Execution_Arguments : IntegrationTestBase
             {
                 private const string FilePath = @"x:\new.statement";

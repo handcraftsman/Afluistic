@@ -11,9 +11,11 @@
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
 
+using Afluistic.Commands.ArgumentChecks;
 using Afluistic.Domain;
 using Afluistic.MvbaCore;
 using Afluistic.Services;
+using Afluistic.Tests.Commands.ArgumentChecks;
 using Afluistic.Tests.Services;
 
 using NUnit.Framework;
@@ -98,6 +100,8 @@ namespace Afluistic.Tests
                         x.For<ISystemService>().Use<InMemorySystemService>();
                         x.For<IFileSystemService>().Use<InMemoryFileSystemService>();
                     });
+                ObjectFactory.Inject(typeof(IArgumentValidator), new AlwaysReturnsFailureValidator());
+                ObjectFactory.Inject(typeof(IArgumentValidator), new AlwaysReturnsSuccessValidator());
             }
             else
             {
