@@ -12,9 +12,11 @@
 // * **************************************************************************
 
 using System;
+using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
 using Afluistic.Commands.ArgumentChecks.Logic;
+using Afluistic.Tests.Extensions;
 
 using FluentAssert;
 
@@ -35,6 +37,7 @@ namespace Afluistic.Tests.Commands.ArgumentChecks.Logic
                     var logicModifier = IoC.Get<MatchesAnyOf>();
                     var result = logicModifier.ApplyTo(new ExecutionArguments(), 0, new[] { typeof(AlwaysReturnsFailureValidator) });
                     result.HasErrors.ShouldBeTrue();
+                    Regex.IsMatch(result.Errors, MatchesAnyOf.ErrorMessageText.MessageTextToRegex()).ShouldBeTrue();
                 }
             }
 
@@ -47,6 +50,7 @@ namespace Afluistic.Tests.Commands.ArgumentChecks.Logic
                     var logicModifier = IoC.Get<MatchesAnyOf>();
                     var result = logicModifier.ApplyTo(new ExecutionArguments(), 0, new Type[] { });
                     result.HasErrors.ShouldBeTrue();
+                    Regex.IsMatch(result.Errors, MatchesAnyOf.ErrorMessageText.MessageTextToRegex()).ShouldBeTrue();
                 }
             }
 

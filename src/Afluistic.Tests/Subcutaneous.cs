@@ -1,4 +1,4 @@
-﻿// * **************************************************************************
+// * **************************************************************************
 // * Copyright (c) Clinton Sheppard <sheppard@cs.unm.edu>
 // *
 // * This source code is subject to terms and conditions of the MIT License.
@@ -10,19 +10,14 @@
 // *
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
-using Afluistic.Commands;
-using Afluistic.Commands.ArgumentChecks;
-using Afluistic.MvbaCore;
 
-namespace Afluistic.Tests.Commands.ArgumentChecks
+namespace Afluistic.Tests
 {
-    public class AlwaysReturnsFailureValidator : IArgumentValidator
+    public static class Subcutaneous
     {
-        public const string ErrorMessageText = "this is an expected failure";
-
-        public Notification Check(ExecutionArguments executionArguments, int argumentIndex)
+        public static SubcutaneousFromCommandLine FromCommandline()
         {
-            return Notification.ErrorFor(ErrorMessageText);
+            return new SubcutaneousFromCommandLine();
         }
     }
 }

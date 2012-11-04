@@ -12,13 +12,17 @@
 // * **************************************************************************
 
 using System;
+using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
 using Afluistic.Commands.ArgumentChecks.Logic;
+using Afluistic.Tests.Extensions;
 
 using FluentAssert;
 
 using NUnit.Framework;
+
+using Afluistic.Extensions;
 
 namespace Afluistic.Tests.Commands.ArgumentChecks.Logic
 {
@@ -59,6 +63,8 @@ namespace Afluistic.Tests.Commands.ArgumentChecks.Logic
                     var logicModifier = IoC.Get<MatchesNoneOf>();
                     var result = logicModifier.ApplyTo(new ExecutionArguments(), 0, new[] { typeof(AlwaysReturnsFailureValidator), typeof(AlwaysReturnsSuccessValidator) });
                     result.HasErrors.ShouldBeTrue();
+                    Regex.IsMatch(result.Errors, MatchesNoneOf.ErrorMessageText.MessageTextToRegex()).ShouldBeTrue();
+                    result.Errors.ShouldContain(typeof(AlwaysReturnsSuccessValidator).GetTypeNameWordsAsString());
                 }
             }
         }

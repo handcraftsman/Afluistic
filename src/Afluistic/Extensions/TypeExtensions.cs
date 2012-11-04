@@ -47,6 +47,12 @@ namespace Afluistic.Extensions
             return nameWords;
         }
 
+        public static string GetTypeNameWordsAsString(this Type type)
+        {
+            var nameWords = String.Join(" ", type.Name.SplitOnTransitionToCapitalLetter());
+            return nameWords;
+        }
+
         private static string GetUIDescription(this Type type, bool plural)
         {
             var attribute = type.GetCustomAttributes(typeof(UIDescriptionAttribute), false).FirstOrDefault() as UIDescriptionAttribute;
@@ -54,7 +60,7 @@ namespace Afluistic.Extensions
             {
                 return plural ? attribute.PluralUIDescription : attribute.UIDescription;
             }
-            return plural ? type.Name.Pluralize() : type.Name;
+            return plural ? type.GetTypeNameWordsAsString().Pluralize() : type.GetTypeNameWordsAsString();
         }
 
         private static string GetUIDescription<T>(Expression<Func<T, object>> propertyOnType, bool plural)
@@ -67,7 +73,7 @@ namespace Afluistic.Extensions
             {
                 return plural ? attribute.PluralUIDescription : attribute.UIDescription;
             }
-            return plural ? property.Name.Pluralize() : property.Name;
+            return plural ? property.GetPropertyNameWordsAsString().Pluralize() : property.GetPropertyNameWordsAsString();
         }
     }
 }

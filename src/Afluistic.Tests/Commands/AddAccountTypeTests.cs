@@ -17,6 +17,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
+using Afluistic.Commands.ArgumentChecks;
+using Afluistic.Commands.ArgumentChecks.Logic;
+using Afluistic.Commands.Prerequisites;
 using Afluistic.Domain;
 using Afluistic.Domain.NamedConstants;
 using Afluistic.Extensions;
@@ -34,6 +37,72 @@ namespace Afluistic.Tests.Commands
     {
         public class When_asked_to_execute
         {
+            [TestFixture]
+            public class Given_an_account_type_with_the_given_name_already_exists : IntegrationTestBase
+            {
+                [Test]
+                public void Should_return_the_correct_error_message()
+                {
+                    Subcutaneous.FromCommandline()
+                        .Init("x:")
+                        .AddAccountType("Bob", TaxabilityType.Taxable.Key)
+                        .AddAccountType("Bob", TaxabilityType.Taxfree.Key)
+                        .VerifyStandardErrorMatches(MatchesNoneOf.ErrorMessageText)
+                        .VerifyStandardErrorMatches(typeof(IsTheNameOfAnExistingAccountType).GetSingularUIDescription());
+                }
+            }
+
+            [TestFixture]
+            public class Given_an_invalid_taxability_type : IntegrationTestBase
+            {
+                [Test]
+                public void Should_return_the_correct_error_message()
+                {
+                    Subcutaneous.FromCommandline()
+                        .Init("x:")
+                        .AddAccountType("Bob", "xxx")
+                        .VerifyStandardErrorMatches(IsATaxabilityTypeKey.InvalidTaxabilityType);
+                }
+            }
+
+            [TestFixture]
+            public class Given_the_statement_path_has_not_been_initialized : IntegrationTestBase
+            {
+                [Test]
+                public void Should_return_the_correct_error_message()
+                {
+                    Subcutaneous.FromCommandline()
+                        .AddAccountType("Bob", TaxabilityType.Taxable.Key)
+                        .VerifyStandardErrorMatches(RequireStatement.StatementFilePathNeedsToBeInitializedMessageText);
+                }
+            }
+
+            [TestFixture]
+            public class Given_too_few_arguments : IntegrationTestBase
+            {
+                [Test]
+                public void Should_return_the_correct_error_message()
+                {
+                    Subcutaneous.FromCommandline()
+                        .Init("x:")
+                        .AddAccountType()
+                        .VerifyStandardErrorMatches(AddAccountType.IncorrectParametersMessageText);
+                }
+            }
+
+            [TestFixture]
+            public class Given_too_many_arguments : IntegrationTestBase
+            {
+                [Test]
+                public void Should_return_the_correct_error_message()
+                {
+                    Subcutaneous.FromCommandline()
+                        .Init("x:")
+                        .AddAccountType("Bob", TaxabilityType.Taxable.Key, "a")
+                        .VerifyStandardErrorMatches(AddAccountType.IncorrectParametersMessageText);
+                }
+            }
+
             [TestFixture]
             public class Given_valid_Execution_Arguments : IntegrationTestBase
             {

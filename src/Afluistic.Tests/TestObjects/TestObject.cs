@@ -14,6 +14,7 @@ namespace Afluistic.Tests.TestObjects
 {
     public class TestObject
     {
+        public string MultiWordPropertyName { get; set; }
         public string Value { get; set; }
     }
 }

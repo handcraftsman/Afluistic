@@ -17,6 +17,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
+using Afluistic.Commands.Prerequisites;
 using Afluistic.Domain;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
@@ -69,6 +70,44 @@ namespace Afluistic.Tests.Commands
                                 }
                         };
                     _result = command.Execute(executionArguments);
+                }
+            }
+
+            [TestFixture]
+            public class Given_any_arguments : IntegrationTestBase
+            {
+                [Test]
+                public void Should_return_the_correct_error_message()
+                {
+                    Subcutaneous.FromCommandline()
+                        .Init("x:")
+                        .ListAccountTypes("a")
+                        .VerifyStandardErrorMatches(RequireExactlyNArgs.WrongNumberOfArgumentsMessageText);
+                }
+            }
+
+            [TestFixture]
+            public class Given_no_account_types_exist : IntegrationTestBase
+            {
+                [Test]
+                public void Should_return_the_correct_error_message()
+                {
+                    Subcutaneous.FromCommandline()
+                        .Init("x:")
+                        .ListAccounts()
+                        .VerifyStandardErrorMatches(RequireAccountTypesExist.NoAccountTypesMessageText);
+                }
+            }
+
+            [TestFixture]
+            public class Given_the_statement_path_has_not_been_initialized : IntegrationTestBase
+            {
+                [Test]
+                public void Should_return_the_correct_error_message()
+                {
+                    Subcutaneous.FromCommandline()
+                        .ListAccountTypes()
+                        .VerifyStandardErrorMatches(RequireStatement.StatementFilePathNeedsToBeInitializedMessageText);
                 }
             }
         }

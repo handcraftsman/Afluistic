@@ -1,4 +1,4 @@
-﻿// * **************************************************************************
+// * **************************************************************************
 // * Copyright (c) Clinton Sheppard <sheppard@cs.unm.edu>
 // *
 // * This source code is subject to terms and conditions of the MIT License.
@@ -10,19 +10,17 @@
 // *
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
-using Afluistic.Commands;
-using Afluistic.Commands.ArgumentChecks;
-using Afluistic.MvbaCore;
+using System;
+using System.Reflection;
 
-namespace Afluistic.Tests.Commands.ArgumentChecks
+namespace Afluistic.Extensions
 {
-    public class AlwaysReturnsFailureValidator : IArgumentValidator
+    public static class PropertyInfoExtensions
     {
-        public const string ErrorMessageText = "this is an expected failure";
-
-        public Notification Check(ExecutionArguments executionArguments, int argumentIndex)
+        public static string GetPropertyNameWordsAsString(this PropertyInfo propertyInfo)
         {
-            return Notification.ErrorFor(ErrorMessageText);
+            var nameWords = String.Join(" ", propertyInfo.Name.SplitOnTransitionToCapitalLetter());
+            return nameWords;
         }
     }
 }

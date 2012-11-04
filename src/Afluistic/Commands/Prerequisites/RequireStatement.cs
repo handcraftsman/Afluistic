@@ -14,12 +14,15 @@
 using System;
 
 using Afluistic.MvbaCore;
+using Afluistic.Services;
 
 namespace Afluistic.Commands.Prerequisites
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class RequireStatement : Attribute, IPrerequisite
     {
+        public const string StatementFilePathNeedsToBeInitializedMessageText = ApplicationSettingsService.MissingSettingsFileMessageText;
+
         public Notification Check(ExecutionArguments executionArguments)
         {
             if (executionArguments.Statement.HasErrors)

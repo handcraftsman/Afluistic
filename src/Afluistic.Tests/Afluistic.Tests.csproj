@@ -85,6 +85,7 @@
     <Compile Include="Commands\ArgumentChecks\Logic\MatchesAnyOfTests.cs" />
     <Compile Include="Commands\ArgumentChecks\Logic\MatchesNoneOfTests.cs" />
     <Compile Include="Commands\ChangeAccountTypeTaxabilityTypeTests.cs" />
+    <Compile Include="Commands\ChangeAccountTypeNameTests.cs" />
     <Compile Include="Commands\ListAccountTypesTests.cs" />
     <Compile Include="Commands\ListAccountsTests.cs" />
     <Compile Include="Commands\Prerequisites\RequireAtMostNArgsTests.cs" />
@@ -95,6 +96,9 @@
     <Compile Include="Commands\Prerequisites\RequireApplicationSettingsAlreadyInitializedTests.cs" />
     <Compile Include="Commands\Prerequisites\RequireApplicationSettingsTests.cs" />
     <Compile Include="Extensions\IEnumerableTExtensionsTests.cs" />
+    <Compile Include="Extensions\PropertyInfoExtensionsTests.cs" />
+    <Compile Include="Subcutaneous.cs" />
+    <Compile Include="SubcutaneousFromCommandLine.cs" />
     <Compile Include="TestObjects\Commands\CommandWithMultiplePrerequisites.cs" />
     <Compile Include="TestObjects\Commands\CommandWithNoPrerequisites.cs" />
     <Compile Include="TestObjects\Commands\CommandWithOnePrerequisite.cs" />

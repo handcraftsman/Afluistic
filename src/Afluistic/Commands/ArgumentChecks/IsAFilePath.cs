@@ -17,6 +17,8 @@ namespace Afluistic.Commands.ArgumentChecks
 {
     public class IsAFilePath : IArgumentValidator
     {
+        public const string ErrorMessageText = StringExtensions.ErrorConvertingToAbsolutePathMesssageText;
+
         public Notification Check(ExecutionArguments executionArguments, int argumentIndex)
         {
             var argument = executionArguments.Args[argumentIndex];

@@ -22,6 +22,7 @@ namespace Afluistic.Commands.ArgumentChecks
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public class VerifyThatArgument : Attribute, IPrerequisite
     {
+        public const string ErrorMessageText = "Argument {0} is invalid.";
         private readonly int _oneBasedArgumentIndex;
         private readonly Type _validationLogicModificationType;
         private readonly Type[] _validators;
@@ -47,12 +48,19 @@ namespace Afluistic.Commands.ArgumentChecks
             }
 
             var logicModifier = IoC.Get<IArgumentLogicModifier>(_validationLogicModificationType);
-            return logicModifier.ApplyTo(executionArguments, _oneBasedArgumentIndex - 1, _validators);
+            result = logicModifier.ApplyTo(executionArguments, _oneBasedArgumentIndex - 1, _validators);
+            if (result.HasErrors)
+            {
+                var notification = Notification.ErrorFor(ErrorMessageText, _oneBasedArgumentIndex);
+                notification.Add(result);
+                return notification;
+            }
+            return Notification.Empty;
         }
 
         public int Order
         {
-            get { return 10000; }
+            get { return 10000 + _oneBasedArgumentIndex; }
         }
     }
 }

@@ -16,6 +16,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
+using Afluistic.Commands.ArgumentChecks;
 using Afluistic.Domain;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
@@ -25,14 +26,48 @@ using FluentAssert;
 
 using NUnit.Framework;
 
-using StringExtensions = Afluistic.Extensions.StringExtensions;
-
 namespace Afluistic.Tests.Commands
 {
     public class InitTests
     {
         public class When_asked_to_execute
         {
+            [TestFixture]
+            public class Given_the_argument_is_not_a_valid_file_path : IntegrationTestBase
+            {
+                [Test]
+                public void Should_return_the_correct_error_message()
+                {
+                    Subcutaneous.FromCommandline()
+                        .Init("?")
+                        .VerifyStandardErrorMatches(IsAFilePath.ErrorMessageText);
+                }
+            }
+
+            [TestFixture]
+            public class Given_too_few_arguments : IntegrationTestBase
+            {
+                [Test]
+                public void Should_return_the_correct_error_message()
+                {
+                    Subcutaneous.FromCommandline()
+                        .Init()
+                        .VerifyStandardErrorMatches(Init.FilePathNotSpecifiedMessageText);
+                }
+            }
+
+            [TestFixture]
+            public class Given_too_many_arguments : IntegrationTestBase
+            {
+                [Test]
+                public void Should_return_the_correct_error_message()
+                {
+                    Subcutaneous.FromCommandline()
+                        .Init("a", "b")
+                        .VerifyStandardErrorMatches(Init.FilePathNotSpecifiedMessageText);
+                }
+            }
+
             [TestFixture]
             public class Given_valid_Execution_Arguments : IntegrationTestBase
             {

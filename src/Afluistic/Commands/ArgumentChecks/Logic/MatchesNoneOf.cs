@@ -15,13 +15,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Afluistic.Extensions;
 using Afluistic.MvbaCore;
 
 namespace Afluistic.Commands.ArgumentChecks.Logic
 {
     public class MatchesNoneOf : IArgumentLogicModifier
     {
-        public const string ErrorMessageText = "Unexpectedly matched {0}";
+        public const string ErrorMessageText = "Unexpectedly matched: {0}";
         private readonly IArgumentValidator[] _validators;
 
         public MatchesNoneOf(IArgumentValidator[] validators)
@@ -38,7 +39,7 @@ namespace Afluistic.Commands.ArgumentChecks.Logic
                 var result = argumentValidator.Check(executionArguments, argumentIndex);
                 if (!result.HasErrors)
                 {
-                    return Notification.ErrorFor(ErrorMessageText, argumentValidator.GetType().Name);
+                    return Notification.ErrorFor(ErrorMessageText, argumentValidator.GetType().GetSingularUIDescription());
                 }
             }
             return Notification.Empty;

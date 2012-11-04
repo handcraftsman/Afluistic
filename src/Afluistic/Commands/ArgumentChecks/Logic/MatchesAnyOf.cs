@@ -10,6 +10,7 @@
 // *
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +21,8 @@ namespace Afluistic.Commands.ArgumentChecks.Logic
 {
     public class MatchesAnyOf : IArgumentLogicModifier
     {
+        public const string ErrorMessageText = "Does not match any of the allowed values:";
         private readonly IArgumentValidator[] _validators;
-        public const string ErrorMessageText = "All validators failed.";
 
         public MatchesAnyOf(IArgumentValidator[] validators)
         {
@@ -32,6 +33,7 @@ namespace Afluistic.Commands.ArgumentChecks.Logic
         {
             var requestedValidators = _validators.Where(x => argumentValidatorTypes.Contains(x.GetType()));
 
+            var errors = Notification.ErrorFor(ErrorMessageText);
             foreach (var argumentValidator in requestedValidators)
             {
                 var result = argumentValidator.Check(executionArguments, argumentIndex);
@@ -39,8 +41,12 @@ namespace Afluistic.Commands.ArgumentChecks.Logic
                 {
                     return result;
                 }
+                else
+                {
+                    errors.Add(result);
+                }
             }
-            return Notification.ErrorFor(ErrorMessageText);
+            return errors;
         }
     }
 }

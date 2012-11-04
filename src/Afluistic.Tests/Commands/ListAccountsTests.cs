@@ -17,7 +17,9 @@ using System.IO;
 using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
+using Afluistic.Commands.Prerequisites;
 using Afluistic.Domain;
+using Afluistic.Domain.NamedConstants;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
 using Afluistic.Tests.Extensions;
@@ -78,6 +80,62 @@ namespace Afluistic.Tests.Commands
                     _result = command.Execute(executionArguments);
                 }
             }
+
+            [TestFixture]
+            public class Given_any_arguments : IntegrationTestBase
+            {
+                [Test]
+                public void Should_return_the_correct_error_message()
+                {
+                    Subcutaneous.FromCommandline()
+                        .Init("x:")
+                        .ListAccounts("a")
+                        .VerifyStandardErrorMatches(RequireExactlyNArgs.WrongNumberOfArgumentsMessageText);
+                }
+            }
+
+            [TestFixture]
+            public class Given_no_accounts_exist : IntegrationTestBase
+            {
+                [Test]
+                public void Should_return_the_correct_error_message()
+                {
+                    Subcutaneous.FromCommandline()
+                        .Init("x:")
+                        .ListAccounts()
+                        .VerifyStandardErrorMatches(RequireActiveAccountsExist.NoActiveAccountsMessageText);
+                }
+            }
+
+            [TestFixture]
+            [Ignore]
+            public class Given_only_inactive_accounts_exist : IntegrationTestBase
+            {
+                [Test]
+                public void Should_return_the_correct_error_message()
+                {
+                    Subcutaneous.FromCommandline()
+                        .Init("x:")
+                        .AddAccountType("bob", TaxabilityType.Taxfree.Key)
+                        .AddAccount("Savings", "bob")
+                        .DeleteAccount("Savings")
+                        .ListAccounts()
+                        .VerifyStandardErrorMatches(RequireActiveAccountsExist.NoActiveAccountsMessageText)
+                    ;
+                }
+            }
+
+            [TestFixture]
+            public class Given_the_statement_path_has_not_been_initialized : IntegrationTestBase
+            {
+                [Test]
+                public void Should_return_the_correct_error_message()
+                {
+                    Subcutaneous.FromCommandline()
+                        .ListAccounts()
+                        .VerifyStandardErrorMatches(RequireStatement.StatementFilePathNeedsToBeInitializedMessageText);
+                }
+            }
         }
 
         public class When_asked_to_write_its_usage_information
@@ -94,7 +152,6 @@ namespace Afluistic.Tests.Commands
                     var output = writer.ToString();
                     output.ShouldContain(String.Join(" ", command.GetCommandWords()));
                     Regex.IsMatch(output, ListAccounts.UsageMessageText.MessageTextToRegex()).ShouldBeTrue();
-
                 }
             }
         }

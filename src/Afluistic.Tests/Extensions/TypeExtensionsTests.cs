@@ -53,10 +53,10 @@ namespace Afluistic.Tests.Extensions
             public class Given_a_Type_that_does_not_have_a_UIDescription_attribute
             {
                 [Test]
-                public void Should_return_the_pluralized_name_of_the_Type()
+                public void Should_return_the_words_in_the_name_of_the_Type_with_the_final_word_pluralized()
                 {
                     var description = typeof(CommandHandler).GetPluralUIDescription();
-                    description.ShouldBeEqualTo("CommandHandlers");
+                    description.ShouldBeEqualTo("Command Handlers");
                 }
             }
 
@@ -103,10 +103,10 @@ namespace Afluistic.Tests.Extensions
             public class Given_a_Type_that_does_not_have_a_UIDescription_attribute
             {
                 [Test]
-                public void Should_return_the_name_of_the_Type()
+                public void Should_return_the_words_in_the_name_of_the_Type()
                 {
                     var description = typeof(CommandHandler).GetSingularUIDescription();
-                    description.ShouldBeEqualTo(typeof(CommandHandler).Name);
+                    description.ShouldBeEqualTo(typeof(CommandHandler).GetTypeNameWordsAsString());
                 }
             }
 
@@ -122,27 +122,30 @@ namespace Afluistic.Tests.Extensions
             }
         }
 
-        public class When_asked_to_get_the_words_from_the_type_name
+        public class When_asked_to_get_the_words_from_the_Type_name
         {
             [TestFixture]
-            public class Given_a_type_that_doesn_not_have_a_UIDescription_attribute
+            public class Given_a_Type
             {
                 [Test]
-                public void Should_return_then_Type_name_split_into_words_at_capital_letters()
+                public void Should_return_the_Type_name_split_into_words_at_capital_letters()
                 {
                     var words = typeof(TypeExtensionsTests).GetTypeNameWords();
                     words.ShouldContainAllInOrder(new[] { "Type", "Extensions", "Tests" });
                 }
             }
+        }
 
+        public class When_asked_to_get_the_words_from_the_Type_name_as_a_string
+        {
             [TestFixture]
-            public class Given_a_type_that_has_a_UIDescription_attribute
+            public class Given_a_Type
             {
                 [Test]
-                public void Should_return_then_Type_name_split_into_words_at_capital_letters()
+                public void Should_return_the_Type_name_split_into_words_at_capital_letters_and_separated_by_spaces()
                 {
-                    var words = typeof(ObjectWithDescription).GetTypeNameWords();
-                    words.ShouldContainAllInOrder(new[] { "Object", "With", "Description" });
+                    var words = typeof(TypeExtensionsTests).GetTypeNameWordsAsString();
+                    words.ShouldBeEqualTo("Type Extensions Tests");
                 }
             }
         }
