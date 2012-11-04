@@ -93,7 +93,7 @@ namespace Afluistic.Tests.Commands
             public class Given_valid_Execution_Arguments : IntegrationTestBase
             {
                 private const string ExpectedAccountName = "Bob";
-                private TaxabilityType _expectedTaxabilityType;
+                private TaxabilityType _expectedTaxabilityType = TaxabilityType.Taxable;
                 private Notification _result;
 
                 [Test]
@@ -124,30 +124,11 @@ namespace Afluistic.Tests.Commands
 
                 protected override void Before_first_test()
                 {
-                    _expectedTaxabilityType = TaxabilityType.Taxable;
-                    var executionArguments = new ExecutionArguments
-                        {
-                            ApplicationSettings = new ApplicationSettings
-                                {
-                                    StatementPath = @"x:\previous.statement"
-                                },
-                            Args = new[] { ExpectedAccountName, _expectedTaxabilityType.Key },
-                            Statement = new Statement
-                                {
-                                    AccountTypes = new List<AccountType>
-                                        {
-                                            new AccountType
-                                                {
-                                                    Name = ExpectedAccountName,
-                                                    Taxability = TaxabilityType.GetAll().First(x => x != _expectedTaxabilityType)
-                                                }
-                                        }
-                                }
-                        };
-                    var configured = IoC.Get<IApplicationSettingsService>().Save(executionArguments.ApplicationSettings);
-                    configured.IsValid.ShouldBeTrue(() => configured.ErrorsAndWarnings);
-                    var stored = IoC.Get<IStorageService>().Save(executionArguments.Statement);
-                    stored.IsValid.ShouldBeTrue(() => configured.ErrorsAndWarnings);
+                    var executionArguments = Subcutaneous.FromCommandline()
+                        .Init(@"x:\previous.statement")
+                        .AddAccountType(ExpectedAccountName, TaxabilityType.GetAll().First(x => x != _expectedTaxabilityType).Key)
+                        .ClearOutput()
+                        .CreateExecutionArguments(ExpectedAccountName, _expectedTaxabilityType.Key);
 
                     var command = IoC.Get<ChangeAccountTypeTaxabilityType>();
                     _result = command.Execute(executionArguments);

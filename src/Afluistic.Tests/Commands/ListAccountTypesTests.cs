@@ -12,13 +12,12 @@
 // * **************************************************************************
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
 using Afluistic.Commands.Prerequisites;
-using Afluistic.Domain;
+using Afluistic.Domain.NamedConstants;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
 using Afluistic.Tests.Extensions;
@@ -55,20 +54,13 @@ namespace Afluistic.Tests.Commands
 
                 protected override void Before_first_test()
                 {
+                    var executionArguments = Subcutaneous.FromCommandline()
+                        .Init("x:")
+                        .AddAccountType(AccountTypeName, TaxabilityType.Taxfree.Key)
+                        .ClearOutput()
+                        .CreateExecutionArguments();
+
                     var command = IoC.Get<ListAccountTypes>();
-                    var executionArguments = new ExecutionArguments
-                        {
-                            Statement = new Statement
-                                {
-                                    AccountTypes = new List<AccountType>
-                                        {
-                                            new AccountType
-                                                {
-                                                    Name = AccountTypeName
-                                                }
-                                        }
-                                }
-                        };
                     _result = command.Execute(executionArguments);
                 }
             }

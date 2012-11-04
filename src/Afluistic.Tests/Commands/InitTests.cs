@@ -17,7 +17,6 @@ using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
 using Afluistic.Commands.ArgumentChecks;
-using Afluistic.Domain;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
 using Afluistic.Tests.Extensions;
@@ -105,16 +104,12 @@ namespace Afluistic.Tests.Commands
 
                 protected override void Before_first_test()
                 {
+                    var executionArguments = Subcutaneous.FromCommandline()
+                        .Init(@"x:\previous.statement")
+                        .ClearOutput()
+                        .CreateExecutionArguments(FilePath);
+
                     var command = IoC.Get<Init>();
-                    var executionArguments = new ExecutionArguments
-                        {
-                            ApplicationSettings = new ApplicationSettings
-                                {
-                                    StatementPath = @"x:\previous.statement"
-                                },
-                            Args = new[] { FilePath },
-                            Statement = new Statement()
-                        };
                     _result = command.Execute(executionArguments);
                 }
             }

@@ -106,6 +106,13 @@ namespace Afluistic.Tests.Commands
                 }
 
                 [Test]
+                public void Should_not_write_to_output()
+                {
+                    StandardErrorText.ShouldBeEqualTo("");
+                    StandardOutText.ShouldBeEqualTo("");
+                }
+
+                [Test]
                 public void Should_return_a_success_message()
                 {
                     _result.HasErrors.ShouldBeFalse();
