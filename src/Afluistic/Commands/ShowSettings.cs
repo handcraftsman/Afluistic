@@ -13,6 +13,7 @@
 
 using System;
 using System.IO;
+using System.Linq.Expressions;
 
 using Afluistic.Commands.Prerequisites;
 using Afluistic.Domain;
@@ -38,7 +39,7 @@ namespace Afluistic.Commands
         public Notification Execute(ExecutionArguments executionArguments)
         {
             ApplicationSettings applicationSettings = executionArguments.ApplicationSettings;
-            _systemService.StandardOut.WriteLine(TypeExtensions.GetSingularUIDescription<ApplicationSettings>(x => x.StatementPath) + ":\t" + applicationSettings.StatementPath);
+            _systemService.StandardOut.WriteLine(GetLabelFor(x => x.StatementPath) + ":\t" + applicationSettings.StatementPath);
             return Notification.Empty;
         }
 
@@ -46,6 +47,11 @@ namespace Afluistic.Commands
         {
             textWriter.WriteLine(String.Join(" ", this.GetCommandWords()));
             textWriter.WriteLine(UsageMessageText, typeof(ApplicationSettings).GetSingularUIDescription());
+        }
+
+        private static string GetLabelFor(Expression<Func<ApplicationSettings, object>> func)
+        {
+            return TypeExtensions.GetSingularUIDescription(func);
         }
     }
 }

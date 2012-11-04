@@ -14,55 +14,54 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 
 using Afluistic.Commands.ArgumentChecks;
 using Afluistic.Commands.ArgumentChecks.Logic;
 using Afluistic.Commands.Prerequisites;
 using Afluistic.Domain;
-using Afluistic.Domain.NamedConstants;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
 using Afluistic.Services;
 
 namespace Afluistic.Commands
 {
-    public class ChangeAccountTypeTaxabilityType : ICommand
+    public class ShowAccountType : ICommand
     {
-        public const string IncorrectParametersMessageText = "$AccountType name or index and a $TaxabilityType must be specified.";
-        public const string SuccessMessageText = "The {0} was changed";
-        public const string UsageMessageText = "\tChanges the {0} of an {1}.";
-        private readonly IStorageService _storageService;
+        public const string IncorrectParametersMessageText = "An $AccountType name or index must be specified.";
+        public const string UsageMessageText = "\tShows the details of a partcular {0}.";
+        private readonly ISystemService _systemService;
 
-        public ChangeAccountTypeTaxabilityType(IStorageService storageService)
+        public ShowAccountType(ISystemService systemService)
         {
-            _storageService = storageService;
+            _systemService = systemService;
         }
 
-        [RequireExactlyNArgs(2, IncorrectParametersMessageText)]
+        [RequireExactlyNArgs(1, IncorrectParametersMessageText)]
         [RequireStatement]
         [VerifyThatArgument(1, typeof(MatchesAnyOf), typeof(IsTheNameOfAnExistingAccountType), typeof(IsTheIndexOfAnExistingAccountType))]
-        [VerifyThatArgument(2, typeof(IsATaxabilityTypeKey))]
         public Notification Execute(ExecutionArguments executionArguments)
         {
             Statement statement = executionArguments.Statement;
 
             var accountType = statement.AccountTypes.GetIndexedValues()
                 .First(x => x.Item.Name == executionArguments.Args[0] || x.Index.ToString() == executionArguments.Args[0]).Item;
-            accountType.Taxability = TaxabilityType.GetFor(executionArguments.Args[1]);
 
-            var storageResult = _storageService.Save(statement);
-            if (storageResult.HasErrors)
-            {
-                return storageResult;
-            }
-            return Notification.InfoFor(SuccessMessageText, typeof(TaxabilityType).GetSingularUIDescription());
+            _systemService.StandardOut.WriteLine(GetLabelFor(x => x.Name) + ":\t" + accountType.Name);
+            _systemService.StandardOut.WriteLine(GetLabelFor(x => x.Taxability) + ":\t" + accountType.Taxability.Label);
+
+            return Notification.Empty;
         }
 
         public void WriteUsage(TextWriter textWriter)
         {
-            var taxabilityKeys = String.Join("|", TaxabilityType.GetAll().Select(x => x.Key).ToArray());
-            textWriter.WriteLine(String.Join(" ", this.GetCommandWords()) + " [type name|index#] [" + taxabilityKeys + "]");
-            textWriter.WriteLine(UsageMessageText, typeof(TaxabilityType).GetSingularUIDescription(), typeof(AccountType).GetSingularUIDescription());
+            textWriter.WriteLine(String.Join(" ", this.GetCommandWords()) + " [type name|index#]");
+            textWriter.WriteLine(UsageMessageText, typeof(AccountType).GetSingularUIDescription());
+        }
+
+        private static string GetLabelFor(Expression<Func<AccountType, object>> func)
+        {
+            return TypeExtensions.GetSingularUIDescription(func);
         }
     }
 }

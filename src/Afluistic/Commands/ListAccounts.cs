@@ -34,8 +34,6 @@ namespace Afluistic.Commands
         }
 
         [RequireExactlyNArgs(0)]
-        [RequireApplicationSettings]
-        [RequireApplicationSettingsAlreadyInitialized]
         [RequireStatement]
         [RequireActiveAccountsExist]
         public Notification Execute(ExecutionArguments executionArguments)

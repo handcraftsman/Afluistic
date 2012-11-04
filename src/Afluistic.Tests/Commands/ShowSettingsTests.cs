@@ -81,14 +81,14 @@ namespace Afluistic.Tests.Commands
             }
 
             [TestFixture]
-            public class Given_the_statement_path_has_not_been_initialized : IntegrationTestBase
+            public class Given_the_application_settings_have_not_been_initialized : IntegrationTestBase
             {
                 [Test]
                 public void Should_return_the_correct_error_message()
                 {
                     Subcutaneous.FromCommandline()
                         .ShowSettings()
-                        .VerifyStandardErrorMatches(RequireStatement.StatementFilePathNeedsToBeInitializedMessageText);
+                        .VerifyStandardErrorMatches(RequireApplicationSettingsAlreadyInitialized.StatementFilePathNeedsToBeInitializedMessageText);
                 }
             }
         }

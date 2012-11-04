@@ -13,12 +13,10 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
 using Afluistic.Commands.ArgumentChecks;
-using Afluistic.Commands.ArgumentChecks.Logic;
 using Afluistic.Domain.NamedConstants;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
@@ -30,7 +28,7 @@ using NUnit.Framework;
 
 namespace Afluistic.Tests.Commands
 {
-    public class ChangeAccountTypeNameTests
+    public class ShowAccountTypeTests
     {
         public class When_asked_to_execute
         {
@@ -42,24 +40,8 @@ namespace Afluistic.Tests.Commands
                 {
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .ChangeAccountTypeName("Savings", "Checking")
+                        .ShowAccountType("Savings")
                         .VerifyStandardErrorMatches(IsTheNameOfAnExistingAccountType.NameDoesNotExistMessageText);
-                }
-            }
-
-            [TestFixture]
-            public class Given_the_second_argument_is_an_existing_account_type_name : IntegrationTestBase
-            {
-                [Test]
-                public void Should_return_the_correct_error_message()
-                {
-                    Subcutaneous.FromCommandline()
-                        .Init("x:")
-                        .AddAccountType("Savings", TaxabilityType.Taxfree.Key)
-                        .AddAccountType("Checking", TaxabilityType.Taxfree.Key)
-                        .ChangeAccountTypeName("Savings", "Checking")
-                        .VerifyStandardErrorMatches(MatchesNoneOf.ErrorMessageText)
-                        .VerifyStandardErrorMatches(typeof(IsTheNameOfAnExistingAccountType).GetSingularUIDescription());
                 }
             }
 
@@ -71,8 +53,8 @@ namespace Afluistic.Tests.Commands
                 {
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .ChangeAccountTypeName("Savings")
-                        .VerifyStandardErrorMatches(ChangeAccountTypeName.IncorrectParametersMessageText);
+                        .ShowAccountType()
+                        .VerifyStandardErrorMatches(ShowAccountType.IncorrectParametersMessageText);
                 }
             }
 
@@ -84,44 +66,39 @@ namespace Afluistic.Tests.Commands
                 {
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .ChangeAccountTypeName("Savings", "Checking", "ok")
-                        .VerifyStandardErrorMatches(ChangeAccountTypeName.IncorrectParametersMessageText);
+                        .ShowAccountType("Savings", "Checking")
+                        .VerifyStandardErrorMatches(ShowAccountType.IncorrectParametersMessageText);
                 }
             }
 
             [TestFixture]
             public class Given_valid_Execution_Arguments : IntegrationTestBase
             {
-                private const string NewAccountName = "Bob";
+                private const string AccountName = "Savings";
                 private Notification _result;
 
                 [Test]
-                public void Should_change_the_name()
-                {
-                    var statementResult = Statement;
-                    statementResult.HasErrors.ShouldBeFalse();
-                    statementResult.Item.AccountTypes.Count.ShouldBeEqualTo(1);
-                    var accountType = statementResult.Item.AccountTypes.First();
-                    accountType.Name.ShouldBeEqualTo(NewAccountName);
-                }
-
-                [Test]
-                public void Should_return_a_success_message()
+                public void Should_not_return_errors_or_warnings()
                 {
                     _result.HasErrors.ShouldBeFalse();
                     _result.HasWarnings.ShouldBeFalse();
-                    Regex.IsMatch(_result.Infos, ChangeAccountTypeName.SuccessMessageText.MessageTextToRegex()).ShouldBeTrue();
+                }
+
+                [Test]
+                public void Should_write_to_the_standard_output()
+                {
+                    StandardOutText.Length.ShouldNotBeEqualTo(0);
                 }
 
                 protected override void Before_first_test()
                 {
                     var executionArguments = Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .AddAccountType("Savings", TaxabilityType.Taxfree.Key)
+                        .AddAccountType(AccountName, TaxabilityType.Taxfree.Key)
                         .ClearOutput()
-                        .CreateExecutionArguments("Savings", NewAccountName);
+                        .CreateExecutionArguments(AccountName);
 
-                    var command = IoC.Get<ChangeAccountTypeName>();
+                    var command = IoC.Get<ShowAccountType>();
                     _result = command.Execute(executionArguments);
                 }
             }
@@ -136,11 +113,11 @@ namespace Afluistic.Tests.Commands
                 public void Should_write_its_usage_information_to_the_TextWriter()
                 {
                     var writer = new StringWriter();
-                    var command = IoC.Get<ChangeAccountTypeName>();
+                    var command = IoC.Get<ShowAccountType>();
                     command.WriteUsage(writer);
                     var output = writer.ToString();
                     output.ShouldContain(String.Join(" ", command.GetCommandWords()));
-                    Regex.IsMatch(output, ChangeAccountTypeName.UsageMessageText.MessageTextToRegex()).ShouldBeTrue();
+                    Regex.IsMatch(output, ShowAccountType.UsageMessageText.MessageTextToRegex()).ShouldBeTrue();
                 }
             }
         }

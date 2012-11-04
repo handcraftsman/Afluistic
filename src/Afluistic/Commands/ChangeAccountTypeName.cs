@@ -38,8 +38,6 @@ namespace Afluistic.Commands
         }
 
         [RequireExactlyNArgs(2, IncorrectParametersMessageText)]
-        [RequireApplicationSettings]
-        [RequireApplicationSettingsAlreadyInitialized]
         [RequireStatement]
         [VerifyThatArgument(1, typeof(MatchesAnyOf), typeof(IsTheNameOfAnExistingAccountType), typeof(IsTheIndexOfAnExistingAccountType))]
         [VerifyThatArgument(2, typeof(MatchesNoneOf), typeof(IsTheNameOfAnExistingAccountType))]

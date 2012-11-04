@@ -68,7 +68,7 @@ namespace Afluistic.Tests
         }
 
 // ReSharper disable MemberCanBeMadeStatic.Global
-        public ExecutionArguments CreateExecutionArguments<T>(params string[] parameters) where T : ICommand
+        public ExecutionArguments CreateExecutionArguments(params string[] parameters)
 // ReSharper restore MemberCanBeMadeStatic.Global
         {
             var executionArguments = new ExecutionArguments
@@ -109,6 +109,12 @@ namespace Afluistic.Tests
             return this;
         }
 
+        public SubcutaneousFromCommandLine ShowAccountType(params string[] parameters)
+        {
+            Execute<ShowAccountType>(parameters);
+            return this;
+        }
+
         public SubcutaneousFromCommandLine ShowSettings(params string[] parameters)
         {
             Execute<ShowSettings>(parameters);
@@ -124,6 +130,12 @@ namespace Afluistic.Tests
         public SubcutaneousFromCommandLine VerifyStandardOutMatches(string messageText)
         {
             Regex.IsMatch(_systemService.StandardOutText, messageText.ReplaceTypeReferencesWithUIDescriptions(false).MessageTextToRegex()).ShouldBeTrue(_systemService.StandardOutText);
+            return this;
+        }
+
+        public SubcutaneousFromCommandLine ClearOutput()
+        {
+            _systemService.Reset();
             return this;
         }
     }

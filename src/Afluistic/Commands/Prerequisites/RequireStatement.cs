@@ -21,7 +21,7 @@ namespace Afluistic.Commands.Prerequisites
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class RequireStatement : Attribute, IPrerequisite
     {
-        public const string StatementFilePathNeedsToBeInitializedMessageText = ApplicationSettingsService.MissingSettingsFileMessageText;
+        public const string StatementFilePathNeedsToBeInitializedMessageText = StorageService.InitializationErrorMessageText;
 
         public Notification Check(ExecutionArguments executionArguments)
         {

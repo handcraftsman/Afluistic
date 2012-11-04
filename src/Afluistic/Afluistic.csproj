@@ -71,6 +71,7 @@
     <Compile Include="Commands\ArgumentChecks\IsAFilePath.cs" />
     <Compile Include="Commands\ChangeAccountTypeTaxabilityType.cs" />
     <Compile Include="Commands\ChangeAccountTypeName.cs" />
+    <Compile Include="Commands\ShowAccountType.cs" />
     <Compile Include="Commands\ListAccountTypes.cs" />
     <Compile Include="Commands\ExecutionArguments.cs" />
     <Compile Include="Commands\Prerequisites\IPrerequisite.cs" />
