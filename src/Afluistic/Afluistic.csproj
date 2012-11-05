@@ -61,6 +61,7 @@
     <Compile Include="Commands\AddAccountType.cs" />
     <Compile Include="Commands\ArgumentChecks\IsATaxabilityTypeKey.cs" />
     <Compile Include="Commands\ArgumentChecks\IsTheIndexOfAnExistingAccountType.cs" />
+    <Compile Include="Commands\ArgumentChecks\IsTheNameOfAnExistingAccount.cs" />
     <Compile Include="Commands\ArgumentChecks\IsTheNameOfAnExistingAccountType.cs" />
     <Compile Include="Commands\ArgumentChecks\Logic\IArgumentLogicModifier.cs" />
     <Compile Include="Commands\ArgumentChecks\Logic\MatchesAllOf.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Commands\ArgumentChecks\IsAFilePath.cs" />
     <Compile Include="Commands\ChangeAccountTypeTaxabilityType.cs" />
     <Compile Include="Commands\ChangeAccountTypeName.cs" />
+    <Compile Include="Commands\AddAccount.cs" />
     <Compile Include="Commands\ShowAccountType.cs" />
     <Compile Include="Commands\ListAccountTypes.cs" />
     <Compile Include="Commands\ExecutionArguments.cs" />

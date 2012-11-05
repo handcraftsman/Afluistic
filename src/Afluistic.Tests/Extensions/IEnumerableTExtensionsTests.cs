@@ -11,9 +11,11 @@
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
 
+using System;
 using System.Linq;
 
 using Afluistic.Extensions;
+using Afluistic.Tests.TestObjects;
 
 using FluentAssert;
 
@@ -23,6 +25,87 @@ namespace Afluistic.Tests.Extensions
 {
     public class IEnumerableTExtensionsTests
     {
+        public class When_asked_to_get_by_property_value_or_index
+        {
+            [TestFixture]
+            public class Given_a_non_integer_value_that_matches_a_property_value
+            {
+                [Test]
+                public void Should_throw_an_Exception()
+                {
+                    var input = new[]
+                        {
+                            new TestObject
+                                {
+                                    Value = "A"
+                                },
+                            new TestObject
+                                {
+                                    Value = "B"
+                                },
+                        };
+                    var result = input.GetByPropertyValueOrIndex(x => x.Value, "B");
+                    result.ShouldBeSameInstanceAs(input[1]);
+                }
+            }
+
+            [TestFixture]
+            public class Given_an_integer_value_that_does_not_match_a_property_value_or_index
+            {
+                [Test]
+                [ExpectedException(typeof(InvalidOperationException))]
+                public void Should_throw_an_Exception()
+                {
+                    var input = new TestObject[] { };
+                    input.GetByPropertyValueOrIndex(x => x.Value, "6");
+                }
+            }
+
+            [TestFixture]
+            public class Given_an_integer_value_that_matches_a_property_value
+            {
+                [Test]
+                public void Should_throw_an_Exception()
+                {
+                    var input = new[]
+                        {
+                            new TestObject
+                                {
+                                    Value = "3"
+                                },
+                            new TestObject
+                                {
+                                    Value = "6"
+                                },
+                        };
+                    var result = input.GetByPropertyValueOrIndex(x => x.Value, "6");
+                    result.ShouldBeSameInstanceAs(input[1]);
+                }
+            }
+
+            [TestFixture]
+            public class Given_an_integer_value_that_matches_an_index
+            {
+                [Test]
+                public void Should_throw_an_Exception()
+                {
+                    var input = new[]
+                        {
+                            new TestObject
+                                {
+                                    Value = "A"
+                                },
+                            new TestObject
+                                {
+                                    Value = "B"
+                                },
+                        };
+                    var result = input.GetByPropertyValueOrIndex(x => x.Value, "2");
+                    result.Value.ShouldBeEqualTo("B");
+                }
+            }
+        }
+
         public class When_asked_to_get_indexed_values
         {
             [TestFixture]

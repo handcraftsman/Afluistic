@@ -10,6 +10,7 @@
 // *
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,6 +18,23 @@ namespace Afluistic.Extensions
 {
     public static class IEnumerableTExtensions
     {
+        public static T GetByPropertyValueOrIndex<T>(this IEnumerable<T> items, Func<T, string> getPropertyValue, string value)
+        {
+            if (value.All(Char.IsDigit))
+            {
+                var intValue = Convert.ToInt32(value);
+                var item = items.GetIndexedValues()
+                    .First(x => x.Index == intValue || getPropertyValue(x.Item) == value).Item;
+                return item;
+            }
+            else
+            {
+                var item = items.GetIndexedValues()
+                    .First(x => getPropertyValue(x.Item) == value).Item;
+                return item;
+            }
+        }
+
         public static IEnumerable<IndexedItem<T>> GetIndexedValues<T>(this IEnumerable<T> items)
         {
             var index = 1;

@@ -46,8 +46,7 @@ namespace Afluistic.Commands
         {
             Statement statement = executionArguments.Statement;
 
-            var accountType = statement.AccountTypes.GetIndexedValues()
-                .First(x => x.Item.Name == executionArguments.Args[0] || x.Index.ToString() == executionArguments.Args[0]).Item;
+            var accountType = statement.AccountTypes.GetByPropertyValueOrIndex(x => x.Name, executionArguments.Args[0]);
             accountType.Taxability = TaxabilityType.GetFor(executionArguments.Args[1]);
 
             var storageResult = _storageService.Save(statement);

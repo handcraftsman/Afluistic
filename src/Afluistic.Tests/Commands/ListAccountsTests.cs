@@ -33,7 +33,6 @@ namespace Afluistic.Tests.Commands
         public class When_asked_to_execute
         {
             [TestFixture]
-            [Ignore]
             public class Given_Execution_Arguments : IntegrationTestBase
             {
                 private const string AccountName = "Bob";
@@ -57,7 +56,8 @@ namespace Afluistic.Tests.Commands
                 {
                     var executionArguments = Subcutaneous.FromCommandline()
                         .Init(@"x:\current.statement")
-                        .AddAccount(AccountName, TaxabilityType.Taxfree.Key)
+                        .AddAccountType("Savings", TaxabilityType.Taxfree.Key)
+                        .AddAccount(AccountName, "Savings")
                         .ClearOutput()
                         .CreateExecutionArguments();
 

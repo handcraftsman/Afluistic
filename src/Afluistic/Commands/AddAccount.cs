@@ -24,41 +24,48 @@ using Afluistic.Services;
 
 namespace Afluistic.Commands
 {
-    public class ChangeAccountTypeName : ICommand
+    public class AddAccount : ICommand
     {
-        public const string IncorrectParametersMessageText = "Old $AccountType name or index and a new $AccountType name must be specified.";
-        public const string SuccessMessageText = "The name was changed";
-        public const string UsageMessageText = "\tChanges the name of an {0}.";
+        public const string IncorrectParametersMessageText = "New $Account name and $AccountType or index must be specified.";
+        public const string SuccessMessageText = "The {0} was added";
+        public const string UsageMessageText = "\tAdds an {0}.";
         private readonly IStorageService _storageService;
 
-        public ChangeAccountTypeName(IStorageService storageService)
+        public AddAccount(IStorageService storageService)
         {
             _storageService = storageService;
         }
 
-        [RequireExactlyNArgs(2, IncorrectParametersMessageText)]
         [RequireStatement]
-        [VerifyThatArgument(1, typeof(MatchesAnyOf), typeof(IsTheNameOfAnExistingAccountType), typeof(IsTheIndexOfAnExistingAccountType))]
-        [VerifyThatArgument(2, typeof(MatchesNoneOf), typeof(IsTheNameOfAnExistingAccountType))]
+        [RequireExactlyNArgs(2, IncorrectParametersMessageText)]
+        [VerifyThatArgument(1, typeof(MatchesNoneOf), typeof(IsTheNameOfAnExistingAccount))]
+        [VerifyThatArgument(2, typeof(MatchesAnyOf), typeof(IsTheNameOfAnExistingAccountType), typeof(IsTheIndexOfAnExistingAccountType))]
         public Notification Execute(ExecutionArguments executionArguments)
         {
             Statement statement = executionArguments.Statement;
 
-            var accountType = statement.AccountTypes.GetByPropertyValueOrIndex(x => x.Name, executionArguments.Args[0]);
-            accountType.Name = executionArguments.Args[1];
+            var accountType = statement.AccountTypes.GetByPropertyValueOrIndex(x => x.Name, executionArguments.Args[1]);
+
+            var account = new Account
+                {
+                    Name = executionArguments.Args[0],
+                    AccountType = accountType,
+                };
+
+            statement.Accounts.Add(account);
 
             var storageResult = _storageService.Save(statement);
             if (storageResult.HasErrors)
             {
                 return storageResult;
             }
-            return Notification.InfoFor(SuccessMessageText);
+            return Notification.InfoFor(SuccessMessageText, typeof(Account).GetSingularUIDescription());
         }
 
         public void WriteUsage(TextWriter textWriter)
         {
-            textWriter.WriteLine(String.Join(" ", this.GetCommandWords()) + " [old type name|index#] [new type name]");
-            textWriter.WriteLine(UsageMessageText, typeof(AccountType).GetSingularUIDescription());
+            textWriter.WriteLine(String.Join(" ", this.GetCommandWords()) + " [new account name] [type name|index#]");
+            textWriter.WriteLine(UsageMessageText, typeof(Account).GetSingularUIDescription());
         }
     }
 }

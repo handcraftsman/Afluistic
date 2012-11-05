@@ -39,7 +39,8 @@ namespace Afluistic.Tests
 
         public SubcutaneousFromCommandLine AddAccount(params string[] parameters)
         {
-            throw new NotImplementedException();
+            Execute<AddAccount>(parameters);
+            return this;
         }
 
         public SubcutaneousFromCommandLine AddAccountType(params string[] parameters)
