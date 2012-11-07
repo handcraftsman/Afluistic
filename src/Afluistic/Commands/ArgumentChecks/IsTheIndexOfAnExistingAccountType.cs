@@ -28,7 +28,7 @@ namespace Afluistic.Commands.ArgumentChecks
             var argument = executionArguments.Args[argumentIndex];
 
             Statement statement = executionArguments.Statement;
-            if (!Enumerable.Any<string>(statement.AccountTypes.GetIndexedValues().Select(x => x.Index.ToString()), x => x == argument))
+            if (!statement.AccountTypes.GetIndexedValues().Select(x => x.Index.ToString()).Any(x => x == argument))
             {
                 return Notification.ErrorFor(IndexDoesNotExistMessageText, typeof(AccountType).GetSingularUIDescription());
             }
