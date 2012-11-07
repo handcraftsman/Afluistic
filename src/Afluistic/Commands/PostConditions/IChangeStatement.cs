@@ -10,21 +10,9 @@
 // *
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
-using System.Collections.Generic;
-
-namespace Afluistic.Domain
+namespace Afluistic.Commands.PostConditions
 {
-    public class Statement
+    public interface IChangeStatement
     {
-        public Statement()
-        {
-            Accounts = new List<Account>();
-            AccountTypes = new List<AccountType>();
-            CommandHistory = new List<CommandHistory>();
-        }
-
-        public IList<AccountType> AccountTypes { get; set; }
-        public IList<Account> Accounts { get; set; }
-        public IList<CommandHistory> CommandHistory { get; set; }
     }
 }

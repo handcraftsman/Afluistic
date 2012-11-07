@@ -11,6 +11,7 @@
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
 
+using System;
 using System.IO;
 
 using Afluistic.Services;
@@ -21,6 +22,7 @@ namespace Afluistic.Tests.Services
     {
         private static StringWriter _standardError = new StringWriter();
         private static StringWriter _standardOut = new StringWriter();
+        private DateTime? _currentDateTime;
         public string StandardErrorText
         {
             get { return _standardError.ToString(); }
@@ -32,6 +34,11 @@ namespace Afluistic.Tests.Services
         public string AppDataDirectory
         {
             get { return @"k:\temp"; }
+        }
+        public DateTime CurrentDateTime
+        {
+            get { return _currentDateTime == null ? DateTime.Now : _currentDateTime.Value; }
+            set { _currentDateTime = value; }
         }
         public TextWriter StandardError
         {

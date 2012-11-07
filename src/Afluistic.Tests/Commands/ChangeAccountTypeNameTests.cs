@@ -32,6 +32,26 @@ namespace Afluistic.Tests.Commands
 {
     public class ChangeAccountTypeNameTests
     {
+        [TestFixture]
+        public class When_asked_if_it_changes_the_application_settings
+        {
+            [Test]
+            public void Should_return_false()
+            {
+                IoC.Get<ChangeAccountTypeName>().ChangesTheApplicationSettings().ShouldBeFalse();
+            }
+        }
+
+        [TestFixture]
+        public class When_asked_if_it_changes_the_statement
+        {
+            [Test]
+            public void Should_return_true()
+            {
+                IoC.Get<ChangeAccountTypeName>().ChangesTheStatement().ShouldBeTrue();
+            }
+        }
+
         public class When_asked_to_execute
         {
             [TestFixture]
@@ -93,12 +113,13 @@ namespace Afluistic.Tests.Commands
             public class Given_valid_Execution_Arguments : IntegrationTestBase
             {
                 private const string NewAccountName = "Bob";
+                private ExecutionArguments _executionArguments;
                 private Notification _result;
 
                 [Test]
                 public void Should_change_the_name()
                 {
-                    var statementResult = Statement;
+                    var statementResult = _executionArguments.Statement;
                     statementResult.HasErrors.ShouldBeFalse();
                     statementResult.Item.AccountTypes.Count.ShouldBeEqualTo(1);
                     var accountType = statementResult.Item.AccountTypes.First();
@@ -122,14 +143,14 @@ namespace Afluistic.Tests.Commands
 
                 protected override void Before_first_test()
                 {
-                    var executionArguments = Subcutaneous.FromCommandline()
+                    _executionArguments = Subcutaneous.FromCommandline()
                         .Init("x:")
                         .AddAccountType("Savings", TaxabilityType.Taxfree.Key)
                         .ClearOutput()
                         .CreateExecutionArguments("Savings", NewAccountName);
 
                     var command = IoC.Get<ChangeAccountTypeName>();
-                    _result = command.Execute(executionArguments);
+                    _result = command.Execute(_executionArguments);
                 }
             }
         }

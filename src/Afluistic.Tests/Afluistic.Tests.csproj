@@ -102,6 +102,8 @@
     <Compile Include="Extensions\PropertyInfoExtensionsTests.cs" />
     <Compile Include="Subcutaneous.cs" />
     <Compile Include="SubcutaneousFromCommandLine.cs" />
+    <Compile Include="TestObjects\Commands\CommandThatChangesApplicationSettings.cs" />
+    <Compile Include="TestObjects\Commands\CommandThatChangesTheStatement.cs" />
     <Compile Include="TestObjects\Commands\CommandWithMultiplePrerequisites.cs" />
     <Compile Include="TestObjects\Commands\CommandWithNoPrerequisites.cs" />
     <Compile Include="TestObjects\Commands\CommandWithOnePrerequisite.cs" />
@@ -122,6 +124,7 @@
     <Compile Include="Services\JsonSerializerTests.cs" />
     <Compile Include="Services\SerializationServiceTests.cs" />
     <Compile Include="Services\StorageServiceTests.cs" />
+    <Compile Include="TestObjects\Commands\SimpleCommand.cs" />
     <Compile Include="TestObjects\ObjectWithDescription.cs" />
     <Compile Include="TestObjects\TestObject.cs" />
     <Compile Include="UIDescriptionAttributeTests.cs" />

@@ -18,6 +18,7 @@ namespace Afluistic.Services
     public interface ISystemService
     {
         string AppDataDirectory { get; }
+        DateTime CurrentDateTime { get; }
         TextWriter StandardError { get; }
         TextWriter StandardOut { get; }
     }
@@ -27,6 +28,10 @@ namespace Afluistic.Services
         public TextWriter StandardOut
         {
             get { return Console.Out; }
+        }
+        public DateTime CurrentDateTime
+        {
+            get { return DateTime.Now; }
         }
         public TextWriter StandardError
         {

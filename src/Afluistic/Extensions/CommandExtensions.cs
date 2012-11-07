@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Afluistic.Commands;
+using Afluistic.Commands.PostConditions;
 using Afluistic.Commands.Prerequisites;
 using Afluistic.MvbaCore;
 
@@ -24,6 +25,16 @@ namespace Afluistic.Extensions
     public static class CommandExtensions
     {
         private static readonly IDictionary<Type, IPrerequisite[]> CachedPrerequisites = new Dictionary<Type, IPrerequisite[]>();
+
+        public static bool ChangesTheApplicationSettings(this ICommand command)
+        {
+            return command is IChangeApplicationSettings;
+        }
+
+        public static bool ChangesTheStatement(this ICommand command)
+        {
+            return command is IChangeStatement;
+        }
 
         public static IEnumerable<IPrerequisite> GetCommandExecutionPrerequisites(this ICommand command)
         {

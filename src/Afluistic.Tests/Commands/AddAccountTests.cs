@@ -34,6 +34,26 @@ namespace Afluistic.Tests.Commands
 {
     public class AddAccountTests
     {
+        [TestFixture]
+        public class When_asked_if_it_changes_the_application_settings
+        {
+            [Test]
+            public void Should_return_false()
+            {
+                IoC.Get<AddAccount>().ChangesTheApplicationSettings().ShouldBeFalse();
+            }
+        }
+
+        [TestFixture]
+        public class When_asked_if_it_changes_the_statement
+        {
+            [Test]
+            public void Should_return_true()
+            {
+                IoC.Get<AddAccount>().ChangesTheStatement().ShouldBeTrue();
+            }
+        }
+
         public class When_asked_to_execute
         {
             [TestFixture]
@@ -107,13 +127,14 @@ namespace Afluistic.Tests.Commands
             public class Given_valid_Execution_Arguments : IntegrationTestBase
             {
                 private const string ExpectedAccountName = "Bob";
+                private ExecutionArguments _executionArguments;
                 private AccountType _expectedAccountType;
                 private Notification _result;
 
                 [Test]
                 public void Should_add_the_new_account()
                 {
-                    var statementResult = Statement;
+                    var statementResult = _executionArguments.Statement;
                     statementResult.HasErrors.ShouldBeFalse();
                     statementResult.Item.Accounts.Count.ShouldBeEqualTo(1);
                     var account = statementResult.Item.Accounts.First();
@@ -138,16 +159,16 @@ namespace Afluistic.Tests.Commands
 
                 protected override void Before_first_test()
                 {
-                    var executionArguments = Subcutaneous.FromCommandline()
+                    _executionArguments = Subcutaneous.FromCommandline()
                         .Init(@"x:\previous.statement")
                         .AddAccountType("Savings", TaxabilityType.Taxfree.Key)
                         .ClearOutput()
                         .CreateExecutionArguments(ExpectedAccountName, "Savings");
 
-                    _expectedAccountType = base.Statement.Item.AccountTypes.First();
+                    _expectedAccountType = _executionArguments.Statement.Item.AccountTypes.First();
 
                     var command = IoC.Get<AddAccount>();
-                    _result = command.Execute(executionArguments);
+                    _result = command.Execute(_executionArguments);
                 }
             }
         }

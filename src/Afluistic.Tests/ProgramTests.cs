@@ -12,9 +12,11 @@
 // * **************************************************************************
 
 using System.Linq;
+using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
 using Afluistic.Extensions;
+using Afluistic.Tests.Extensions;
 
 using FluentAssert;
 
@@ -34,6 +36,12 @@ namespace Afluistic.Tests
             }
 
             [Test]
+            public void Should_return_an_error_notification_saying__dont_know_how_to_handle()
+            {
+                Regex.IsMatch(StandardErrorText, Program.DontKnowHowToHandleMessageText.MessageTextToRegex()).ShouldBeTrue();
+            }
+
+            [Test]
             public void Should_write_an_error_message_to_standard_error()
             {
                 StandardErrorText.ShouldContain("namrepus");
@@ -41,8 +49,7 @@ namespace Afluistic.Tests
 
             protected override void Before_first_test()
             {
-                var program = IoC.Get<Program>();
-                program.Handle(new[] { "namrepus" });
+                IoC.Get<Program>().Run(new[] { "namrepus" });
             }
         }
 
@@ -63,8 +70,7 @@ namespace Afluistic.Tests
 
             protected override void Before_first_test()
             {
-                var program = IoC.Get<Program>();
-                program.Handle(IoC.Get<Init>().GetCommandWords());
+                IoC.Get<Program>().Run(IoC.Get<Init>().GetCommandWords());
             }
         }
 
@@ -87,9 +93,7 @@ namespace Afluistic.Tests
 
             protected override void Before_first_test()
             {
-                var program = IoC.Get<Program>();
-
-                program.Handle(IoC.Get<Init>().GetCommandWords().Concat(new[] { FilePath }).ToArray());
+                IoC.Get<Program>().Run(IoC.Get<Init>().GetCommandWords().Concat(new[] { FilePath }).ToArray());
             }
         }
 
@@ -111,7 +115,7 @@ namespace Afluistic.Tests
             protected override void Before_first_test()
             {
                 var program = IoC.Get<Program>();
-                program.Handle(new string[] { });
+                program.Run(new string[] { });
             }
         }
     }

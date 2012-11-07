@@ -10,29 +10,9 @@
 // *
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
-
-using System;
-using System.IO;
-
-using Afluistic.Commands;
-using Afluistic.Commands.PostConditions;
-using Afluistic.Commands.Prerequisites;
-using Afluistic.MvbaCore;
-
-namespace Afluistic.Tests.TestObjects.Commands
+namespace Afluistic.Commands.PostConditions
 {
-    public class CommandWithMultiplePrerequisites : ICommand
+    public interface IChangeApplicationSettings
     {
-        [RequireExactlyNArgs(1)]
-        [RequireApplicationSettings]
-        public Notification Execute(ExecutionArguments executionArguments)
-        {
-            return Notification.InfoFor("Command was executed");
-        }
-
-        public void WriteUsage(TextWriter textWriter)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -11,13 +11,9 @@
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
 
-using System.Text.RegularExpressions;
-
 using Afluistic.Commands;
 using Afluistic.Commands.Prerequisites;
-using Afluistic.Extensions;
 using Afluistic.MvbaCore;
-using Afluistic.Tests.Extensions;
 using Afluistic.Tests.TestObjects.Commands;
 
 using FluentAssert;
@@ -35,21 +31,28 @@ namespace Afluistic.Tests
         public class When_asked_to_handle
         {
             [TestFixture]
-            public class Given_arguments_that_do_not_match_a_command
+            public class Given_all_prerequisites_for_the_command_pass
             {
+                private CommandWithNoPrerequisites _command;
                 private Notification _result;
 
                 [TestFixtureSetUp]
                 public void Before_first_test()
                 {
+                    _command = new CommandWithNoPrerequisites();
                     var mocker = new RhinoAutoMocker<CommandHandler>();
-                    _result = mocker.ClassUnderTest.Handle(new[] { "$" });
+                    mocker.Inject(typeof(ICommand), _command);
+                    mocker.Get<IPrerequisiteChecker>()
+                        .Expect(x => x.Check(Arg<ICommand>.Is.Same(_command), Arg<ExecutionArguments>.Is.NotNull))
+                        .Return(Notification.Empty);
+                    _result = mocker.ClassUnderTest.Handle(_command, new ExecutionArguments());
                 }
 
                 [Test]
-                public void Should_return_an_error_notification_saying__dont_know_how_to_handle()
+                public void Should_execute_the_command_and_return_its_notification()
                 {
-                    Regex.IsMatch(_result.Errors, CommandHandler.DontKnowHowToHandleMessageText.MessageTextToRegex()).ShouldBeTrue();
+                    _result.IsValid.ShouldBeTrue();
+                    _result.Infos.ShouldBeEqualTo(CommandWithNoPrerequisites.CommandWasExecutedMessageText);
                 }
             }
 
@@ -68,7 +71,7 @@ namespace Afluistic.Tests
                     mocker.Get<IPrerequisiteChecker>()
                         .Expect(x => x.Check(Arg<ICommand>.Is.Same(_command), Arg<ExecutionArguments>.Is.NotNull))
                         .Return(Notification.ErrorFor("pretend"));
-                    _result = mocker.ClassUnderTest.Handle(_command.GetCommandWords());
+                    _result = mocker.ClassUnderTest.Handle(_command, new ExecutionArguments());
                 }
 
                 [Test]
@@ -81,32 +84,6 @@ namespace Afluistic.Tests
                 public void Should_return_an_error_notification_for_the_failed_prerequisite()
                 {
                     _result.Errors.ShouldBeEqualTo("pretend");
-                }
-            }
-
-            [TestFixture]
-            public class Given_all_prerequisites_for_the_command_pass
-            {
-                private CommandWithNoPrerequisites _command;
-                private Notification _result;
-
-                [TestFixtureSetUp]
-                public void Before_first_test()
-                {
-                    _command = new CommandWithNoPrerequisites();
-                    var mocker = new RhinoAutoMocker<CommandHandler>();
-                    mocker.Inject(typeof(ICommand), _command);
-                    mocker.Get<IPrerequisiteChecker>()
-                        .Expect(x => x.Check(Arg<ICommand>.Is.Same(_command), Arg<ExecutionArguments>.Is.NotNull))
-                        .Return(Notification.Empty);
-                    _result = mocker.ClassUnderTest.Handle(_command.GetCommandWords());
-                }
-
-                [Test]
-                public void Should_execute_the_command_and_return_its_notification()
-                {
-                    _result.IsValid.ShouldBeTrue();
-                    _result.Infos.ShouldBeEqualTo(CommandWithNoPrerequisites.CommandWasExecutedMessageText);
                 }
             }
         }

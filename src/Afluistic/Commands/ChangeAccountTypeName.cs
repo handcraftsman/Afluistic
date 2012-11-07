@@ -16,6 +16,7 @@ using System.IO;
 
 using Afluistic.Commands.ArgumentChecks;
 using Afluistic.Commands.ArgumentChecks.Logic;
+using Afluistic.Commands.PostConditions;
 using Afluistic.Commands.Prerequisites;
 using Afluistic.Domain;
 using Afluistic.Extensions;
@@ -24,17 +25,11 @@ using Afluistic.Services;
 
 namespace Afluistic.Commands
 {
-    public class ChangeAccountTypeName : ICommand
+    public class ChangeAccountTypeName : ICommand, IChangeStatement
     {
         public const string IncorrectParametersMessageText = "Old $AccountType name or index and a new $AccountType name must be specified.";
         public const string SuccessMessageText = "The name was changed";
         public const string UsageMessageText = "\tChanges the name of an {0}.";
-        private readonly IStorageService _storageService;
-
-        public ChangeAccountTypeName(IStorageService storageService)
-        {
-            _storageService = storageService;
-        }
 
         [RequireExactlyNArgs(2, IncorrectParametersMessageText)]
         [RequireStatement]
@@ -47,11 +42,6 @@ namespace Afluistic.Commands
             var accountType = statement.AccountTypes.GetByPropertyValueOrIndex(x => x.Name, executionArguments.Args[0]);
             accountType.Name = executionArguments.Args[1];
 
-            var storageResult = _storageService.Save(statement);
-            if (storageResult.HasErrors)
-            {
-                return storageResult;
-            }
             return Notification.InfoFor(SuccessMessageText);
         }
 

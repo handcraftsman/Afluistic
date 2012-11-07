@@ -17,25 +17,61 @@ using System.IO;
 using Afluistic.Commands;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
+using Afluistic.Tests.TestObjects.Commands;
 
 using FluentAssert;
 
 using NUnit.Framework;
 
+using Single = Afluistic.Tests.TestObjects.Commands.Single;
+
 namespace Afluistic.Tests.Extensions
 {
     public class CommandExtensionsTests
     {
-        public class SampleCommand : ICommand
+        public class When_asked_if_a_command_changes_the_application_settings
         {
-            public Notification Execute(ExecutionArguments executionArguments)
+            [TestFixture]
+            public class Given_a_command_that_changes_application_settings
             {
-                throw new NotImplementedException();
+                [Test]
+                public void Should_return_true()
+                {
+                    new CommandThatChangesApplicationSettings().ChangesTheApplicationSettings().ShouldBeTrue();
+                }
             }
 
-            public void WriteUsage(TextWriter textWriter)
+            [TestFixture]
+            public class Given_a_command_that_does_not_change_application_settings
             {
-                throw new NotImplementedException();
+                [Test]
+                public void Should_return_true()
+                {
+                    new SimpleCommand().ChangesTheApplicationSettings().ShouldBeFalse();
+                }
+            }
+        }
+
+        public class When_asked_if_a_command_changes_the_statement
+        {
+            [TestFixture]
+            public class Given_a_command_that_changes_the_statement
+            {
+                [Test]
+                public void Should_return_true()
+                {
+                    new CommandThatChangesTheStatement().ChangesTheStatement().ShouldBeTrue();
+                }
+            }
+
+            [TestFixture]
+            public class Given_a_command_that_does_not_change_the_statement
+            {
+                [Test]
+                public void Should_return_true()
+                {
+                    new SimpleCommand().ChangesTheStatement().ShouldBeFalse();
+                }
             }
         }
 
@@ -47,21 +83,21 @@ namespace Afluistic.Tests.Extensions
                 [Test]
                 public void Should_return_false_if_the_first_words_of_the_arguments_do_not_match_the_command_words_at_all()
                 {
-                    var result = new SampleCommand().IsMatch(new[] { "hello", "world", "woot" });
+                    var result = new SimpleCommand().IsMatch(new[] { "hello", "world", "woot" });
                     result.ShouldBeFalse();
                 }
 
                 [Test]
                 public void Should_return_false_if_the_first_words_of_the_arguments_match_the_command_words_except_for_case()
                 {
-                    var result = new SampleCommand().IsMatch(new[] { "Sample", "Command", "Woot!" });
+                    var result = new SimpleCommand().IsMatch(new[] { "Simple", "Command", "Woot!" });
                     result.ShouldBeFalse();
                 }
 
                 [Test]
                 public void Should_return_true_if_the_first_words_of_the_arguments_exactly_match_the_command_words()
                 {
-                    var result = new SampleCommand().IsMatch(new[] { "sample", "command", "woot" });
+                    var result = new SimpleCommand().IsMatch(new[] { "simple", "command", "woot" });
                     result.ShouldBeTrue();
                 }
             }
@@ -72,21 +108,21 @@ namespace Afluistic.Tests.Extensions
                 [Test]
                 public void Should_return_false_if_the_arguments_do_not_match_the_command_words_at_all()
                 {
-                    var result = new SampleCommand().IsMatch(new[] { "hello", "world" });
+                    var result = new SimpleCommand().IsMatch(new[] { "hello", "world" });
                     result.ShouldBeFalse();
                 }
 
                 [Test]
                 public void Should_return_false_if_the_arguments_match_the_command_words_except_for_case()
                 {
-                    var result = new SampleCommand().IsMatch(new[] { "Sample", "Command" });
+                    var result = new SimpleCommand().IsMatch(new[] { "Simple", "Command" });
                     result.ShouldBeFalse();
                 }
 
                 [Test]
                 public void Should_return_true_if_the_arguments_exactly_match_the_command_words()
                 {
-                    var result = new SampleCommand().IsMatch(new[] { "sample", "command" });
+                    var result = new SimpleCommand().IsMatch(new[] { "simple", "command" });
                     result.ShouldBeTrue();
                 }
             }
@@ -97,7 +133,7 @@ namespace Afluistic.Tests.Extensions
                 [Test]
                 public void Should_return_false()
                 {
-                    var result = new SampleCommand().IsMatch(new[] { "foo" });
+                    var result = new SimpleCommand().IsMatch(new[] { "foo" });
                     result.ShouldBeFalse();
                 }
             }
@@ -111,8 +147,8 @@ namespace Afluistic.Tests.Extensions
                 [Test]
                 public void Should_lowercase_and_return_the_words_from_the_type_name()
                 {
-                    var words = new SampleCommand().GetCommandWords();
-                    words.ShouldContainAllInOrder(new[] { "sample", "command" });
+                    var words = new SimpleCommand().GetCommandWords();
+                    words.ShouldContainAllInOrder(new[] { "simple", "command" });
                 }
             }
 
@@ -122,22 +158,10 @@ namespace Afluistic.Tests.Extensions
                 [Test]
                 public void Should_lowercase_and_return_the_word_from_the_type_name()
                 {
-                    var words = new Sample().GetCommandWords();
-                    words.ShouldContainAllInOrder(new[] { "sample" });
+                    var words = new Single().GetCommandWords();
+                    words.ShouldContainAllInOrder(new[] { "single" });
                 }
 
-                public class Sample : ICommand
-                {
-                    public Notification Execute(ExecutionArguments executionArguments)
-                    {
-                        throw new NotImplementedException();
-                    }
-
-                    public void WriteUsage(TextWriter textWriter)
-                    {
-                        throw new NotImplementedException();
-                    }
-                }
             }
         }
     }

@@ -16,13 +16,12 @@ using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
 using Afluistic.Commands.ArgumentChecks.Logic;
+using Afluistic.Extensions;
 using Afluistic.Tests.Extensions;
 
 using FluentAssert;
 
 using NUnit.Framework;
-
-using Afluistic.Extensions;
 
 namespace Afluistic.Tests.Commands.ArgumentChecks.Logic
 {

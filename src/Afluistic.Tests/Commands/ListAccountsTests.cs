@@ -30,6 +30,26 @@ namespace Afluistic.Tests.Commands
 {
     public class ListAccountsTests
     {
+        [TestFixture]
+        public class When_asked_if_it_changes_the_application_settings
+        {
+            [Test]
+            public void Should_return_false()
+            {
+                IoC.Get<ListAccounts>().ChangesTheApplicationSettings().ShouldBeFalse();
+            }
+        }
+
+        [TestFixture]
+        public class When_asked_if_it_changes_the_statement
+        {
+            [Test]
+            public void Should_return_false()
+            {
+                IoC.Get<ListAccounts>().ChangesTheStatement().ShouldBeFalse();
+            }
+        }
+
         public class When_asked_to_execute
         {
             [TestFixture]

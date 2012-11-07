@@ -17,26 +17,20 @@ using System.Linq;
 
 using Afluistic.Commands.ArgumentChecks;
 using Afluistic.Commands.ArgumentChecks.Logic;
+using Afluistic.Commands.PostConditions;
 using Afluistic.Commands.Prerequisites;
 using Afluistic.Domain;
 using Afluistic.Domain.NamedConstants;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
-using Afluistic.Services;
 
 namespace Afluistic.Commands
 {
-    public class ChangeAccountTypeTaxabilityType : ICommand
+    public class ChangeAccountTypeTaxabilityType : ICommand, IChangeStatement
     {
         public const string IncorrectParametersMessageText = "$AccountType name or index and a $TaxabilityType must be specified.";
         public const string SuccessMessageText = "The {0} was changed";
         public const string UsageMessageText = "\tChanges the {0} of an {1}.";
-        private readonly IStorageService _storageService;
-
-        public ChangeAccountTypeTaxabilityType(IStorageService storageService)
-        {
-            _storageService = storageService;
-        }
 
         [RequireExactlyNArgs(2, IncorrectParametersMessageText)]
         [RequireStatement]
@@ -49,11 +43,6 @@ namespace Afluistic.Commands
             var accountType = statement.AccountTypes.GetByPropertyValueOrIndex(x => x.Name, executionArguments.Args[0]);
             accountType.Taxability = TaxabilityType.GetFor(executionArguments.Args[1]);
 
-            var storageResult = _storageService.Save(statement);
-            if (storageResult.HasErrors)
-            {
-                return storageResult;
-            }
             return Notification.InfoFor(SuccessMessageText, typeof(TaxabilityType).GetSingularUIDescription());
         }
 

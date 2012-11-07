@@ -29,6 +29,26 @@ namespace Afluistic.Tests.Commands
 {
     public class InitTests
     {
+        [TestFixture]
+        public class When_asked_if_it_changes_the_application_settings
+        {
+            [Test]
+            public void Should_return_true()
+            {
+                IoC.Get<Init>().ChangesTheApplicationSettings().ShouldBeTrue();
+            }
+        }
+
+        [TestFixture]
+        public class When_asked_if_it_changes_the_statement
+        {
+            [Test]
+            public void Should_return_true()
+            {
+                IoC.Get<Init>().ChangesTheStatement().ShouldBeTrue();
+            }
+        }
+
         public class When_asked_to_execute
         {
             [TestFixture]
@@ -71,13 +91,8 @@ namespace Afluistic.Tests.Commands
             public class Given_valid_Execution_Arguments : IntegrationTestBase
             {
                 private const string FilePath = @"x:\new.statement";
+                private ExecutionArguments _executionArguments;
                 private Notification _result;
-
-                [Test]
-                public void Should_create_the_requested_file()
-                {
-                    FileExists(FilePath).ShouldBeTrue();
-                }
 
                 [Test]
                 public void Should_not_write_to_output()
@@ -97,20 +112,20 @@ namespace Afluistic.Tests.Commands
                 [Test]
                 public void Should_update_the_settings_statement_path_to_the_new_filepath()
                 {
-                    var settingsResult = Settings;
+                    var settingsResult = _executionArguments.ApplicationSettings;
                     settingsResult.HasErrors.ShouldBeFalse();
                     settingsResult.Item.StatementPath.ShouldBeEqualTo(FilePath);
                 }
 
                 protected override void Before_first_test()
                 {
-                    var executionArguments = Subcutaneous.FromCommandline()
+                    _executionArguments = Subcutaneous.FromCommandline()
                         .Init(@"x:\previous.statement")
                         .ClearOutput()
                         .CreateExecutionArguments(FilePath);
 
                     var command = IoC.Get<Init>();
-                    _result = command.Execute(executionArguments);
+                    _result = command.Execute(_executionArguments);
                 }
             }
         }

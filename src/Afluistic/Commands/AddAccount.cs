@@ -16,25 +16,19 @@ using System.IO;
 
 using Afluistic.Commands.ArgumentChecks;
 using Afluistic.Commands.ArgumentChecks.Logic;
+using Afluistic.Commands.PostConditions;
 using Afluistic.Commands.Prerequisites;
 using Afluistic.Domain;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
-using Afluistic.Services;
 
 namespace Afluistic.Commands
 {
-    public class AddAccount : ICommand
+    public class AddAccount : ICommand, IChangeStatement
     {
         public const string IncorrectParametersMessageText = "New $Account name and $AccountType or index must be specified.";
         public const string SuccessMessageText = "The {0} was added";
         public const string UsageMessageText = "\tAdds an {0}.";
-        private readonly IStorageService _storageService;
-
-        public AddAccount(IStorageService storageService)
-        {
-            _storageService = storageService;
-        }
 
         [RequireStatement]
         [RequireExactlyNArgs(2, IncorrectParametersMessageText)]
@@ -54,11 +48,6 @@ namespace Afluistic.Commands
 
             statement.Accounts.Add(account);
 
-            var storageResult = _storageService.Save(statement);
-            if (storageResult.HasErrors)
-            {
-                return storageResult;
-            }
             return Notification.InfoFor(SuccessMessageText, typeof(Account).GetSingularUIDescription());
         }
 

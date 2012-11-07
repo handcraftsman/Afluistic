@@ -17,26 +17,20 @@ using System.Linq;
 
 using Afluistic.Commands.ArgumentChecks;
 using Afluistic.Commands.ArgumentChecks.Logic;
+using Afluistic.Commands.PostConditions;
 using Afluistic.Commands.Prerequisites;
 using Afluistic.Domain;
 using Afluistic.Domain.NamedConstants;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
-using Afluistic.Services;
 
 namespace Afluistic.Commands
 {
-    public class AddAccountType : ICommand
+    public class AddAccountType : ICommand, IChangeStatement
     {
         public const string IncorrectParametersMessageText = "$AccountType name and $TaxabilityType must be specified.";
         public const string SuccessMessageText = "The {0} was added";
         public const string UsageMessageText = "\tAdds an {0}.";
-        private readonly IStorageService _storageService;
-
-        public AddAccountType(IStorageService storageService)
-        {
-            _storageService = storageService;
-        }
 
         [RequireExactlyNArgs(2, IncorrectParametersMessageText)]
         [RequireStatement]
@@ -53,11 +47,6 @@ namespace Afluistic.Commands
             Statement statement = executionArguments.Statement;
             statement.AccountTypes.Add(accountType);
 
-            var storageResult = _storageService.Save(statement);
-            if (storageResult.HasErrors)
-            {
-                return storageResult;
-            }
             return Notification.InfoFor(SuccessMessageText, typeof(AccountType).GetSingularUIDescription());
         }
 

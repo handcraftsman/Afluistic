@@ -12,18 +12,15 @@
 // * **************************************************************************
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
 using Afluistic.Commands.ArgumentChecks;
-using Afluistic.Domain;
 using Afluistic.Domain.NamedConstants;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
-using Afluistic.Services;
 using Afluistic.Tests.Extensions;
 
 using FluentAssert;
@@ -34,6 +31,26 @@ namespace Afluistic.Tests.Commands
 {
     public class ChangeAccountTypeTaxabilityTypeTests
     {
+        [TestFixture]
+        public class When_asked_if_it_changes_the_application_settings
+        {
+            [Test]
+            public void Should_return_false()
+            {
+                IoC.Get<ChangeAccountTypeTaxabilityType>().ChangesTheApplicationSettings().ShouldBeFalse();
+            }
+        }
+
+        [TestFixture]
+        public class When_asked_if_it_changes_the_statement
+        {
+            [Test]
+            public void Should_return_true()
+            {
+                IoC.Get<ChangeAccountTypeTaxabilityType>().ChangesTheStatement().ShouldBeTrue();
+            }
+        }
+
         public class When_asked_to_execute
         {
             [TestFixture]
@@ -93,13 +110,14 @@ namespace Afluistic.Tests.Commands
             public class Given_valid_Execution_Arguments : IntegrationTestBase
             {
                 private const string ExpectedAccountName = "Bob";
-                private TaxabilityType _expectedTaxabilityType = TaxabilityType.Taxable;
+                private readonly TaxabilityType _expectedTaxabilityType = TaxabilityType.Taxable;
+                private ExecutionArguments _executionArguments;
                 private Notification _result;
 
                 [Test]
                 public void Should_change_the_taxability_type()
                 {
-                    var statementResult = Statement;
+                    var statementResult = _executionArguments.Statement;
                     statementResult.HasErrors.ShouldBeFalse();
                     statementResult.Item.AccountTypes.Count.ShouldBeEqualTo(1);
                     var accountType = statementResult.Item.AccountTypes.First();
@@ -124,14 +142,14 @@ namespace Afluistic.Tests.Commands
 
                 protected override void Before_first_test()
                 {
-                    var executionArguments = Subcutaneous.FromCommandline()
+                    _executionArguments = Subcutaneous.FromCommandline()
                         .Init(@"x:\previous.statement")
                         .AddAccountType(ExpectedAccountName, TaxabilityType.GetAll().First(x => x != _expectedTaxabilityType).Key)
                         .ClearOutput()
                         .CreateExecutionArguments(ExpectedAccountName, _expectedTaxabilityType.Key);
 
                     var command = IoC.Get<ChangeAccountTypeTaxabilityType>();
-                    _result = command.Execute(executionArguments);
+                    _result = command.Execute(_executionArguments);
                 }
             }
         }

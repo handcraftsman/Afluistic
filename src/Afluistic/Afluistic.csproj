@@ -73,6 +73,8 @@
     <Compile Include="Commands\ChangeAccountTypeTaxabilityType.cs" />
     <Compile Include="Commands\ChangeAccountTypeName.cs" />
     <Compile Include="Commands\AddAccount.cs" />
+    <Compile Include="Commands\PostConditions\IChangeApplicationSettings.cs" />
+    <Compile Include="Commands\PostConditions\IChangeStatement.cs" />
     <Compile Include="Commands\ShowAccountType.cs" />
     <Compile Include="Commands\ListAccountTypes.cs" />
     <Compile Include="Commands\ExecutionArguments.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Domain\Account.cs" />
     <Compile Include="Domain\AccountType.cs" />
+    <Compile Include="Domain\CommandHistory.cs" />
     <Compile Include="Domain\NamedConstants\TaxabilityType.cs" />
     <Compile Include="Domain\Statement.cs" />
     <Compile Include="Extensions\CommandExtensions.cs" />

@@ -33,6 +33,26 @@ namespace Afluistic.Tests.Commands
 {
     public class AddAccountTypeTests
     {
+        [TestFixture]
+        public class When_asked_if_it_changes_the_application_settings
+        {
+            [Test]
+            public void Should_return_false()
+            {
+                IoC.Get<AddAccountType>().ChangesTheApplicationSettings().ShouldBeFalse();
+            }
+        }
+
+        [TestFixture]
+        public class When_asked_if_it_changes_the_statement
+        {
+            [Test]
+            public void Should_return_true()
+            {
+                IoC.Get<AddAccountType>().ChangesTheStatement().ShouldBeTrue();
+            }
+        }
+
         public class When_asked_to_execute
         {
             [TestFixture]
@@ -106,12 +126,13 @@ namespace Afluistic.Tests.Commands
             {
                 private const string ExpectedAccountName = "Bob";
                 private readonly TaxabilityType _expectedTaxabilityType = TaxabilityType.Taxable;
+                private ExecutionArguments _executionArguments;
                 private Notification _result;
 
                 [Test]
                 public void Should_add_the_new_account_type()
                 {
-                    var statementResult = Statement;
+                    var statementResult = _executionArguments.Statement;
                     statementResult.HasErrors.ShouldBeFalse();
                     statementResult.Item.AccountTypes.Count.ShouldBeEqualTo(1);
                     var accountType = statementResult.Item.AccountTypes.First();
@@ -136,13 +157,13 @@ namespace Afluistic.Tests.Commands
 
                 protected override void Before_first_test()
                 {
-                    var executionArguments = Subcutaneous.FromCommandline()
+                    _executionArguments = Subcutaneous.FromCommandline()
                         .Init(@"x:\previous.statement")
                         .ClearOutput()
                         .CreateExecutionArguments(ExpectedAccountName, _expectedTaxabilityType.Key);
 
                     var command = IoC.Get<AddAccountType>();
-                    _result = command.Execute(executionArguments);
+                    _result = command.Execute(_executionArguments);
                 }
             }
         }

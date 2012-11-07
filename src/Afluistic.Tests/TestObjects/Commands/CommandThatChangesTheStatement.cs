@@ -16,18 +16,15 @@ using System.IO;
 
 using Afluistic.Commands;
 using Afluistic.Commands.PostConditions;
-using Afluistic.Commands.Prerequisites;
 using Afluistic.MvbaCore;
 
 namespace Afluistic.Tests.TestObjects.Commands
 {
-    public class CommandWithMultiplePrerequisites : ICommand
+    public class CommandThatChangesTheStatement : ICommand, IChangeStatement
     {
-        [RequireExactlyNArgs(1)]
-        [RequireApplicationSettings]
         public Notification Execute(ExecutionArguments executionArguments)
         {
-            return Notification.InfoFor("Command was executed");
+            throw new NotImplementedException();
         }
 
         public void WriteUsage(TextWriter textWriter)

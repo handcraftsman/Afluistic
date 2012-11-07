@@ -61,11 +61,18 @@ namespace Afluistic.Tests
             return this;
         }
 
+        public SubcutaneousFromCommandLine ClearOutput()
+        {
+            _systemService.Reset();
+            return this;
+        }
+
         private static string[] CreateArgs<T>(IEnumerable<string> parameters)
         {
             return typeof(T).GetTypeNameWords()
                 .Select(x => x.ToLower())
-                .Concat(parameters).ToArray();
+                .Concat(parameters)
+                .ToArray();
         }
 
 // ReSharper disable MemberCanBeMadeStatic.Global
@@ -89,7 +96,7 @@ namespace Afluistic.Tests
         private void Execute<T>(IEnumerable<string> parameters) where T : ICommand
         {
             var args = CreateArgs<T>(parameters);
-            _program.Handle(args);
+            _program.Run(args);
         }
 
         public SubcutaneousFromCommandLine Init(params string[] parameters)
@@ -131,12 +138,6 @@ namespace Afluistic.Tests
         public SubcutaneousFromCommandLine VerifyStandardOutMatches(string messageText)
         {
             Regex.IsMatch(_systemService.StandardOutText, messageText.ReplaceTypeReferencesWithUIDescriptions(false).MessageTextToRegex()).ShouldBeTrue(_systemService.StandardOutText);
-            return this;
-        }
-
-        public SubcutaneousFromCommandLine ClearOutput()
-        {
-            _systemService.Reset();
             return this;
         }
     }

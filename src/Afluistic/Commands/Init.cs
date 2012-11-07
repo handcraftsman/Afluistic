@@ -16,28 +16,19 @@ using System.IO;
 using System.Linq;
 
 using Afluistic.Commands.ArgumentChecks;
+using Afluistic.Commands.PostConditions;
 using Afluistic.Commands.Prerequisites;
 using Afluistic.Domain;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
-using Afluistic.Services;
 
 namespace Afluistic.Commands
 {
-    public class Init : ICommand
+    public class Init : ICommand, IChangeApplicationSettings, IChangeStatement
     {
         public const string FilePathNotSpecifiedMessageText = "filepath must be specified.";
         public const string SuccessMessageText = "The {0} was created at {1}";
         public const string UsageMessageText = "\tInitializes a {0} at [filepath].";
-        private readonly IApplicationSettingsService _applicationSettingsService;
-        private readonly IStorageService _storageService;
-
-        public Init(IApplicationSettingsService applicationSettingsService,
-                    IStorageService storageService)
-        {
-            _applicationSettingsService = applicationSettingsService;
-            _storageService = storageService;
-        }
 
         [RequireExactlyNArgs(1, FilePathNotSpecifiedMessageText)]
         [RequireApplicationSettings]
@@ -46,18 +37,8 @@ namespace Afluistic.Commands
         {
             ApplicationSettings applicationSettings = executionArguments.ApplicationSettings;
             applicationSettings.StatementPath = executionArguments.Args.Last().ToStatementPath();
+            executionArguments.Statement = new Statement();
 
-            var saveResult = _applicationSettingsService.Save(applicationSettings);
-            if (saveResult.HasErrors)
-            {
-                return saveResult;
-            }
-
-            var storageResult = _storageService.Save(new Statement());
-            if (storageResult.HasErrors)
-            {
-                return storageResult;
-            }
             return Notification.InfoFor(SuccessMessageText, typeof(Statement).GetSingularUIDescription(), applicationSettings.StatementPath);
         }
 
