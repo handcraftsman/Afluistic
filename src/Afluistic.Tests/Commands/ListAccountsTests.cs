@@ -113,7 +113,6 @@ namespace Afluistic.Tests.Commands
             }
 
             [TestFixture]
-            [Ignore]
             public class Given_only_inactive_accounts_exist : IntegrationTestBase
             {
                 [Test]
@@ -125,8 +124,7 @@ namespace Afluistic.Tests.Commands
                         .AddAccount("Savings", "bob")
                         .DeleteAccount("Savings")
                         .ListAccounts()
-                        .VerifyStandardErrorMatches(RequireActiveAccountsExist.NoActiveAccountsMessageText)
-                        ;
+                        .VerifyStandardErrorMatches(RequireActiveAccountsExist.NoActiveAccountsMessageText);
                 }
             }
 
