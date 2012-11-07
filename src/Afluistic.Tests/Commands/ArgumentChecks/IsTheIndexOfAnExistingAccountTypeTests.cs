@@ -30,7 +30,7 @@ namespace Afluistic.Tests.Commands.ArgumentChecks
         public class When_asked_to_check_a_specific_argument
         {
             [TestFixture]
-            public class Given_a_non_integer_exist : IntegrationTestBase
+            public class Given_a_non_integer_value : IntegrationTestBase
             {
                 private const string AccountTypeIndex = @"Bob";
                 private Notification _result;
