@@ -39,7 +39,7 @@ namespace Afluistic.Commands
         public Notification Execute(ExecutionArguments executionArguments)
         {
             Statement statement = executionArguments.Statement;
-            foreach (var indexed in statement.Accounts.Where(x => !x.IsDeleted).GetIndexedValues())
+            foreach (var indexed in statement.Accounts.Where(x => !x.Inactive).GetIndexedValues())
             {
                 _systemService.StandardOut.WriteLine(indexed.ToString(x => x.Name));
             }

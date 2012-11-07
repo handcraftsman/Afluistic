@@ -40,7 +40,7 @@ namespace Afluistic.Tests.Commands.Prerequisites
                         {
                             new Account
                                 {
-                                    IsDeleted = false
+                                    Inactive = false
                                 }
                         };
                     var statement = new Statement
@@ -77,7 +77,7 @@ namespace Afluistic.Tests.Commands.Prerequisites
                         {
                             new Account
                                 {
-                                    IsDeleted = true
+                                    Inactive = true
                                 }
                         };
                     var statement = new Statement

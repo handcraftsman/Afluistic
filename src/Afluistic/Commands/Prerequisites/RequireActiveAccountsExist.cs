@@ -28,7 +28,7 @@ namespace Afluistic.Commands.Prerequisites
         public Notification Check(ExecutionArguments executionArguments)
         {
             Statement statement = executionArguments.Statement;
-            if (!statement.Accounts.Any(x => !x.IsDeleted))
+            if (!statement.Accounts.Any(x => !x.Inactive))
             {
                 return Notification.ErrorFor(NoActiveAccountsMessageText, typeof(Account).GetPluralUIDescription());
             }
