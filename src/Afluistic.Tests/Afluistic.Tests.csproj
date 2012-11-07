@@ -77,6 +77,7 @@
     <Compile Include="Commands\AddAccountTypeTests.cs" />
     <Compile Include="Commands\ArgumentChecks\AlwaysReturnsFailureValidator.cs" />
     <Compile Include="Commands\ArgumentChecks\AlwaysReturnsSuccessValidator.cs" />
+    <Compile Include="Commands\ArgumentChecks\IsTheIndexOfAnExistingAccountTests.cs" />
     <Compile Include="Commands\ArgumentChecks\IsTheNameOfAnExistingAccountTests.cs" />
     <Compile Include="Commands\ArgumentChecks\IsAFilePathTests.cs" />
     <Compile Include="Commands\ArgumentChecks\IsATaxabilityTypeKeyTests.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Commands\ChangeAccountTypeTaxabilityTypeTests.cs" />
     <Compile Include="Commands\ChangeAccountTypeNameTests.cs" />
     <Compile Include="Commands\AddAccountTests.cs" />
+    <Compile Include="Commands\DeleteAccountTests.cs" />
     <Compile Include="Commands\ShowAccountTypeTests.cs" />
     <Compile Include="Commands\ListAccountTypesTests.cs" />
     <Compile Include="Commands\ListAccountsTests.cs" />

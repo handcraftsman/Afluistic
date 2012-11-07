@@ -90,7 +90,8 @@ namespace Afluistic.Tests
 
         public SubcutaneousFromCommandLine DeleteAccount(params string[] parameters)
         {
-            throw new NotImplementedException();
+            Execute<DeleteAccount>(parameters);
+            return this;
         }
 
         private void Execute<T>(IEnumerable<string> parameters) where T : ICommand
