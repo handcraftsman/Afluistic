@@ -11,7 +11,6 @@
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -46,6 +45,12 @@ namespace Afluistic.Tests
         public SubcutaneousFromCommandLine AddAccountType(params string[] parameters)
         {
             Execute<AddAccountType>(parameters);
+            return this;
+        }
+
+        public SubcutaneousFromCommandLine ChangeAccountName(params string[] parameters)
+        {
+            Execute<ChangeAccountName>(parameters);
             return this;
         }
 
