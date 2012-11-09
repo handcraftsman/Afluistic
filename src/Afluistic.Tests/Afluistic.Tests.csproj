@@ -90,6 +90,7 @@
     <Compile Include="Commands\ChangeAccountTypeNameTests.cs" />
     <Compile Include="Commands\AddAccountTests.cs" />
     <Compile Include="Commands\ChangeAccountNameTests.cs" />
+    <Compile Include="Commands\ChangeAccountTypeTests.cs" />
     <Compile Include="Commands\DeleteAccountTests.cs" />
     <Compile Include="Commands\ShowAccountTypeTests.cs" />
     <Compile Include="Commands\ListAccountTypesTests.cs" />

@@ -54,6 +54,12 @@ namespace Afluistic.Tests
             return this;
         }
 
+        public SubcutaneousFromCommandLine ChangeAccountType(params string[] parameters)
+        {
+            Execute<ChangeAccountType>(parameters);
+            return this;
+        }
+
         public SubcutaneousFromCommandLine ChangeAccountTypeName(params string[] parameters)
         {
             Execute<ChangeAccountTypeName>(parameters);

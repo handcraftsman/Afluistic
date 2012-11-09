@@ -75,6 +75,7 @@
     <Compile Include="Commands\ChangeAccountTypeName.cs" />
     <Compile Include="Commands\AddAccount.cs" />
     <Compile Include="Commands\ChangeAccountName.cs" />
+    <Compile Include="Commands\ChangeAccountType.cs" />
     <Compile Include="Commands\DeleteAccount.cs" />
     <Compile Include="Commands\PostConditions\IChangeApplicationSettings.cs" />
     <Compile Include="Commands\PostConditions\IChangeStatement.cs" />
