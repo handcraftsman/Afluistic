@@ -18,7 +18,6 @@ using System.Text.RegularExpressions;
 using Afluistic.Commands;
 using Afluistic.Commands.ArgumentChecks;
 using Afluistic.Extensions;
-using Afluistic.MvbaCore;
 using Afluistic.Tests.Extensions;
 
 using FluentAssert;
@@ -91,41 +90,39 @@ namespace Afluistic.Tests.Commands
             public class Given_valid_Execution_Arguments : IntegrationTestBase
             {
                 private const string FilePath = @"x:\new.statement";
-                private ExecutionArguments _executionArguments;
-                private Notification _result;
 
                 [Test]
-                public void Should_not_write_to_output()
+                public void Should_create_the_requested_file()
                 {
-                    StandardErrorText.ShouldBeEqualTo("");
-                    StandardOutText.ShouldBeEqualTo("");
+                    FileExists(FilePath).ShouldBeTrue();
                 }
 
                 [Test]
-                public void Should_return_a_success_message()
+                public void Should_not_write_an_error_message()
                 {
-                    _result.HasErrors.ShouldBeFalse();
-                    _result.HasWarnings.ShouldBeFalse();
-                    Regex.IsMatch(_result.Infos, Init.SuccessMessageText.MessageTextToRegex()).ShouldBeTrue();
+                    StandardErrorText.Length.ShouldBeEqualTo(0);
                 }
 
                 [Test]
                 public void Should_update_the_settings_statement_path_to_the_new_filepath()
                 {
-                    var settingsResult = _executionArguments.ApplicationSettings;
+                    var settingsResult = Settings;
                     settingsResult.HasErrors.ShouldBeFalse();
                     settingsResult.Item.StatementPath.ShouldBeEqualTo(FilePath);
                 }
 
+                [Test]
+                public void Should_write_a_success_message()
+                {
+                    Regex.IsMatch(StandardOutText, Init.SuccessMessageText.MessageTextToRegex()).ShouldBeTrue();
+                }
+
                 protected override void Before_first_test()
                 {
-                    _executionArguments = Subcutaneous.FromCommandline()
+                    Subcutaneous.FromCommandline()
                         .Init(@"x:\previous.statement")
                         .ClearOutput()
-                        .CreateExecutionArguments(FilePath);
-
-                    var command = IoC.Get<Init>();
-                    _result = command.Execute(_executionArguments);
+                        .Init(FilePath);
                 }
             }
         }
