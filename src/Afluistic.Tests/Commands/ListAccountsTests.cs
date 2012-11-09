@@ -55,7 +55,7 @@ namespace Afluistic.Tests.Commands
             [TestFixture]
             public class Given_Execution_Arguments : IntegrationTestBase
             {
-                private const string AccountName = "Bob";
+                private const string AccountName = "Alpha";
                 private Notification _result;
 
                 [Test]
@@ -119,8 +119,8 @@ namespace Afluistic.Tests.Commands
                 {
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .AddAccount("Savings", Init.GetDefaultAccountTypes().First().Name)
-                        .DeleteAccount("Savings")
+                        .AddAccount("Alhpa", Init.GetDefaultAccountTypes().First().Name)
+                        .DeleteAccount("Alhpa")
                         .ListAccounts()
                         .VerifyStandardErrorMatches(RequireActiveAccountsExist.NoActiveAccountsMessageText);
                 }

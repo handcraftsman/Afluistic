@@ -72,7 +72,7 @@ namespace Afluistic.Tests.Commands.ArgumentChecks
                     var statement = new Statement();
                     statement.Accounts.Add(new Account
                         {
-                            Name = "bob"
+                            Name = "Alpha"
                         });
                     var executionArguments = new ExecutionArguments
                         {

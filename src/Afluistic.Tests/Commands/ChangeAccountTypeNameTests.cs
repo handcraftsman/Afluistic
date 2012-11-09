@@ -54,7 +54,20 @@ namespace Afluistic.Tests.Commands
         public class When_asked_to_execute
         {
             [TestFixture]
-            public class Given_the_first_argument_is_not_an_existing_account_type : IntegrationTestBase
+            public class Given_the_first_argument_is_not_an_existing_account_type_index : IntegrationTestBase
+            {
+                [Test]
+                public void Should_return_the_correct_error_message()
+                {
+                    Subcutaneous.FromCommandline()
+                        .Init("x:")
+                        .ChangeAccountTypeName("0", "Foo")
+                        .VerifyStandardErrorMatches(IsTheIndexOfAnExistingAccountType.IndexDoesNotExistMessageText);
+                }
+            }
+
+            [TestFixture]
+            public class Given_the_first_argument_is_not_an_existing_account_type_name : IntegrationTestBase
             {
                 [Test]
                 public void Should_return_the_correct_error_message()

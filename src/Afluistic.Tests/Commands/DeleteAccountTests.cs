@@ -62,7 +62,7 @@ namespace Afluistic.Tests.Commands
                 {
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .DeleteAccount("Savings")
+                        .DeleteAccount("Alpha")
                         .VerifyStandardErrorMatches(IsTheNameOfAnExistingAccount.NameDoesNotExistMessageText);
                 }
             }
@@ -75,7 +75,7 @@ namespace Afluistic.Tests.Commands
                 {
                     Statement statement = Statement;
                     statement.Accounts.Count.ShouldBeEqualTo(2);
-                    statement.Accounts.Any(x => x.Name == "Savings").ShouldBeFalse();
+                    statement.Accounts.Any(x => x.Name == "Beta").ShouldBeFalse();
                 }
 
                 [Test]
@@ -90,9 +90,9 @@ namespace Afluistic.Tests.Commands
                     var accountType = Init.GetDefaultAccountTypes().First();
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .AddAccount("Checking", accountType.Name)
-                        .AddAccount("Savings", accountType.Name)
-                        .AddAccount("Empty", accountType.Name)
+                        .AddAccount("Alpha", accountType.Name)
+                        .AddAccount("Beta", accountType.Name)
+                        .AddAccount("Gamma", accountType.Name)
                         .DeleteAccount("2");
                 }
             }
@@ -106,14 +106,14 @@ namespace Afluistic.Tests.Commands
                     var accountType = Init.GetDefaultAccountTypes().First();
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .AddAccount("Checking", accountType.Name)
-                        .AddAccount("Savings", accountType.Name)
-                        .AddAccount("Empty", accountType.Name)
-                        .DeleteAccount("Savings");
+                        .AddAccount("Alpha", accountType.Name)
+                        .AddAccount("Beta", accountType.Name)
+                        .AddAccount("Gamma", accountType.Name)
+                        .DeleteAccount("Beta");
 
                     Statement statement = Statement;
                     statement.Accounts.Count.ShouldBeEqualTo(2);
-                    statement.Accounts.Any(x => x.Name == "Savings").ShouldBeFalse();
+                    statement.Accounts.Any(x => x.Name == "Beta").ShouldBeFalse();
                 }
             }
 
@@ -124,7 +124,7 @@ namespace Afluistic.Tests.Commands
                 public void Should_return_the_correct_error_message()
                 {
                     Subcutaneous.FromCommandline()
-                        .DeleteAccount("Savings")
+                        .DeleteAccount("Alpha")
                         .VerifyStandardErrorMatches(RequireStatement.StatementFilePathNeedsToBeInitializedMessageText);
                 }
             }
@@ -150,7 +150,7 @@ namespace Afluistic.Tests.Commands
                 {
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .DeleteAccount("Savings", "a")
+                        .DeleteAccount("Alpha", "a")
                         .VerifyStandardErrorMatches(DeleteAccount.IncorrectParametersMessageText);
                 }
             }

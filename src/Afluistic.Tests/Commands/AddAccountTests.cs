@@ -65,8 +65,8 @@ namespace Afluistic.Tests.Commands
                     var accountType = Init.GetDefaultAccountTypes().First();
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .AddAccount("Savings", accountType.Name)
-                        .AddAccount("Savings", accountType.Name)
+                        .AddAccount("Alpha", accountType.Name)
+                        .AddAccount("Alpha", accountType.Name)
                         .VerifyStandardErrorMatches(MatchesNoneOf.ErrorMessageText)
                         .VerifyStandardErrorMatches(typeof(IsTheNameOfAnExistingAccount).GetSingularUIDescription());
                 }
@@ -80,7 +80,7 @@ namespace Afluistic.Tests.Commands
                 {
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .AddAccount("Savings", "xxx")
+                        .AddAccount("Alpha", "xxx")
                         .VerifyStandardErrorMatches(IsTheNameOfAnExistingAccount.NameDoesNotExistMessageText);
                 }
             }
@@ -92,7 +92,7 @@ namespace Afluistic.Tests.Commands
                 public void Should_return_the_correct_error_message()
                 {
                     Subcutaneous.FromCommandline()
-                        .AddAccount("Savings", "Bob")
+                        .AddAccount("Alpha", "Bob")
                         .VerifyStandardErrorMatches(RequireStatement.StatementFilePathNeedsToBeInitializedMessageText);
                 }
             }
@@ -118,7 +118,7 @@ namespace Afluistic.Tests.Commands
                 {
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .AddAccount("Savings", "Bob", "a")
+                        .AddAccount("Alpha", "Bob", "a")
                         .VerifyStandardErrorMatches(AddAccount.IncorrectParametersMessageText);
                 }
             }
@@ -126,7 +126,7 @@ namespace Afluistic.Tests.Commands
             [TestFixture]
             public class Given_valid_Execution_Arguments : IntegrationTestBase
             {
-                private const string ExpectedAccountName = "Bob";
+                private const string ExpectedAccountName = "Beta";
                 private ExecutionArguments _executionArguments;
                 private AccountType _expectedAccountType;
                 private Notification _result;

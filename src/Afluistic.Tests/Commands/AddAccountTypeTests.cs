@@ -124,7 +124,7 @@ namespace Afluistic.Tests.Commands
             [TestFixture]
             public class Given_valid_Execution_Arguments : IntegrationTestBase
             {
-                private const string ExpectedAccountName = "Bob";
+                private const string ExpectedAccountName = "Alpha";
                 private readonly TaxabilityType _expectedTaxabilityType = TaxabilityType.Taxable;
                 private ExecutionArguments _executionArguments;
                 private Notification _result;

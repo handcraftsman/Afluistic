@@ -32,7 +32,7 @@ namespace Afluistic.Tests.Commands.ArgumentChecks
             [TestFixture]
             public class Given_an_account_with_the_provided_name_does_not_exist : IntegrationTestBase
             {
-                private const string AccountName = @"Bob";
+                private const string AccountName = @"Alpha";
                 private Notification _result;
 
                 [Test]
@@ -57,7 +57,7 @@ namespace Afluistic.Tests.Commands.ArgumentChecks
             [TestFixture]
             public class Given_an_account_with_the_provided_name_exists : IntegrationTestBase
             {
-                private const string AccountName = @"Bob";
+                private const string AccountName = @"Alpha";
                 private Notification _result;
 
                 [Test]
