@@ -19,7 +19,6 @@ using System.Text.RegularExpressions;
 using Afluistic.Commands;
 using Afluistic.Commands.ArgumentChecks;
 using Afluistic.Commands.ArgumentChecks.Logic;
-using Afluistic.Domain.NamedConstants;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
 using Afluistic.Tests.Extensions;
@@ -62,7 +61,7 @@ namespace Afluistic.Tests.Commands
                 {
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .ChangeAccountTypeName("Savings", "Checking")
+                        .ChangeAccountTypeName("Bob", "Foo")
                         .VerifyStandardErrorMatches(IsTheNameOfAnExistingAccountType.NameDoesNotExistMessageText);
                 }
             }
@@ -73,11 +72,10 @@ namespace Afluistic.Tests.Commands
                 [Test]
                 public void Should_return_the_correct_error_message()
                 {
+                    var defaultAccountTypes = Init.GetDefaultAccountTypes().ToList();
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .AddAccountType("Savings", TaxabilityType.Taxfree.Key)
-                        .AddAccountType("Checking", TaxabilityType.Taxfree.Key)
-                        .ChangeAccountTypeName("Savings", "Checking")
+                        .ChangeAccountTypeName(defaultAccountTypes.First().Name, defaultAccountTypes.Last().Name)
                         .VerifyStandardErrorMatches(MatchesNoneOf.ErrorMessageText)
                         .VerifyStandardErrorMatches(typeof(IsTheNameOfAnExistingAccountType).GetSingularUIDescription());
                 }
@@ -91,7 +89,7 @@ namespace Afluistic.Tests.Commands
                 {
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .ChangeAccountTypeName("Savings")
+                        .ChangeAccountTypeName(Init.GetDefaultAccountTypes().First().Name)
                         .VerifyStandardErrorMatches(ChangeAccountTypeName.IncorrectParametersMessageText);
                 }
             }
@@ -104,7 +102,7 @@ namespace Afluistic.Tests.Commands
                 {
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .ChangeAccountTypeName("Savings", "Checking", "ok")
+                        .ChangeAccountTypeName(Init.GetDefaultAccountTypes().First().Name, "Bob", "ok")
                         .VerifyStandardErrorMatches(ChangeAccountTypeName.IncorrectParametersMessageText);
                 }
             }
@@ -112,7 +110,7 @@ namespace Afluistic.Tests.Commands
             [TestFixture]
             public class Given_valid_Execution_Arguments : IntegrationTestBase
             {
-                private const string NewAccountName = "Bob";
+                private const string NewAccountName = "Foo";
                 private ExecutionArguments _executionArguments;
                 private Notification _result;
 
@@ -121,7 +119,7 @@ namespace Afluistic.Tests.Commands
                 {
                     var statementResult = _executionArguments.Statement;
                     statementResult.HasErrors.ShouldBeFalse();
-                    statementResult.Item.AccountTypes.Count.ShouldBeEqualTo(1);
+                    statementResult.Item.AccountTypes.Count.ShouldBeEqualTo(Init.GetDefaultAccountTypes().Count());
                     var accountType = statementResult.Item.AccountTypes.First();
                     accountType.Name.ShouldBeEqualTo(NewAccountName);
                 }
@@ -145,9 +143,8 @@ namespace Afluistic.Tests.Commands
                 {
                     _executionArguments = Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .AddAccountType("Savings", TaxabilityType.Taxfree.Key)
                         .ClearOutput()
-                        .CreateExecutionArguments("Savings", NewAccountName);
+                        .CreateExecutionArguments(Init.GetDefaultAccountTypes().First().Name, NewAccountName);
 
                     var command = IoC.Get<ChangeAccountTypeName>();
                     _result = command.Execute(_executionArguments);

@@ -13,11 +13,11 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
 using Afluistic.Commands.Prerequisites;
-using Afluistic.Domain.NamedConstants;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
 using Afluistic.Tests.Extensions;
@@ -55,7 +55,6 @@ namespace Afluistic.Tests.Commands
             [TestFixture]
             public class Given_Execution_Arguments : IntegrationTestBase
             {
-                private const string AccountTypeName = "Bob";
                 private Notification _result;
 
                 [Test]
@@ -69,14 +68,13 @@ namespace Afluistic.Tests.Commands
                 public void Should_write_to_the_standard_output()
                 {
                     StandardOutText.Length.ShouldNotBeEqualTo(0);
-                    StandardOutText.ShouldContain(AccountTypeName);
+                    StandardOutText.ShouldContain(Init.GetDefaultAccountTypes().First().Name);
                 }
 
                 protected override void Before_first_test()
                 {
                     var executionArguments = Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .AddAccountType(AccountTypeName, TaxabilityType.Taxfree.Key)
                         .ClearOutput()
                         .CreateExecutionArguments();
 

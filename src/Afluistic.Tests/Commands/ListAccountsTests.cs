@@ -13,11 +13,11 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
 using Afluistic.Commands.Prerequisites;
-using Afluistic.Domain.NamedConstants;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
 using Afluistic.Tests.Extensions;
@@ -76,8 +76,7 @@ namespace Afluistic.Tests.Commands
                 {
                     var executionArguments = Subcutaneous.FromCommandline()
                         .Init(@"x:\current.statement")
-                        .AddAccountType("Savings", TaxabilityType.Taxfree.Key)
-                        .AddAccount(AccountName, "Savings")
+                        .AddAccount(AccountName, Init.GetDefaultAccountTypes().First().Name)
                         .ClearOutput()
                         .CreateExecutionArguments();
 
@@ -120,8 +119,7 @@ namespace Afluistic.Tests.Commands
                 {
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .AddAccountType("bob", TaxabilityType.Taxfree.Key)
-                        .AddAccount("Savings", "bob")
+                        .AddAccount("Savings", Init.GetDefaultAccountTypes().First().Name)
                         .DeleteAccount("Savings")
                         .ListAccounts()
                         .VerifyStandardErrorMatches(RequireActiveAccountsExist.NoActiveAccountsMessageText);

@@ -134,8 +134,8 @@ namespace Afluistic.Tests.Commands
                 {
                     var statementResult = _executionArguments.Statement;
                     statementResult.HasErrors.ShouldBeFalse();
-                    statementResult.Item.AccountTypes.Count.ShouldBeEqualTo(1);
-                    var accountType = statementResult.Item.AccountTypes.First();
+                    statementResult.Item.AccountTypes.Count.ShouldBeEqualTo(1 + Init.GetDefaultAccountTypes().Count());
+                    var accountType = statementResult.Item.AccountTypes.Last();
                     accountType.Name.ShouldBeEqualTo(ExpectedAccountName);
                     accountType.Taxability.ShouldBeEqualTo(_expectedTaxabilityType);
                 }

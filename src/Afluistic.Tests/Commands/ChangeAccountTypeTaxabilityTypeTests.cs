@@ -61,7 +61,7 @@ namespace Afluistic.Tests.Commands
                 {
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .ChangeAccountTypeTaxabilityType("Savings", TaxabilityType.Taxable.Key)
+                        .ChangeAccountTypeTaxabilityType("Bob", TaxabilityType.Taxable.Key)
                         .VerifyStandardErrorMatches(IsTheNameOfAnExistingAccountType.NameDoesNotExistMessageText);
                 }
             }
@@ -74,8 +74,7 @@ namespace Afluistic.Tests.Commands
                 {
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .AddAccountType("Savings", TaxabilityType.Taxfree.Key)
-                        .ChangeAccountTypeTaxabilityType("Savings", "z")
+                        .ChangeAccountTypeTaxabilityType(Init.GetDefaultAccountTypes().First().Name, "z")
                         .VerifyStandardErrorMatches(IsATaxabilityTypeKey.InvalidTaxabilityType);
                 }
             }
@@ -88,7 +87,7 @@ namespace Afluistic.Tests.Commands
                 {
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .ChangeAccountTypeTaxabilityType("Savings")
+                        .ChangeAccountTypeTaxabilityType(Init.GetDefaultAccountTypes().First().Name)
                         .VerifyStandardErrorMatches(ChangeAccountTypeTaxabilityType.IncorrectParametersMessageText);
                 }
             }
@@ -101,7 +100,7 @@ namespace Afluistic.Tests.Commands
                 {
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .ChangeAccountTypeTaxabilityType("Savings", TaxabilityType.Taxable.Key, "a")
+                        .ChangeAccountTypeTaxabilityType(Init.GetDefaultAccountTypes().First().Name, TaxabilityType.Taxable.Key, "a")
                         .VerifyStandardErrorMatches(ChangeAccountTypeTaxabilityType.IncorrectParametersMessageText);
                 }
             }
@@ -109,9 +108,8 @@ namespace Afluistic.Tests.Commands
             [TestFixture]
             public class Given_valid_Execution_Arguments : IntegrationTestBase
             {
-                private const string ExpectedAccountName = "Bob";
-                private readonly TaxabilityType _expectedTaxabilityType = TaxabilityType.Taxable;
                 private ExecutionArguments _executionArguments;
+                private TaxabilityType _expectedTaxabilityType;
                 private Notification _result;
 
                 [Test]
@@ -119,9 +117,9 @@ namespace Afluistic.Tests.Commands
                 {
                     var statementResult = _executionArguments.Statement;
                     statementResult.HasErrors.ShouldBeFalse();
-                    statementResult.Item.AccountTypes.Count.ShouldBeEqualTo(1);
+                    statementResult.Item.AccountTypes.Count.ShouldBeEqualTo(Init.GetDefaultAccountTypes().Count());
                     var accountType = statementResult.Item.AccountTypes.First();
-                    accountType.Name.ShouldBeEqualTo(ExpectedAccountName);
+                    accountType.Name.ShouldBeEqualTo(Init.GetDefaultAccountTypes().First().Name);
                     accountType.Taxability.ShouldBeEqualTo(_expectedTaxabilityType);
                 }
 
@@ -142,11 +140,12 @@ namespace Afluistic.Tests.Commands
 
                 protected override void Before_first_test()
                 {
+                    var accountType = Init.GetDefaultAccountTypes().First();
+                    _expectedTaxabilityType = TaxabilityType.GetAll().First(x => x != accountType.Taxability);
                     _executionArguments = Subcutaneous.FromCommandline()
                         .Init(@"x:\previous.statement")
-                        .AddAccountType(ExpectedAccountName, TaxabilityType.GetAll().First(x => x != _expectedTaxabilityType).Key)
                         .ClearOutput()
-                        .CreateExecutionArguments(ExpectedAccountName, _expectedTaxabilityType.Key);
+                        .CreateExecutionArguments(Init.GetDefaultAccountTypes().First().Name, _expectedTaxabilityType.Key);
 
                     var command = IoC.Get<ChangeAccountTypeTaxabilityType>();
                     _result = command.Execute(_executionArguments);

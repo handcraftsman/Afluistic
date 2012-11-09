@@ -13,11 +13,11 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
 using Afluistic.Commands.ArgumentChecks;
-using Afluistic.Domain.NamedConstants;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
 using Afluistic.Tests.Extensions;
@@ -60,7 +60,7 @@ namespace Afluistic.Tests.Commands
                 {
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .ShowAccountType("Savings")
+                        .ShowAccountType("Bob")
                         .VerifyStandardErrorMatches(IsTheNameOfAnExistingAccountType.NameDoesNotExistMessageText);
                 }
             }
@@ -86,7 +86,7 @@ namespace Afluistic.Tests.Commands
                 {
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .ShowAccountType("Savings", "Checking")
+                        .ShowAccountType(Init.GetDefaultAccountTypes().First().Name, "Checking")
                         .VerifyStandardErrorMatches(ShowAccountType.IncorrectParametersMessageText);
                 }
             }
@@ -94,7 +94,6 @@ namespace Afluistic.Tests.Commands
             [TestFixture]
             public class Given_valid_Execution_Arguments : IntegrationTestBase
             {
-                private const string AccountName = "Savings";
                 private Notification _result;
 
                 [Test]
@@ -114,9 +113,8 @@ namespace Afluistic.Tests.Commands
                 {
                     var executionArguments = Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .AddAccountType(AccountName, TaxabilityType.Taxfree.Key)
                         .ClearOutput()
-                        .CreateExecutionArguments(AccountName);
+                        .CreateExecutionArguments(Init.GetDefaultAccountTypes().First().Name);
 
                     var command = IoC.Get<ShowAccountType>();
                     _result = command.Execute(executionArguments);

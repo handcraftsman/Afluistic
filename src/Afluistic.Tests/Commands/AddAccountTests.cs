@@ -62,11 +62,11 @@ namespace Afluistic.Tests.Commands
                 [Test]
                 public void Should_return_the_correct_error_message()
                 {
+                    var accountType = Init.GetDefaultAccountTypes().First();
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .AddAccountType("Bob", TaxabilityType.Taxfree.Key)
-                        .AddAccount("Savings", "Bob")
-                        .AddAccount("Savings", "Bob")
+                        .AddAccount("Savings", accountType.Name)
+                        .AddAccount("Savings", accountType.Name)
                         .VerifyStandardErrorMatches(MatchesNoneOf.ErrorMessageText)
                         .VerifyStandardErrorMatches(typeof(IsTheNameOfAnExistingAccount).GetSingularUIDescription());
                 }
@@ -161,9 +161,8 @@ namespace Afluistic.Tests.Commands
                 {
                     _executionArguments = Subcutaneous.FromCommandline()
                         .Init(@"x:\previous.statement")
-                        .AddAccountType("Savings", TaxabilityType.Taxfree.Key)
                         .ClearOutput()
-                        .CreateExecutionArguments(ExpectedAccountName, "Savings");
+                        .CreateExecutionArguments(ExpectedAccountName, Init.GetDefaultAccountTypes().First().Name);
 
                     _expectedAccountType = _executionArguments.Statement.Item.AccountTypes.First();
 

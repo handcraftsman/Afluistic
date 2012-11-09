@@ -87,12 +87,12 @@ namespace Afluistic.Tests.Commands
 
                 protected override void Before_first_test()
                 {
+                    var accountType = Init.GetDefaultAccountTypes().First();
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .AddAccountType("Bob", TaxabilityType.Taxfree.Key)
-                        .AddAccount("Checking", "Bob")
-                        .AddAccount("Savings", "Bob")
-                        .AddAccount("Empty", "Bob")
+                        .AddAccount("Checking", accountType.Name)
+                        .AddAccount("Savings", accountType.Name)
+                        .AddAccount("Empty", accountType.Name)
                         .DeleteAccount("2");
                 }
             }
@@ -103,12 +103,12 @@ namespace Afluistic.Tests.Commands
                 [Test]
                 public void Should_delete_that_account_from_the_statement()
                 {
+                    var accountType = Init.GetDefaultAccountTypes().First();
                     Subcutaneous.FromCommandline()
                         .Init("x:")
-                        .AddAccountType("Bob", TaxabilityType.Taxfree.Key)
-                        .AddAccount("Checking", "Bob")
-                        .AddAccount("Savings", "Bob")
-                        .AddAccount("Empty", "Bob")
+                        .AddAccount("Checking", accountType.Name)
+                        .AddAccount("Savings", accountType.Name)
+                        .AddAccount("Empty", accountType.Name)
                         .DeleteAccount("Savings");
 
                     Statement statement = Statement;

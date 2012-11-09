@@ -12,6 +12,7 @@
 // * **************************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -19,6 +20,7 @@ using Afluistic.Commands.ArgumentChecks;
 using Afluistic.Commands.PostConditions;
 using Afluistic.Commands.Prerequisites;
 using Afluistic.Domain;
+using Afluistic.Domain.NamedConstants;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
 
@@ -37,7 +39,9 @@ namespace Afluistic.Commands
         {
             ApplicationSettings applicationSettings = executionArguments.ApplicationSettings;
             applicationSettings.StatementPath = executionArguments.Args.Last().ToStatementPath();
-            executionArguments.Statement = new Statement();
+            var statement = new Statement();
+            AddDefaultAccountTypes(statement);
+            executionArguments.Statement = statement;
 
             return Notification.InfoFor(SuccessMessageText, typeof(Statement).GetSingularUIDescription(), applicationSettings.StatementPath);
         }
@@ -46,6 +50,52 @@ namespace Afluistic.Commands
         {
             textWriter.WriteLine(String.Join(" ", this.GetCommandWords()) + " [filepath]");
             textWriter.WriteLine(UsageMessageText, typeof(Statement).GetSingularUIDescription());
+        }
+
+        private static void AddDefaultAccountTypes(Statement statement)
+        {
+            foreach (var accountType in GetDefaultAccountTypes())
+            {
+                statement.AccountTypes.Add(accountType);
+            }
+        }
+
+        public static IEnumerable<AccountType> GetDefaultAccountTypes()
+        {
+            var accountTypes = new[]
+                {
+                    new AccountType
+                        {
+                            Name = "Checking",
+                            Taxability = TaxabilityType.Taxable
+                        },
+                    new AccountType
+                        {
+                            Name = "Savings",
+                            Taxability = TaxabilityType.Taxable
+                        },
+                    new AccountType
+                        {
+                            Name = "Brokerage",
+                            Taxability = TaxabilityType.Taxable
+                        },
+                    new AccountType
+                        {
+                            Name = "401k",
+                            Taxability = TaxabilityType.Taxfree
+                        },
+                    new AccountType
+                        {
+                            Name = "IRA",
+                            Taxability = TaxabilityType.Taxfree
+                        },
+                    new AccountType
+                        {
+                            Name = "Roth IRA",
+                            Taxability = TaxabilityType.Taxfree
+                        }
+                };
+            return accountTypes;
         }
     }
 }
