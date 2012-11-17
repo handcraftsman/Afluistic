@@ -78,9 +78,11 @@
     <Compile Include="Commands\ChangeAccountName.cs" />
     <Compile Include="Commands\ChangeAccountType.cs" />
     <Compile Include="Commands\AddTaxReportingCategory.cs" />
+    <Compile Include="Commands\ListTaxReportingCategories.cs" />
     <Compile Include="Commands\DeleteAccount.cs" />
     <Compile Include="Commands\PostConditions\IChangeApplicationSettings.cs" />
     <Compile Include="Commands\PostConditions\IChangeStatement.cs" />
+    <Compile Include="Commands\Prerequisites\RequireTaxReportingCategoriesExist.cs" />
     <Compile Include="Commands\ShowAccountType.cs" />
     <Compile Include="Commands\ListAccountTypes.cs" />
     <Compile Include="Commands\ExecutionArguments.cs" />

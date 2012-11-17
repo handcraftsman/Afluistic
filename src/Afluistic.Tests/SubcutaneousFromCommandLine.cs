@@ -135,6 +135,12 @@ namespace Afluistic.Tests
             return this;
         }
 
+        public SubcutaneousFromCommandLine ListTaxReportingCategories(params string[] parameters)
+        {
+            Execute<ListTaxReportingCategories>(parameters);
+            return this;
+        }
+
         public SubcutaneousFromCommandLine ShowAccountType(params string[] parameters)
         {
             Execute<ShowAccountType>(parameters);
