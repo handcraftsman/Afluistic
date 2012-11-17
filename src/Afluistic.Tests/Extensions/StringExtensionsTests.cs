@@ -160,7 +160,7 @@ namespace Afluistic.Tests.Extensions
         public class When_asked_to_pluralize_a_string
         {
             [TestFixture]
-            public class Given_an_input_that_does_not_end_with__s
+            public class Given_an_input_that_does_not_end_with__y_or_s
             {
                 [Test]
                 public void Should_return_the_input_with_suffix__s()
@@ -180,6 +180,18 @@ namespace Afluistic.Tests.Extensions
                     const string input = "boss";
                     var result = input.Pluralize();
                     result.ShouldBeEqualTo("bosses");
+                }
+            }
+
+            [TestFixture]
+            public class Given_an_input_that_ends_with__y
+            {
+                [Test]
+                public void Should_return_the_input_with_the_trailing_y_replaced_with__ies()
+                {
+                    const string input = "category";
+                    var result = input.Pluralize();
+                    result.ShouldBeEqualTo("categories");
                 }
             }
         }

@@ -28,7 +28,15 @@ namespace Afluistic.Extensions
         public static string Pluralize(this string input)
         {
             // other variations are YAGNI at this time
-            return input.EndsWith("s") ? input + "es" : input + "s";
+            if (input.EndsWith("s"))
+            {
+                return input + "es";
+            }
+            if (input.EndsWith("y"))
+            {
+                return input.Substring(0, input.Length - 1) + "ies";
+            }
+            return input + "s";
         }
 
         public static string ReplaceTypeReferencesWithUIDescriptions(this string uiDescription, bool plural)
