@@ -18,8 +18,10 @@ using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
 using Afluistic.Commands.Prerequisites;
+using Afluistic.Domain;
 using Afluistic.Extensions;
 using Afluistic.MvbaCore;
+using Afluistic.Services;
 using Afluistic.Tests.Extensions;
 
 using FluentAssert;
@@ -102,9 +104,12 @@ namespace Afluistic.Tests.Commands
                 [Test]
                 public void Should_return_the_correct_error_message()
                 {
-                    Subcutaneous.FromCommandline()
-                        .Init("x:")
-                        .ListAccounts()
+                    var subcutaneous = Subcutaneous.FromCommandline()
+                        .Init("x:");
+                    Statement statement = Statement;
+                    statement.AccountTypes.Clear();
+                    IoC.Get<IStorageService>().Save(statement);
+                    subcutaneous.ListAccountTypes()
                         .VerifyStandardErrorMatches(RequireAccountTypesExist.NoAccountTypesMessageText);
                 }
             }
