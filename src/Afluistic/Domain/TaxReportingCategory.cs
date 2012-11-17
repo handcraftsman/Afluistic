@@ -14,6 +14,7 @@ using System;
 
 namespace Afluistic.Domain
 {
+    [UIDescription("Tax Reporting Category")]
     public class TaxReportingCategory
     {
         public string Name { get; set; }

@@ -48,6 +48,12 @@ namespace Afluistic.Tests
             return this;
         }
 
+        public SubcutaneousFromCommandLine AddTaxReportingCategory(params string[] parameters)
+        {
+            Execute<AddTaxReportingCategory>(parameters);
+            return this;
+        }
+
         public SubcutaneousFromCommandLine ChangeAccountName(params string[] parameters)
         {
             Execute<ChangeAccountName>(parameters);

@@ -64,6 +64,7 @@
     <Compile Include="Commands\ArgumentChecks\IsTheIndexOfAnExistingAccountType.cs" />
     <Compile Include="Commands\ArgumentChecks\IsTheNameOfAnExistingAccount.cs" />
     <Compile Include="Commands\ArgumentChecks\IsTheNameOfAnExistingAccountType.cs" />
+    <Compile Include="Commands\ArgumentChecks\IsTheNameOfAnExistingTaxReportingCategory.cs" />
     <Compile Include="Commands\ArgumentChecks\Logic\IArgumentLogicModifier.cs" />
     <Compile Include="Commands\ArgumentChecks\Logic\MatchesAllOf.cs" />
     <Compile Include="Commands\ArgumentChecks\Logic\MatchesAnyOf.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Commands\AddAccount.cs" />
     <Compile Include="Commands\ChangeAccountName.cs" />
     <Compile Include="Commands\ChangeAccountType.cs" />
+    <Compile Include="Commands\AddTaxReportingCategory.cs" />
     <Compile Include="Commands\DeleteAccount.cs" />
     <Compile Include="Commands\PostConditions\IChangeApplicationSettings.cs" />
     <Compile Include="Commands\PostConditions\IChangeStatement.cs" />
