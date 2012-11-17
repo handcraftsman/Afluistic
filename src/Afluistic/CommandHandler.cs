@@ -40,7 +40,7 @@ namespace Afluistic
                               ISystemService systemService,
                               ICommand[] commands)
         {
-            _commands = commands;
+            _commands = commands.OrderByDescending(x => x.GetCommandWords().Length).ToArray();
             _prerequisiteChecker = prerequisiteChecker;
             _systemService = systemService;
         }
