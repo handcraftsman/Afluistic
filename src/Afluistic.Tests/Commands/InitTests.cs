@@ -17,6 +17,7 @@ using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
 using Afluistic.Commands.ArgumentChecks;
+using Afluistic.Domain;
 using Afluistic.Extensions;
 using Afluistic.Tests.Extensions;
 
@@ -101,6 +102,20 @@ namespace Afluistic.Tests.Commands
                 public void Should_not_write_an_error_message()
                 {
                     StandardErrorText.Length.ShouldBeEqualTo(0);
+                }
+
+                [Test]
+                public void Should_populate_account_types_with_the_default_values()
+                {
+                    Statement statement = Statement;
+                    statement.AccountTypes.ShouldContainAll(Init.GetDefaultAccountTypes());
+                }
+
+                [Test]
+                public void Should_populate_tax_reporting_categories_with_the_default_values()
+                {
+                    Statement statement = Statement;
+                    statement.TaxReportingCategories.ShouldContainAll(Init.GetDefaultTaxReportingCategories());
                 }
 
                 [Test]

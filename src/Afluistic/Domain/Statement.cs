@@ -21,10 +21,12 @@ namespace Afluistic.Domain
             Accounts = new List<Account>();
             AccountTypes = new List<AccountType>();
             CommandHistory = new List<CommandHistory>();
+            TaxReportingCategories = new List<TaxReportingCategory>();
         }
 
         public IList<AccountType> AccountTypes { get; set; }
         public IList<Account> Accounts { get; set; }
         public IList<CommandHistory> CommandHistory { get; set; }
+        public IList<TaxReportingCategory> TaxReportingCategories { get; set; }
     }
 }

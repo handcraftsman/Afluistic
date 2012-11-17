@@ -41,6 +41,7 @@ namespace Afluistic.Commands
             applicationSettings.StatementPath = executionArguments.Args.Last().ToStatementPath();
             var statement = new Statement();
             AddDefaultAccountTypes(statement);
+            AddDefaultTaxReportingCategories(statement);
             executionArguments.Statement = statement;
 
             return Notification.InfoFor(SuccessMessageText, typeof(Statement).GetSingularUIDescription(), applicationSettings.StatementPath);
@@ -57,6 +58,14 @@ namespace Afluistic.Commands
             foreach (var accountType in GetDefaultAccountTypes())
             {
                 statement.AccountTypes.Add(accountType);
+            }
+        }
+
+        private void AddDefaultTaxReportingCategories(Statement statement)
+        {
+            foreach (var category in GetDefaultTaxReportingCategories())
+            {
+                statement.TaxReportingCategories.Add(category);
             }
         }
 
@@ -96,6 +105,34 @@ namespace Afluistic.Commands
                         }
                 };
             return accountTypes;
+        }
+
+        public static IEnumerable<TaxReportingCategory> GetDefaultTaxReportingCategories()
+        {
+            var categories = new[]
+                {
+                    new TaxReportingCategory
+                        {
+                            Name = "N/A"
+                        },
+                    new TaxReportingCategory
+                        {
+                            Name = "Dividend"
+                        },
+                    new TaxReportingCategory
+                        {
+                            Name = "Interest"
+                        },
+                    new TaxReportingCategory
+                        {
+                            Name = "Long Term Capital Gain"
+                        },
+                    new TaxReportingCategory
+                        {
+                            Name = "Short Term Capital Gain"
+                        },
+                };
+            return categories;
         }
     }
 }

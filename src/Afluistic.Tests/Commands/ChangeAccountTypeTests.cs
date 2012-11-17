@@ -151,7 +151,7 @@ namespace Afluistic.Tests.Commands
                     statementResult.Item.Accounts.Count.ShouldBeEqualTo(1);
                     var account = statementResult.Item.Accounts.First();
                     account.Name.ShouldBeEqualTo("Alpha");
-                    account.AccountType.Name.ShouldBeEqualTo(_expectedAccountType.Name);
+                    account.AccountType.ShouldBeEqualTo(_expectedAccountType);
                 }
 
                 [Test]

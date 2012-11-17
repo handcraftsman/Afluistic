@@ -1,4 +1,4 @@
-﻿// * **************************************************************************
+// * **************************************************************************
 // * Copyright (c) Clinton Sheppard <sheppard@cs.unm.edu>
 // *
 // * This source code is subject to terms and conditions of the MIT License.
@@ -10,20 +10,15 @@
 // *
 // * source repository: https://github.com/handcraftsman/Afluistic
 // * **************************************************************************
-
 using System;
-
-using Afluistic.Domain.NamedConstants;
 
 namespace Afluistic.Domain
 {
-    [UIDescription("Account Type")]
-    public class AccountType
+    public class TaxReportingCategory
     {
         public string Name { get; set; }
-        public TaxabilityType Taxability { get; set; }
 
-        public bool Equals(AccountType other)
+        public bool Equals(TaxReportingCategory other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -46,11 +41,11 @@ namespace Afluistic.Domain
             {
                 return true;
             }
-            if (obj.GetType() != typeof(AccountType))
+            if (obj.GetType() != typeof(TaxReportingCategory))
             {
                 return false;
             }
-            return Equals((AccountType)obj);
+            return Equals((TaxReportingCategory)obj);
         }
 
         public override int GetHashCode()
@@ -58,7 +53,7 @@ namespace Afluistic.Domain
             return Name.GetHashCode();
         }
 
-        public static bool operator ==(AccountType a, AccountType b)
+        public static bool operator ==(TaxReportingCategory a, TaxReportingCategory b)
         {
             if (ReferenceEquals(a, b))
             {
@@ -73,7 +68,7 @@ namespace Afluistic.Domain
             return a.Equals(b);
         }
 
-        public static bool operator !=(AccountType a, AccountType b)
+        public static bool operator !=(TaxReportingCategory a, TaxReportingCategory b)
         {
             return !a.Equals(b);
         }

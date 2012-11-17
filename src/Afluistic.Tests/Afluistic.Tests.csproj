@@ -102,6 +102,8 @@
     <Compile Include="Commands\Prerequisites\RequireExactlyNArgsTests.cs" />
     <Compile Include="Commands\Prerequisites\RequireApplicationSettingsAlreadyInitializedTests.cs" />
     <Compile Include="Commands\Prerequisites\RequireApplicationSettingsTests.cs" />
+    <Compile Include="Domain\AccountTypeTests.cs" />
+    <Compile Include="Domain\TaxReportingCategoryTests.cs" />
     <Compile Include="Extensions\IEnumerableTExtensionsTests.cs" />
     <Compile Include="Extensions\PropertyInfoExtensionsTests.cs" />
     <Compile Include="Subcutaneous.cs" />
