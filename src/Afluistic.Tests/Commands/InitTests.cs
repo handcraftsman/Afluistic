@@ -13,6 +13,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 using Afluistic.Commands;
@@ -122,7 +123,7 @@ namespace Afluistic.Tests.Commands
                 public void Should_populate_transaction_types_with_the_default_values()
                 {
                     Statement statement = Statement;
-                    statement.TransactionTypes.ShouldContainAll(Init.GetDefaultTransactionTypes());
+                    statement.TransactionTypes.ShouldContainAll(Init.GetDefaultTransactionTypes(statement));
                 }
 
                 [Test]
@@ -163,6 +164,31 @@ namespace Afluistic.Tests.Commands
                     var output = writer.ToString();
                     output.ShouldContain(String.Join(" ", command.GetCommandWords()));
                     Regex.IsMatch(output, Init.UsageMessageText.MessageTextToRegex()).ShouldBeTrue();
+                }
+            }
+        }
+
+        public class when_asked_to_get_default_transaction_types
+        {
+            [TestFixture]
+            public class Given_a_default_statement : IntegrationTestBase
+            {
+                [Test]
+                public void The_deserialized_transaction_type_categories_should_be_same_objects_as_the_statement_tax_reporting_categories()
+                {
+                    // ensures that references are being reused during serialization
+
+                    Subcutaneous.FromCommandline()
+                        .Init(@"x:\previous.statement")
+                        .ClearOutput()
+                        .Init(@"x:\new.statement");
+
+                    Statement statement = Statement;
+                    var categoryLookup = statement.TaxReportingCategories.ToDictionary(x => x.Name);
+                    foreach (var transactionType in statement.TransactionTypes)
+                    {
+                        transactionType.Category.ShouldBeSameInstanceAs(categoryLookup[transactionType.Category.Name]);
+                    }
                 }
             }
         }

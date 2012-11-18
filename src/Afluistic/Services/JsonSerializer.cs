@@ -47,6 +47,7 @@ namespace Afluistic.Services
                 {
                     TypeNameHandling = TypeNameHandling.All,
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    PreserveReferencesHandling = PreserveReferencesHandling.Objects,
                 };
             serializer.Converters.Add(new IsoDateTimeConverter());
             serializer.Converters.Add(new NamedConstantJsonConverter());

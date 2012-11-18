@@ -72,7 +72,7 @@ namespace Afluistic.Commands
 
         private static void AddDefaultTransactionTypes(Statement statement)
         {
-            foreach (var transactionType in GetDefaultTransactionTypes())
+            foreach (var transactionType in GetDefaultTransactionTypes(statement))
             {
                 statement.TransactionTypes.Add(transactionType);
             }
@@ -148,10 +148,8 @@ namespace Afluistic.Commands
             return categories;
         }
 
-        public static IEnumerable<TransactionType> GetDefaultTransactionTypes()
+        private static IEnumerable<TransactionType> GetDefaultTransactionTypes(Dictionary<string, TaxReportingCategory> taxReportingCategoryLookup)
         {
-            var taxReportingCategoryLookup = GetDefaultTaxReportingCategories().ToDictionary(x => x.Name);
-
             var transactionType = new[]
                 {
                     new TransactionType
@@ -201,6 +199,12 @@ namespace Afluistic.Commands
                         },
                 };
             return transactionType;
+        }
+
+        public static IEnumerable<TransactionType> GetDefaultTransactionTypes(Statement statement)
+        {
+            var taxReportingCategoryLookup = statement.TaxReportingCategories.ToDictionary(x => x.Name);
+            return GetDefaultTransactionTypes(taxReportingCategoryLookup);
         }
     }
 }
