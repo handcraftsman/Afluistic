@@ -42,6 +42,7 @@ namespace Afluistic.Commands
             var statement = new Statement();
             AddDefaultAccountTypes(statement);
             AddDefaultTaxReportingCategories(statement);
+            AddDefaultTransactionTypes(statement);
             executionArguments.Statement = statement;
 
             return Notification.InfoFor(SuccessMessageText, typeof(Statement).GetSingularUIDescription(), applicationSettings.StatementPath);
@@ -61,11 +62,19 @@ namespace Afluistic.Commands
             }
         }
 
-        private void AddDefaultTaxReportingCategories(Statement statement)
+        private static void AddDefaultTaxReportingCategories(Statement statement)
         {
             foreach (var category in GetDefaultTaxReportingCategories())
             {
                 statement.TaxReportingCategories.Add(category);
+            }
+        }
+
+        private static void AddDefaultTransactionTypes(Statement statement)
+        {
+            foreach (var transactionType in GetDefaultTransactionTypes())
+            {
+                statement.TransactionTypes.Add(transactionType);
             }
         }
 
@@ -125,14 +134,73 @@ namespace Afluistic.Commands
                         },
                     new TaxReportingCategory
                         {
-                            Name = "Long Term Capital Gain"
+                            Name = "Long-Term Capital Gain"
                         },
                     new TaxReportingCategory
                         {
-                            Name = "Short Term Capital Gain"
+                            Name = "Short-Term Capital Gain"
+                        },
+                    new TaxReportingCategory
+                        {
+                            Name = "To be determined"
                         },
                 };
             return categories;
+        }
+
+        public static IEnumerable<TransactionType> GetDefaultTransactionTypes()
+        {
+            var taxReportingCategoryLookup = GetDefaultTaxReportingCategories().ToDictionary(x => x.Name);
+
+            var transactionType = new[]
+                {
+                    new TransactionType
+                        {
+                            Name = "Credit",
+                            Category = taxReportingCategoryLookup["N/A"]
+                        },
+                    new TransactionType
+                        {
+                            Name = "Debit",
+                            Category = taxReportingCategoryLookup["N/A"]
+                        },
+                    new TransactionType
+                        {
+                            Name = "Buy",
+                            Category = taxReportingCategoryLookup["N/A"]
+                        },
+                    new TransactionType
+                        {
+                            Name = "Sell",
+                            Category = taxReportingCategoryLookup["To be determined"]
+                        },
+                    new TransactionType
+                        {
+                            Name = "Reinvest Dividend",
+                            Category = taxReportingCategoryLookup["Dividend"]
+                        },
+                    new TransactionType
+                        {
+                            Name = "Reinvest Short-Term Capital Gain",
+                            Category = taxReportingCategoryLookup["Short-Term Capital Gain"]
+                        },
+                    new TransactionType
+                        {
+                            Name = "Reinvest Long-Term Capital Gain",
+                            Category = taxReportingCategoryLookup["Long-Term Capital Gain"]
+                        },
+                    new TransactionType
+                        {
+                            Name = "Add Shares",
+                            Category = taxReportingCategoryLookup["N/A"]
+                        },
+                    new TransactionType
+                        {
+                            Name = "Remove Shares",
+                            Category = taxReportingCategoryLookup["N/A"]
+                        },
+                };
+            return transactionType;
         }
     }
 }

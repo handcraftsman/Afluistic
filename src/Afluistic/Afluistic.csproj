@@ -107,6 +107,7 @@
     <Compile Include="Domain\NamedConstants\TaxabilityType.cs" />
     <Compile Include="Domain\Statement.cs" />
     <Compile Include="Domain\TaxReportingCategory.cs" />
+    <Compile Include="Domain\TransactionType.cs" />
     <Compile Include="Extensions\CommandExtensions.cs" />
     <Compile Include="Extensions\IEnumerableTExtensions.cs" />
     <Compile Include="Extensions\PropertyInfoExtensions.cs" />

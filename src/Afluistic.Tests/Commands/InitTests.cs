@@ -119,6 +119,13 @@ namespace Afluistic.Tests.Commands
                 }
 
                 [Test]
+                public void Should_populate_transaction_types_with_the_default_values()
+                {
+                    Statement statement = Statement;
+                    statement.TransactionTypes.ShouldContainAll(Init.GetDefaultTransactionTypes());
+                }
+
+                [Test]
                 public void Should_update_the_settings_statement_path_to_the_new_filepath()
                 {
                     var settingsResult = Settings;
