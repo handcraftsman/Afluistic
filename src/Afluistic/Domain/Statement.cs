@@ -28,6 +28,7 @@ namespace Afluistic.Domain
         public IList<AccountType> AccountTypes { get; set; }
         public IList<Account> Accounts { get; set; }
         public IList<CommandHistory> CommandHistory { get; set; }
+        public Account SelectedAccount { get; set; }
         public IList<TaxReportingCategory> TaxReportingCategories { get; set; }
         public IList<TransactionType> TransactionTypes { get; set; }
     }

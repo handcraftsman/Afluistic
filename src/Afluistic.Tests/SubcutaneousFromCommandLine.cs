@@ -141,6 +141,12 @@ namespace Afluistic.Tests
             return this;
         }
 
+        public SubcutaneousFromCommandLine SelectAccount(params string[] parameters)
+        {
+            Execute<SelectAccount>(parameters);
+            return this;
+        }
+
         public SubcutaneousFromCommandLine ShowAccountType(params string[] parameters)
         {
             Execute<ShowAccountType>(parameters);

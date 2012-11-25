@@ -78,6 +78,7 @@
     <Compile Include="Commands\ChangeAccountName.cs" />
     <Compile Include="Commands\ChangeAccountType.cs" />
     <Compile Include="Commands\AddTaxReportingCategory.cs" />
+    <Compile Include="Commands\SelectAccount.cs" />
     <Compile Include="Commands\ListTaxReportingCategories.cs" />
     <Compile Include="Commands\DeleteAccount.cs" />
     <Compile Include="Commands\PostConditions\IChangeApplicationSettings.cs" />
