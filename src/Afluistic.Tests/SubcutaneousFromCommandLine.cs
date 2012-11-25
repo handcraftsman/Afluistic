@@ -78,6 +78,12 @@ namespace Afluistic.Tests
             return this;
         }
 
+        public SubcutaneousFromCommandLine ChangeName(params string[] parameters)
+        {
+            Execute<ChangeName>(parameters);
+            return this;
+        }
+
         public SubcutaneousFromCommandLine ClearOutput()
         {
             _systemService.Reset();
