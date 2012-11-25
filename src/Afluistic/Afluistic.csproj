@@ -105,6 +105,7 @@
     <Compile Include="Domain\AccountType.cs" />
     <Compile Include="Domain\CommandHistory.cs" />
     <Compile Include="Domain\NamedConstants\TaxabilityType.cs" />
+    <Compile Include="Domain\NamedConstants\TransactionDetailType.cs" />
     <Compile Include="Domain\Statement.cs" />
     <Compile Include="Domain\TaxReportingCategory.cs" />
     <Compile Include="Domain\TransactionType.cs" />

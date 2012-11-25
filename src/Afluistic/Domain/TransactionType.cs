@@ -18,6 +18,7 @@ namespace Afluistic.Domain
     public class TransactionType
     {
         public TaxReportingCategory Category { get; set; }
+        public string Format { get; set; }
         public string Name { get; set; }
 
         public bool Equals(TransactionType other)

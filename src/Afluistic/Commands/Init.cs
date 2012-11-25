@@ -148,54 +148,63 @@ namespace Afluistic.Commands
             return categories;
         }
 
-        private static IEnumerable<TransactionType> GetDefaultTransactionTypes(Dictionary<string, TaxReportingCategory> taxReportingCategoryLookup)
+        private static IEnumerable<TransactionType> GetDefaultTransactionTypes(IDictionary<string, TaxReportingCategory> taxReportingCategoryLookup)
         {
             var transactionType = new[]
                 {
                     new TransactionType
                         {
                             Name = "Credit",
-                            Category = taxReportingCategoryLookup["N/A"]
+                            Category = taxReportingCategoryLookup["N/A"],
+                            Format = String.Join(" ", new[] { TransactionDetailType.Date.Key, TransactionDetailType.CashAdded.Key, TransactionDetailType.CommentOptional.Key })
                         },
                     new TransactionType
                         {
                             Name = "Debit",
-                            Category = taxReportingCategoryLookup["N/A"]
+                            Category = taxReportingCategoryLookup["N/A"],
+                            Format = String.Join(" ", new[] { TransactionDetailType.Date.Key, TransactionDetailType.CashRemoved.Key, TransactionDetailType.CommentOptional.Key })
                         },
                     new TransactionType
                         {
                             Name = "Buy",
-                            Category = taxReportingCategoryLookup["N/A"]
+                            Category = taxReportingCategoryLookup["N/A"],
+                            Format = String.Join(" ", new[] { TransactionDetailType.Date.Key, TransactionDetailType.Symbol.Key, TransactionDetailType.SharesAdded.Key, TransactionDetailType.Total.Key, TransactionDetailType.Fees.Key, TransactionDetailType.CommentOptional.Key })
                         },
                     new TransactionType
                         {
                             Name = "Sell",
-                            Category = taxReportingCategoryLookup["To be determined"]
+                            Category = taxReportingCategoryLookup["To be determined"],
+                            Format = String.Join(" ", new[] { TransactionDetailType.Date.Key, TransactionDetailType.Symbol.Key, TransactionDetailType.SharesRemoved.Key, TransactionDetailType.Total.Key, TransactionDetailType.Fees.Key, TransactionDetailType.CommentOptional.Key })
                         },
                     new TransactionType
                         {
                             Name = "Reinvest Dividend",
-                            Category = taxReportingCategoryLookup["Dividend"]
+                            Category = taxReportingCategoryLookup["Dividend"],
+                            Format = String.Join(" ", new[] { TransactionDetailType.Date.Key, TransactionDetailType.Symbol.Key, TransactionDetailType.SharesAdded.Key, TransactionDetailType.Total.Key, TransactionDetailType.Fees.Key, TransactionDetailType.CommentOptional.Key })
                         },
                     new TransactionType
                         {
                             Name = "Reinvest Short-Term Capital Gain",
-                            Category = taxReportingCategoryLookup["Short-Term Capital Gain"]
+                            Category = taxReportingCategoryLookup["Short-Term Capital Gain"],
+                            Format = String.Join(" ", new[] { TransactionDetailType.Date.Key, TransactionDetailType.Symbol.Key, TransactionDetailType.SharesAdded.Key, TransactionDetailType.Total.Key, TransactionDetailType.Fees.Key, TransactionDetailType.CommentOptional.Key })
                         },
                     new TransactionType
                         {
                             Name = "Reinvest Long-Term Capital Gain",
-                            Category = taxReportingCategoryLookup["Long-Term Capital Gain"]
+                            Category = taxReportingCategoryLookup["Long-Term Capital Gain"],
+                            Format = String.Join(" ", new[] { TransactionDetailType.Date.Key, TransactionDetailType.Symbol.Key, TransactionDetailType.SharesAdded.Key, TransactionDetailType.Total.Key, TransactionDetailType.Fees.Key, TransactionDetailType.CommentOptional.Key })
                         },
                     new TransactionType
                         {
                             Name = "Add Shares",
-                            Category = taxReportingCategoryLookup["N/A"]
+                            Category = taxReportingCategoryLookup["N/A"],
+                            Format = String.Join(" ", new[] { TransactionDetailType.Date.Key, TransactionDetailType.Symbol.Key, TransactionDetailType.SharesAdded.Key, TransactionDetailType.CommentOptional.Key })
                         },
                     new TransactionType
                         {
                             Name = "Remove Shares",
-                            Category = taxReportingCategoryLookup["N/A"]
+                            Category = taxReportingCategoryLookup["N/A"],
+                            Format = String.Join(" ", new[] { TransactionDetailType.Date.Key, TransactionDetailType.Symbol.Key, TransactionDetailType.SharesRemoved.Key, TransactionDetailType.CommentOptional.Key })
                         },
                 };
             return transactionType;
